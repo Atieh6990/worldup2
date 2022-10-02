@@ -11,7 +11,6 @@
 
 <script>
 
-// import sideMenu from '../components/sideMenu/SideMenu'
 import videoPlayer from '../components/video/videoPlayer'
 import func from '../mixins/mixin'
 import {mapMutations, mapGetters} from 'vuex'
