@@ -1,12 +1,29 @@
 <template>
-  <div class="videoParent"></div>
+  <div class="videoParent">
+
+    <object v-if="url != ''" id="av-player" type="application/avplayer" ></object>
+
+  </div>
 </template>
 
 <script>
+
+import Player from "../../js/player"
+
+
 export default {
   name: "player",
+  data(){
+    return{
+      Player: "",url:"https://content.jwplatform.com/manifests/vM7nH0Kl.m3u8",
+      playerObj:""
+    }
+  },
   created() {
-    console.log("jdskfjkfgjgn")
+
+    this.playerObj = new Player.VideoPlayer();//this.channel 104->aiofilm , 100->aiotoon
+    this.playerObj.open(this.url);
+    this.playerObj.play();
   }
 }
 </script>

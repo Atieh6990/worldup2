@@ -19,11 +19,13 @@ export default {
             let data = response['data'];
             return data
         }).catch(response => {
-            console.log("code catch",response)
+            console.log("code catch", response)
         });
     },
     signup(key, code, mobile, mac, uid, version) {
         let Url = ROAST_CONFIG.API_URL + '/signup'
+
+        // console.log('key', key, 'code', code, 'mobile', mobile, 'mac', mac, 'uid', uid, 'version', version)
         let Orgdata = {'key': key, 'code': code, 'mobile': mobile, 'mac': mac, 'uid': uid, 'version': version}
         return axios({
             method: "POST",
@@ -33,7 +35,7 @@ export default {
             let data = response['data'];
             return data
         }).catch(response => {
-            console.log("signup catch",response)
+            console.log("signup catch", response)
         });
     },
     //
