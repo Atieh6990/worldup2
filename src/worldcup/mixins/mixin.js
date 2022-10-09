@@ -5,6 +5,7 @@ var isImeFocused;
 var isFile = 0;
 var FileSelected = "";
 var documentsDir = "";
+
 var androidTvDevelop = {
     android_id: 'f24e46cfec5a98e2',
     mac: "44:D8:78:EB:A2:AD",
@@ -14,22 +15,26 @@ var androidTvDevelop = {
 }
 var tizenTvDevelop = {
     mac: "KLpr4eeerdddd33Q22",
+    uid: "KLpr4eeerdddd33Q22",
     year: "17",
     isOld: "0",
     ps: "dummy value",
     real: "dummy value, eg. UN65JS9500",
     model: "dummy value",
     firmware: "dummy value",
-    IsCompletePrf: "1"
+    // IsCompletePrf: "1",
+    version: "17"
 }
 
+
 export default {
+
     methods: {
 
         UserTVInfo() {
             let urlParams;
             let url_string = window.location.href;
-            console.log(ROAST_CONFIG.OS_TYPE , ROAST_CONFIG.DEVELOP_MODE)
+            // console.log(ROAST_CONFIG.OS_TYPE, ROAST_CONFIG.DEVELOP_MODE)
             if (ROAST_CONFIG.OS_TYPE == 0) {//android
 
                 if (ROAST_CONFIG.DEVELOP_MODE == 1) {
@@ -46,20 +51,25 @@ export default {
                     var firmware = webapis.productinfo.getFirmware();
                     var psID = webapis.productinfo.getFirmware();
                     var Duid = webapis.productinfo.getDuid();
-                    var year = modelTV.split("_", 1);
+                    var year = modelTV.split("_", 1)[0];
                     urlParams = {
                         mac: Duid,
+                        uid: Duid,
                         year: year,
                         isOld: 0,
                         ps: psID,
                         real: real,
                         model: modelTV,
                         firmware: firmware,
-                        IsCompletePrf: "1"
+                        // IsCompletePrf: "1",
+                        version: year,
+                        android_id: "",
+                        android_version: "",
+                        ver: ""
                     };
                 }
             }
-            console.log(urlParams)
+            // console.log('urlParams',urlParams)
             return urlParams;
         },
         getUrlParams(url) {
@@ -120,12 +130,12 @@ export default {
         },
 
         getToken: function () {
-            let savedToken;
-            let type;
+            let savedToken = '';
+            let type = '';
             if (ROAST_CONFIG.DEVELOP_MODE == 1) {
 
                 savedToken = this.getParam(ROAST_CONFIG.FILE_NAME)
-                type = 0
+                return this.tokenFind(savedToken,0)
             } else {
                 if (ROAST_CONFIG.OS_TYPE == 0) {//android
                     savedToken = window.ReactNativeWebView && window.ReactNativeWebView.postMessage(JSON.stringify({
@@ -133,13 +143,14 @@ export default {
                         data: ''
                     }))
                     type = 1
+                    //TODO
+                    // let sendData = {type: type, savedToken: savedToken}
+                    // return sendData
                 } else {//tizen
-                    savedToken = this.loadFile()
-                    type = 2
+                    return this.loadFile();
                 }
 
             }
-            return {type: type, savedToken: savedToken}
 
         },
 
@@ -156,7 +167,9 @@ export default {
                     data: jsonObj
                 }))
             } else {//tizen
-                this.FileWrite(jsonObj.token, jsonObj.refresh_token, jsonObj.expires_in)
+                // console.log("sare setToken", jsonObj.token, jsonObj.refresh_token, jsonObj.expires_in)
+                // this.DeleteFile();
+                this.FileWrite(jsonObj)
             }
 
         },
@@ -177,20 +190,22 @@ export default {
             // }, 0);
         },
 
-
         loadFile() {
             let _this = this
+
+            // console.log("loadFile", ROAST_CONFIG.FILE_NAME)
 
             function onsuccess(files) {
 
                 for (var i = 0; i < files.length; i++) {
+                    // console.log(i, files[i].name)
                     if (files[i].name == ROAST_CONFIG.FILE_NAME) {
                         isFile = 1
                         FileSelected = files[i]
                     }
                 }
-
-                if (_this.isFile) {//
+                // console.log("loadFile ghable iiiiiiiiiiiiif", isFile,FileSelected)
+                if (isFile) {
                     return _this.FileRead()
                 } else {
 
@@ -213,29 +228,18 @@ export default {
 
 
         },
-        FileWrite(token, refresh_token, expires_in) {
-            var _this = this
 
+        FileWrite(jsonObj) {
 
-            var json = {
-                expires_in: (expires_in * 1000) + (new Date).getTime(),
-                access_token: token,
-                refresh_token: refresh_token
-            };
-            var testFile = _this.documentsDir.createFile(ROAST_CONFIG.FILE_NAME);
-            //    console.log("++++++++++++testFile", _this.testFile)
-            json = JSON.stringify(json)
-
-
+            // console.log('sare writ', jsonObj)
+            var testFile = documentsDir.createFile(ROAST_CONFIG.FILE_NAME);
             if (testFile != null) {
-
-
                 testFile.openStream(
                     "w",
                     function (fs) {
-                        fs.write(json);
+                        fs.write(jsonObj);
                         fs.close();
-
+                        console.log("what is write?????????",jsonObj)
                     }, function (e) {
                         console.log("Error " + e.message);
                     }, "UTF-8"
@@ -243,21 +247,93 @@ export default {
             }
         },
         FileRead() {
-
+            var _this = this
             var file = documentsDir.resolve(ROAST_CONFIG.FILE_NAME);
+            // console.log("FileRead0000000000000000000000000000000000000000000000000", file)
+
             file.openStream(
                 "r",
                 function (fs) {
+
                     var text = fs.read(file.fileSize);
+
                     fs.close();
-                    var data = JSON.parse(text)
-                    return data
-                    // _this.checkTocken(data);
+                    var data = (text)
+
+                    return _this.tokenFind(data,2)
+
                 }, function (e) {
                     console.log("Error " + e.message);
                 }, "UTF-8");
 
         },
+
+        tokenFind(tk,tkType) {
+
+            let type = tkType
+            let sendData = {type: type, savedToken: JSON.parse(tk)}
+            this.$root.$emit("tokenFindInStore", sendData)
+            return sendData
+
+        },
+
+
+        DeleteFile() {
+            // console.log("DeleteFile0000000000000000000000000000000000000000000000000")
+            let _this = this
+
+            function onsuccess(files) {
+                // console.log("oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo", files)
+                for (var i = 0; i < files.length; i++) {
+                    if (files[i].name == ROAST_CONFIG.FILE_NAME) {
+                        isFile = 1
+                        FileSelected = files[i]
+                    }
+
+                }
+                // console.log("_this.isFile", isFile, FileSelected)
+                if (isFile) {
+                    if (!FileSelected.isDirectory) {
+                        documentsDir.deleteFile(
+                            FileSelected.fullPath,
+                            function () {
+                                isFile = 0
+                                FileSelected = ""
+                                console.log("done!!!!")
+                            }, function (e) {
+                                console.log("Error" + e.message);
+                            });
+                    }
+                } else {
+
+                }
+            }
+
+            function onerror(error) {
+                //       console.log("The error " + error.message + " occurred when listing the files in the selected folder");
+            }
+
+            tizen.filesystem.resolve(
+                'documents',
+                function (dir) {
+
+                    _this.documentsDir = dir;
+                    dir.listFiles(onsuccess, onerror);
+
+
+                    //   CompressPath = dir.path + compressFileName;
+                }, function (e) {
+                    console.log("Error" + e.message);
+                }, "rw"
+            );
+
+
+        },
+        handleExit() {
+
+            (ROAST_CONFIG.OS_TYPE == 0) ? (this.exitAndroidApp()) : (tizen.application.getCurrentApplication().exit())
+        },
+
     },
     filters: {
         substr: function (value, count) {

@@ -12,6 +12,7 @@ export default {
   created() {
     console.log("app vue Created")
     window.addEventListener("keydown", this.keyEvent);
+    this.$router.push('/worldCupHome/Pm')
   },
   methods: {
     keyEvent(event) {
@@ -98,7 +99,7 @@ export default {
 
           break;
         case 10182: // Exit
-
+          this.$refs.routeview.exit();
           // tizen.application.getCurrentApplication().exit();
 
           break;
@@ -119,12 +120,12 @@ export default {
         case 55: //key 7
         case 56: //key 8
         case 57: //key 9
-          this.$refs.routeview.showNumber(parseInt(keyCode) - 48)
+          // this.$refs.routeview.showNumber(parseInt(keyCode) - 48)
 
           break;
         case 10190: //key PRE-CH
 
-          this.$refs.routeview.showNumber(parseInt(keyCode) - 48);
+          // this.$refs.routeview.showNumber(parseInt(keyCode) - 48);
 
           break;
           // case 8: //key Backspace

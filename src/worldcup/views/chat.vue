@@ -119,11 +119,14 @@ export default {
   },
   created() {
 
-    console.log("lkgdkjghaaaaaan")
     // this.roomName = "اتاق گفتگوی " + this.getTcChannel();
     this.roomName = "اتاق گفتگوی جام جهانی";
-    this.getTokenData();
+    // this.getToken()
 
+    setTimeout(()=>{
+      console.log("lkgdkjghaaaaaan")
+      this.getToken()
+    },1000)
 
     // // this.setToken("");
     // if (ROAST_CONFIG.LOCAL_TEST == true) {
@@ -154,6 +157,9 @@ export default {
     this.$root.$on("set_error_msg", data => {
       this.errorMessage = data
     })
+
+
+
 
   },
   methods: {
@@ -373,7 +379,10 @@ export default {
       })
     },
     doSignUp() {
-      api.signup(this.userKey, this.verifyCode, this.phoneNumber, this.getUserTv().mac, this.getUserTv().android_id, this.getUserTv().ver).then(data => {
+
+
+      // console.log("doSignUp" , this.getUserTv())
+      api.signup(this.userKey, this.verifyCode, this.phoneNumber, this.getUserTv().mac, this.getUserTv().uid, this.getUserTv().version).then(data => {
         if (data.success == false) {
           this.errorMessage = data.data.message;
           return false
@@ -383,6 +392,8 @@ export default {
           access_token: data.access_token,
           refresh_token: data.refresh_token
         }
+        // console.log("param" , param)
+        // this.DeleteFile()
         this.setToken(JSON.stringify(param));
         this.setUserInfo(param);
         this.startSocket();
@@ -390,6 +401,7 @@ export default {
     },
     checkToken(key) {
       // let keyJson = JSON.parse(key);
+      // console.log("keyJson" ,key.expires_in)
       let keyJson = (key);
       let param = {
         expires_in: (keyJson.expires_in * 1000) + (new Date).getTime(),
@@ -397,10 +409,14 @@ export default {
         refresh_token: keyJson.refresh_token
       }
 
+      console.log('param',param)
+
       this.setUserInfo(param);
       // this.$root.$emit("hide_loading")
+      // if (1==1) {
       if ((new Date).getTime() >= keyJson.expires_in) {
-        // console.log("22")
+        console.log("22")
+        this.DeleteFile()
         this.registrationType = 0;
         this.userLoggedIn = false;
 
@@ -487,22 +503,23 @@ export default {
     cancel() {
     },
     getTokenData() {
-      setTimeout(() => {
-        this.manageTokenGet(this.getToken());//baraye local & tizen miad inja vali baraye andriod event sader mishe
-      }, 800);
+      // setTimeout(() => {
+      //   console.log("chat getTokenData" ,)
+      //   // this.DeleteFile()
+      //   //  this.manageTokenGet(this.getToken());//baraye local & tizen miad inja vali baraye andriod event sader mishe
+      // }, 10000);
     },
 
 
     manageTokenGet(data) {
-      console.log('manageTokenGet', data)
-      this.tokenData = JSON.parse(data.savedToken)
-      let Token = JSON.parse(data.savedToken).access_token
+      this.tokenData = (data.savedToken)
+      let Token = (data.savedToken).access_token
+      // console.log(Token)
       // if (this.tokenData == null || this.tokenData == 'null' || this.tokenData == '' || typeof this.tokenData == "undefined") {
       if (Token == null || Token == 'null' || Token == '' || typeof Token == "undefined") {
         this.registrationType = 0;
         this.userLoggedIn = false;
       } else {
-        // console.log("33")
         this.checkToken(this.tokenData);
       }
     }

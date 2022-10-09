@@ -1,9 +1,7 @@
 <template>
   <div class="routParent">
-<!--    <div class="videoParent"></div>-->
-    <videoPlayer></videoPlayer>
-    <!--    <sideMenu ref="sideMenu"></sideMenu>-->
 
+    <videoPlayer v-if="!showPlayer"></videoPlayer>
     <router-view :key="$route.fullPath" ref="routeview"></router-view>
 
   </div>
@@ -15,7 +13,6 @@ import videoPlayer from '../components/video/videoPlayer'
 import func from '../mixins/mixin'
 import {mapMutations, mapGetters} from 'vuex'
 import {ROAST_CONFIG} from "@/worldcup/js/config";
-// import {ROAST_CONFIG} from "../js/config";
 import router from '../router/index'
 import axios from 'axios'
 
@@ -25,7 +22,8 @@ export default {
   mixins: [func],
   data() {
     return {
-      currentName: '',   loading: false, getResponse: 0,
+      showPlayer:ROAST_CONFIG.DEVELOP_MODE,
+      currentName: '', loading: false, getResponse: 0,
     }
   },
   computed: {
@@ -40,7 +38,8 @@ export default {
   },
   created() {
     console.log("worldCupHome Created")
-    this.$router.push('/worldCupHome/Pm')
+    // this.$router.push('/worldCupHome/Pm')
+    // this.$router.push("/worldCupHome/Pm").catch(()=>{});
     router.beforeEach((to, from, next) => {
       this.currentName = to.name
       if (to.name == 'pm') {
@@ -48,11 +47,16 @@ export default {
       } else next()
     });
 
+    setTimeout(() => {
+      this.setUserTv(this.UserTVInfo())
+      this.setTvChannel(ROAST_CONFIG.TV_CHANNEL);
+    }, 50)
 
-    this.setUserTv(this.UserTVInfo())
-    this.setTvChannel(ROAST_CONFIG.TV_CHANNEL);
     // this.manageInterceptor()
-
+    this.$root.$on("tokenFindInStore", data => {
+      console.log('tokenFindInStore',data)
+      this.$refs.routeview.manageTokenGet(data);//baraye local & tizen miad inja vali baraye andriod event sader mishe
+    })
 
     this.$root.$on("registerData", (data) => {
       // console.log("in registerData !!!")
@@ -79,8 +83,8 @@ export default {
     });
   },
   methods: {
-    ...mapMutations(['setUserTv', "setTvChannel","disconnectSocket"]),
-    ...mapGetters(["getSocket"]),
+    ...mapMutations(['setUserTv', "setTvChannel", "disconnectSocket"]),
+    ...mapGetters(["getSocket", "getUserInfo"]),
     up() {
       this.$refs.routeview.up();
     },
@@ -99,16 +103,19 @@ export default {
     },
     back() {
 
-        this.$router.go(-1);
-        if(ROAST_CONFIG.DEVELOP_MODE == 0 && ROAST_CONFIG.OS_TYPE == 0 && this.currentName == "Pm"){//TODO currentName bayad beshe esme safe avale app
-          this.exitAndroidApp()
-        }
+      this.$router.go(-1);
+      if (ROAST_CONFIG.DEVELOP_MODE == 0 && ROAST_CONFIG.OS_TYPE == 0 && this.currentName == "Pm") {//TODO currentName bayad beshe esme safe avale app
+        this.exitAndroidApp()
+      }
 
       // this.$router.go(-1);
     },
     done() {
     },
     cancel() {
+    },
+    exit(){
+      this.handleExit();
     },
     numberShow(num) {
       this.$refs.routeview.showNum(num)
@@ -120,6 +127,7 @@ export default {
       });
       socket.on("connect_error", (err) => {
         console.log('message ->', err.message, 'data ->', err.data); // not authorized
+        this.DeleteFile()
         this.disconnectSocket();
         this.$refs.routeview.reconnectSocket()
       });
@@ -154,6 +162,7 @@ export default {
     },
     manageInterceptor() {
       axios.interceptors.request.use((config) => {
+        config.headers.Authorization = `Bearer ` + this.getUserInfo().access_token;
         this.getResponse = 0
         this.loading = true;
         return config
@@ -166,7 +175,17 @@ export default {
         this.getResponse = 1
         return response;
       }, error => {
-        this.loading = false
+        this.loading = false;
+
+        if (typeof error.response == "object") {//TODO
+          if (error.response.status == 401) {
+
+            this.DeleteFile()
+            this.disconnectSocket()
+            this.$router.push('/worldCupHome/Pm')
+
+          }
+        }
       })
     }
 
@@ -178,6 +197,7 @@ export default {
 <style scoped>
 
 @import "../styles/styles.css";
+@import "../styles/bootstrap.min.css";
 
 .routParent {
   position: fixed;
@@ -199,5 +219,18 @@ export default {
   left: 0px !important;
   direction: ltr !important;
 }
+.iScrollLoneScrollbar {
+  right: 0px !important;
+}
+@font-face {
+  font-family: 'BYekan';
+  font-weight: normal;
+  font-style: normal;
+  /*font-size: 18px;*/
+  src: url('../assets/font/BYekan.ttf');
+}
 
+body, input, select, label, div, span, p {
+  font-family: "BYekan" !important;
+}
 </style>
