@@ -70,13 +70,13 @@ export const User = {
 
         setUserInfo(state, param) {
 
-            console.log(param.expires_in)
+            // console.log(param.expires_in)
             state.userInfo.expires_in = param.expires_in;
             state.userInfo.access_token = param.access_token;
             state.userInfo.refresh_token = param.refresh_token;
 
 
-            console.log( state.userInfo.access_token)
+            // console.log( state.userInfo.access_token)
         }
         ,
         setUserNameID(state, data) {

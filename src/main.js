@@ -4,7 +4,10 @@ import router from './worldcup/router'
 import store from './worldcup/store'
 
 Vue.config.productionTip = false
-
+try {
+  window.$ = window.jQuery = require('jquery');
+} catch (e) {
+}
 new Vue({
   router,
   store,

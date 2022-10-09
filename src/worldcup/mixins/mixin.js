@@ -135,10 +135,7 @@ export default {
             if (ROAST_CONFIG.DEVELOP_MODE == 1) {
 
                 savedToken = this.getParam(ROAST_CONFIG.FILE_NAME)
-                type = 0
-
-                let sendData = {type: type, savedToken: savedToken}
-                return sendData
+                return this.tokenFind(savedToken,0)
             } else {
                 if (ROAST_CONFIG.OS_TYPE == 0) {//android
                     savedToken = window.ReactNativeWebView && window.ReactNativeWebView.postMessage(JSON.stringify({
@@ -146,9 +143,9 @@ export default {
                         data: ''
                     }))
                     type = 1
-
-                    let sendData = {type: type, savedToken: savedToken}
-                    return sendData
+                    //TODO
+                    // let sendData = {type: type, savedToken: savedToken}
+                    // return sendData
                 } else {//tizen
                     return this.loadFile();
                 }
@@ -170,7 +167,8 @@ export default {
                     data: jsonObj
                 }))
             } else {//tizen
-                console.log("sare setToken", jsonObj.token, jsonObj.refresh_token, jsonObj.expires_in)
+                // console.log("sare setToken", jsonObj.token, jsonObj.refresh_token, jsonObj.expires_in)
+                // this.DeleteFile();
                 this.FileWrite(jsonObj)
             }
 
@@ -206,12 +204,9 @@ export default {
                         FileSelected = files[i]
                     }
                 }
-                // console.log("loadFile ghable iiiiiiiiiiiiif", isFile)
-                if (isFile) {//
-                    // console.log("in iiiiiiiiiiiiiiiiiiiiiiiiiiif",_this.FileRead())
+                // console.log("loadFile ghable iiiiiiiiiiiiif", isFile,FileSelected)
+                if (isFile) {
                     return _this.FileRead()
-
-                    // return tokenObj
                 } else {
 
                 }
@@ -236,31 +231,15 @@ export default {
 
         FileWrite(jsonObj) {
 
-            console.log('sare writ', jsonObj)
-
-
-            var _this = this
-
-
-            // var json = {
-            //     expires_in: (expires_in * 1000) + (new Date).getTime(),
-            //     access_token: token,
-            //     refresh_token: refresh_token
-            // };
+            // console.log('sare writ', jsonObj)
             var testFile = documentsDir.createFile(ROAST_CONFIG.FILE_NAME);
-            // console.log("++++C++++++++testFile", testFile)
-            // json = JSON.stringify(json)
-
-
             if (testFile != null) {
-
-
                 testFile.openStream(
                     "w",
                     function (fs) {
                         fs.write(jsonObj);
                         fs.close();
-                        // console.log("what is write?????????",jsonObj)
+                        console.log("what is write?????????",jsonObj)
                     }, function (e) {
                         console.log("Error " + e.message);
                     }, "UTF-8"
@@ -268,8 +247,6 @@ export default {
             }
         },
         FileRead() {
-            // console.log("sare FileRead")
-            //  console.log("FileRead0000000000000000000000000000000000000000000000000")
             var _this = this
             var file = documentsDir.resolve(ROAST_CONFIG.FILE_NAME);
             // console.log("FileRead0000000000000000000000000000000000000000000000000", file)
@@ -282,8 +259,8 @@ export default {
 
                     fs.close();
                     var data = (text)
-                    // console.log("openStream 000000", data)
-                    return _this.tokenFind(data)
+
+                    return _this.tokenFind(data,2)
 
                 }, function (e) {
                     console.log("Error " + e.message);
@@ -291,11 +268,10 @@ export default {
 
         },
 
-        tokenFind(tk) {
+        tokenFind(tk,tkType) {
 
-            let type = 2
+            let type = tkType
             let sendData = {type: type, savedToken: JSON.parse(tk)}
-
             this.$root.$emit("tokenFindInStore", sendData)
             return sendData
 
@@ -303,11 +279,11 @@ export default {
 
 
         DeleteFile() {
-            console.log("DeleteFile0000000000000000000000000000000000000000000000000")
+            // console.log("DeleteFile0000000000000000000000000000000000000000000000000")
             let _this = this
 
             function onsuccess(files) {
-                console.log("oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo", files)
+                // console.log("oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo", files)
                 for (var i = 0; i < files.length; i++) {
                     if (files[i].name == ROAST_CONFIG.FILE_NAME) {
                         isFile = 1
@@ -315,7 +291,7 @@ export default {
                     }
 
                 }
-                //    console.log("oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo", _this.isFile)
+                // console.log("_this.isFile", isFile, FileSelected)
                 if (isFile) {
                     if (!FileSelected.isDirectory) {
                         documentsDir.deleteFile(
@@ -323,6 +299,7 @@ export default {
                             function () {
                                 isFile = 0
                                 FileSelected = ""
+                                console.log("done!!!!")
                             }, function (e) {
                                 console.log("Error" + e.message);
                             });
@@ -352,7 +329,10 @@ export default {
 
 
         },
+        handleExit() {
 
+            (ROAST_CONFIG.OS_TYPE == 0) ? (this.exitAndroidApp()) : (tizen.application.getCurrentApplication().exit())
+        },
 
     },
     filters: {

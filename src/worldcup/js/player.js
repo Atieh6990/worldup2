@@ -69,7 +69,7 @@ export default {
                         // console.log("Current Playtime : " + currentTime);
                     },
                     onevent: function (eventType, eventData) {
-                        //log("event type: " + eventType + ", data: " + eventData);
+                        console.log("event type: " + eventType + ", data: " + eventData);
                     },
                     onstreamcompleted: function () {
                         console.log("Stream Completed");

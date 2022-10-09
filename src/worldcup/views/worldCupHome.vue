@@ -1,7 +1,7 @@
 <template>
   <div class="routParent">
 
-    <videoPlayer></videoPlayer>
+    <videoPlayer v-if="!showPlayer"></videoPlayer>
     <router-view :key="$route.fullPath" ref="routeview"></router-view>
 
   </div>
@@ -22,6 +22,7 @@ export default {
   mixins: [func],
   data() {
     return {
+      showPlayer:ROAST_CONFIG.DEVELOP_MODE,
       currentName: '', loading: false, getResponse: 0,
     }
   },
@@ -36,8 +37,9 @@ export default {
     }
   },
   created() {
-    // console.log("worldCupHome Created")
-    this.$router.push('/worldCupHome/Pm')
+    console.log("worldCupHome Created")
+    // this.$router.push('/worldCupHome/Pm')
+    // this.$router.push("/worldCupHome/Pm").catch(()=>{});
     router.beforeEach((to, from, next) => {
       this.currentName = to.name
       if (to.name == 'pm') {
@@ -48,11 +50,11 @@ export default {
     setTimeout(() => {
       this.setUserTv(this.UserTVInfo())
       this.setTvChannel(ROAST_CONFIG.TV_CHANNEL);
-    }, 5000)
+    }, 50)
 
     // this.manageInterceptor()
     this.$root.$on("tokenFindInStore", data => {
-      // console.log('tokenFindInStore',data)
+      console.log('tokenFindInStore',data)
       this.$refs.routeview.manageTokenGet(data);//baraye local & tizen miad inja vali baraye andriod event sader mishe
     })
 
@@ -112,6 +114,9 @@ export default {
     },
     cancel() {
     },
+    exit(){
+      this.handleExit();
+    },
     numberShow(num) {
       this.$refs.routeview.showNum(num)
     },
@@ -122,6 +127,7 @@ export default {
       });
       socket.on("connect_error", (err) => {
         console.log('message ->', err.message, 'data ->', err.data); // not authorized
+        this.DeleteFile()
         this.disconnectSocket();
         this.$refs.routeview.reconnectSocket()
       });
@@ -191,6 +197,7 @@ export default {
 <style scoped>
 
 @import "../styles/styles.css";
+@import "../styles/bootstrap.min.css";
 
 .routParent {
   position: fixed;
@@ -212,5 +219,18 @@ export default {
   left: 0px !important;
   direction: ltr !important;
 }
+.iScrollLoneScrollbar {
+  right: 0px !important;
+}
+@font-face {
+  font-family: 'BYekan';
+  font-weight: normal;
+  font-style: normal;
+  /*font-size: 18px;*/
+  src: url('../assets/font/BYekan.ttf');
+}
 
+body, input, select, label, div, span, p {
+  font-family: "BYekan" !important;
+}
 </style>

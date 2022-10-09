@@ -119,12 +119,12 @@ export default {
   },
   created() {
 
-    console.log("lkgdkjghaaaaaan")
     // this.roomName = "اتاق گفتگوی " + this.getTcChannel();
     this.roomName = "اتاق گفتگوی جام جهانی";
     // this.getToken()
 
     setTimeout(()=>{
+      console.log("lkgdkjghaaaaaan")
       this.getToken()
     },1000)
 
@@ -393,7 +393,7 @@ export default {
           refresh_token: data.refresh_token
         }
         // console.log("param" , param)
-
+        // this.DeleteFile()
         this.setToken(JSON.stringify(param));
         this.setUserInfo(param);
         this.startSocket();
@@ -401,7 +401,7 @@ export default {
     },
     checkToken(key) {
       // let keyJson = JSON.parse(key);
-      console.log("keyJson" ,key.expires_in)
+      // console.log("keyJson" ,key.expires_in)
       let keyJson = (key);
       let param = {
         expires_in: (keyJson.expires_in * 1000) + (new Date).getTime(),
@@ -413,8 +413,10 @@ export default {
 
       this.setUserInfo(param);
       // this.$root.$emit("hide_loading")
+      // if (1==1) {
       if ((new Date).getTime() >= keyJson.expires_in) {
-        // console.log("22")
+        console.log("22")
+        this.DeleteFile()
         this.registrationType = 0;
         this.userLoggedIn = false;
 
@@ -512,7 +514,7 @@ export default {
     manageTokenGet(data) {
       this.tokenData = (data.savedToken)
       let Token = (data.savedToken).access_token
-      console.log(Token)
+      // console.log(Token)
       // if (this.tokenData == null || this.tokenData == 'null' || this.tokenData == '' || typeof this.tokenData == "undefined") {
       if (Token == null || Token == 'null' || Token == '' || typeof Token == "undefined") {
         this.registrationType = 0;
