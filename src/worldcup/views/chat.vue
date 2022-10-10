@@ -1,7 +1,7 @@
 <template>
   <div class="parent">
 
-<!--    <div style="position: absolute;width: 200px;height: 200px;background-color: #42b983"></div>-->
+    <!--    <div style="position: absolute;width: 200px;height: 200px;background-color: #42b983"></div>-->
 
 
     <div v-if="!userLoggedIn">
@@ -44,7 +44,7 @@ import chats from '../components/pm/chats'
 import func from '../mixins/mixin'
 import {mapGetters, mapMutations, mapActions} from 'vuex'
 import api from '../api/api'
-import SimpleKeyboard from "@/worldcup/components/pm/SimpleKeyboard";
+import SimpleKeyboard from "../components/pm/SimpleKeyboard";
 
 export default {
   name: "chat",
@@ -123,10 +123,10 @@ export default {
     this.roomName = "اتاق گفتگوی جام جهانی";
     // this.getToken()
 
-    setTimeout(()=>{
+    setTimeout(() => {
       console.log("lkgdkjghaaaaaan")
       this.getToken()
-    },1000)
+    }, 1000)
 
     // // this.setToken("");
     // if (ROAST_CONFIG.LOCAL_TEST == true) {
@@ -157,8 +157,6 @@ export default {
     this.$root.$on("set_error_msg", data => {
       this.errorMessage = data
     })
-
-
 
 
   },
@@ -409,7 +407,7 @@ export default {
         refresh_token: keyJson.refresh_token
       }
 
-      console.log('param',param)
+      console.log('param', param)
 
       this.setUserInfo(param);
       // this.$root.$emit("hide_loading")
@@ -529,12 +527,15 @@ export default {
 
 <style scoped>
 .parent {
-  width: 390px;
+  width: 350px;
   height: 100%;
-  background-color: #242328;
+  /*background-color: #000000;*/
+  /*opacity: 0.2;*/
   /*right: 110px;*/
   /*position: a  bsolute;*/
   overflow: hidden;
+  /*box-shadow: 0px 4px 20px 0px #00000073;*/
+
 }
 
 
@@ -619,7 +620,7 @@ export default {
 }
 
 .errorMdg {
-  width: 390px;
+  width: 350px;
   height: 60px;
   right: 0px;
   position: absolute;
@@ -629,12 +630,12 @@ export default {
   align-items: center;
   justify-content: center;
   font-size: 15px;
-  color: red;
+  color: #FF3939;
 }
 
 .roomTitle {
   /*width: 95%;*/
-  width: 390px;
+  width: 350px;
   height: 80px;
   right: 0px;
   position: absolute;
@@ -651,5 +652,9 @@ export default {
 
 a {
   display: none !important;
+}
+
+:focus {
+  outline: -webkit-focus-ring-color auto 0px !important;
 }
 </style>

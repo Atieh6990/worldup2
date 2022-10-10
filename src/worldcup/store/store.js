@@ -4,7 +4,7 @@ export const User = {
         userTv: {
             android_id: '', mac: "", android_version: "", model: "", ver: "", uid: "", version: ""
         },
-
+menuInfo:"",
         userTv2: "",
         userInfo: {
             expires_in: "",
@@ -57,6 +57,9 @@ export const User = {
         ,
         getTcChannel(state) {
             return state.tvChannel;
+        },
+        getMenu(state){
+            return state.menuInfo
         }
     }
     ,
@@ -89,6 +92,9 @@ export const User = {
         ,
         setTvChannel(state, index) {
             state.tvChannel = index;
+        },
+        setMenu(state , info){
+            state.menuInfo = info
         }
     }
     ,

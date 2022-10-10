@@ -12,7 +12,7 @@ export default {
   created() {
     console.log("app vue Created")
     window.addEventListener("keydown", this.keyEvent);
-    this.$router.push('/worldCupHome/Pm')
+    this.$router.push('/worldCupHome/menu')
   },
   methods: {
     keyEvent(event) {
@@ -54,13 +54,13 @@ export default {
 
           break
           /* case 187://Return
-             //alert(this.$refs.sideMenu.active + ' ** ' + this.$refs.sideMenu.show + ' ** ' + this.$refs.routeview.activeRoute)
+             //alert(this.$refs.menu.active + ' ** ' + this.$refs.menu.show + ' ** ' + this.$refs.routeview.activeRoute)
              if (this.modalOn) {
                this.$refs.routeview.back();
-             } else if (this.$refs.sideMenu.active && this.$refs.sideMenu.show) {
+             } else if (this.$refs.menu.active && this.$refs.menu.show) {
                // else
                if (this.$refs.routeview.activeRoute == 0) {
-                 this.$refs.sideMenu.back();
+                 this.$refs.menu.back();
                  this.$refs.routeview.activeRoute = 1;
                } else {
                  this.$refs.routeview.back();
@@ -143,11 +143,7 @@ export default {
 
 
 
-.parent{
-  position: absolute;
-  height: 200px;width: 200px;
-  background-color: #42b983;
-}
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -166,7 +162,10 @@ export default {
 }
 
 #nav a.router-link-exact-active {
-  color: #42b983;
+  /*color: #42b983;*/
+}
+:focus {
+  outline: -webkit-focus-ring-color auto 0px !important; /*remove input border focuse*/
 }
 
 </style>
