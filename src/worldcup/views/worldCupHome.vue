@@ -2,7 +2,13 @@
   <div class="routParent">
 
     <videoPlayer v-if="!showPlayer"></videoPlayer>
-    <router-view :key="$route.fullPath" ref="routeview"></router-view>
+
+    <div class="nestedRoutParent">
+      <div class="nestedRoutBackground"></div>
+      <routHeader v-if="currentName!='menu'"></routHeader>
+      <router-view :key="$route.fullPath" ref="routeview"></router-view>
+    </div>
+
 
   </div>
 </template>
@@ -15,15 +21,16 @@ import {mapMutations, mapGetters} from 'vuex'
 import {ROAST_CONFIG} from "@/worldcup/js/config";
 import router from '../router/index'
 import axios from 'axios'
+import routHeader from "../components/header/header";
 
 export default {
   name: "worldCupHome",
-  components: {videoPlayer},
+  components: {videoPlayer,routHeader},
   mixins: [func],
   data() {
     return {
       showPlayer:ROAST_CONFIG.DEVELOP_MODE,
-      currentName: '', loading: false, getResponse: 0,
+      currentName: 'menu', loading: false, getResponse: 0,
     }
   },
   computed: {
@@ -37,9 +44,9 @@ export default {
     }
   },
   created() {
-    console.log("worldCupHome Created")
-    // this.$router.push('/worldCupHome/Pm')
-    // this.$router.push("/worldCupHome/Pm").catch(()=>{});
+
+    this.setMenu({id:2,name:'چت آنلاین',des:'چت آنلاین مسابقات جام جهانی'})//TODO ba az ezafe shodane menu bardashte beshe & dar enter menu ezafe beshe
+
     router.beforeEach((to, from, next) => {
       this.currentName = to.name
       if (to.name == 'pm') {
@@ -83,7 +90,7 @@ export default {
     });
   },
   methods: {
-    ...mapMutations(['setUserTv', "setTvChannel", "disconnectSocket"]),
+    ...mapMutations(['setUserTv', "setTvChannel", "disconnectSocket","setMenu"]),
     ...mapGetters(["getSocket", "getUserInfo"]),
     up() {
       this.$refs.routeview.up();
@@ -206,15 +213,36 @@ export default {
   width: 1920px;
   height: 1080px;
   direction: rtl;
-  border: 1px solid green;
+  /*border: 1px solid green;*/
 }
+.nestedRoutParent{
+  height: 1080px;
+  width: 350px;
+  right: 0px;
+  top: 0px;
+  border-radius: 0px;
+  position: absolute;
+  box-shadow: 0px 4px 20px 0px #00000073;
+
+}
+.nestedRoutBackground{
+  height: 1080px;
+  width: 350px;
+  right: 0px;
+  top: 0px;
+  border-radius: 0px;
+  position: absolute;
+  background-color: #11151A;
+  opacity: 0.8;
+}
+
 
 :focus {
   outline: -webkit-focus-ring-color auto 0px !important;
 }
 
 .simple-keyboard {
-  max-width: 390px !important;
+  max-width: 350px !important;
   position: absolute;
   left: 0px !important;
   direction: ltr !important;
@@ -232,5 +260,8 @@ export default {
 
 body, input, select, label, div, span, p {
   font-family: "BYekan" !important;
+}
+:focus {
+  outline: -webkit-focus-ring-color auto 0px !important;
 }
 </style>
