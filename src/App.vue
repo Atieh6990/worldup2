@@ -12,7 +12,7 @@ export default {
   created() {
     console.log("app vue Created")
     window.addEventListener("keydown", this.keyEvent);
-    this.$router.push('/worldCupHome/menu')
+    this.$router.push('/worldCupHome/menuRout').catch(err => {})
   },
   methods: {
     keyEvent(event) {

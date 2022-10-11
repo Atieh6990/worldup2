@@ -8,12 +8,9 @@
       <registering :type="registrationType" ref="registering" :activeRoute="activeRoute"
                    :yPage="yPage" :numberShow="numberShow"></registering>
     </div>
-
     <div v-if="userLoggedIn && messageList.length>0" class="">
-      <div class="roomTitle"> {{ roomName }}</div>
       <chats ref="chats" :messageList="messageList" :userId="getUserInfo().userId"></chats>
     </div>
-
 
     <div class="errorMdg">{{ errorMessage }}</div>
     <div class="fixedBottom" v-if="userLoggedIn">
@@ -27,7 +24,7 @@
         <div class="chatInp input" style="overflow: auto" id="chatTxtDiv">{{ chatTxt }}</div>
       </div>
       <div :class="[((yPage == 1 && activeRoute==1 && xPage == 1 && userLoggedIn) ?'inpParentHover':''),'submitBtn']"
-           v-on:click="sendMessage()"><img src="../assets/images/send.png"></div>
+           v-on:click="sendMessage()"><img src="../assets/images/Pm/sendBtn.svg"></div>
     </div>
 
     <div class="keyboardParent" v-if="userLoggedIn">
@@ -541,7 +538,7 @@ export default {
 
 .fixedBottom {
   /*width: 95%; */
-  width: 383px;
+  width: 350px;
   height: 110px;
   right: 5px;
   position: absolute;
@@ -555,7 +552,7 @@ export default {
 
 .keyboardParent {
   /*width: 95%; *!*/
-  width: 389px;
+  width: 350px;
   height: 225px;
   right: 0px;
   position: absolute;
@@ -569,10 +566,8 @@ export default {
 }
 
 .inpParent {
-  width: 70%;
-  height: 70px;
-  border: 2px solid #3b3a3f;
-  border-radius: 15px;
+  height: 56px;
+  width: 250px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -580,14 +575,16 @@ export default {
 }
 
 .inpParentHover {
-  border: 2px solid #ffffff;
+  border: 1px solid #116DFF !important;
+  background-color: #116DFF !important;
 }
 
 .chatInp {
   line-height: 60px;
-  width: 100%;
-  height: 60px;
-  border: 0px;
+  height: 56px;
+  width: 250px;
+  border: 2px solid #FFFFFF;
+  border-radius: 7px;
   /*direction: rtl;*/
   font-size: 24px;
   background-color: transparent;
@@ -603,16 +600,24 @@ export default {
 }
 
 .submitBtn {
-  margin-left: 7px;
+  margin-left: 16px;
   float: left;
-  width: 30%;
-  height: 70px;
-  margin-top: 1px;
-  background-color: #039be6;
-  border-radius: 15px;
+  width: 90px;
+  height: 56px;
+  -ms-flex-pack: center;
   justify-content: center;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-align: center;
+  align-items: center;
+ border-radius: 7px;
+  background-color: transparent;
+  color: #FFFFFF;
+  border: 1px solid #FFFFFF;
   display: flex;
   align-items: center;
+  justify-content: center;
+
 }
 
 #chatTxt:focus {

@@ -278,8 +278,8 @@ export default {
   font-size: 18px;
 }
 .clearBtnHover{
-  border: 1px solid #116DFF;
-  color: #116DFF;
+  border: 1px solid #116DFF !important;
+  background-color: #116DFF !important;
 }
 
 
@@ -310,7 +310,7 @@ export default {
 }
 
 .keyboardParent {
-  width: 95%;
+  width: 350px;
   height: 225px;
   right: 0px;
   position: absolute;

@@ -5,7 +5,9 @@
 
     <div class="nestedRoutParent">
       <div class="nestedRoutBackground"></div>
-      <routHeader v-if="currentName!='menu'"></routHeader>
+
+      {{currentName}}
+      <routHeader v-if="currentName != 'menuRout'"></routHeader>
       <router-view :key="$route.fullPath" ref="routeview"></router-view>
     </div>
 
@@ -30,7 +32,7 @@ export default {
   data() {
     return {
       showPlayer:ROAST_CONFIG.DEVELOP_MODE,
-      currentName: 'menu', loading: false, getResponse: 0,
+      currentName: '', loading: false, getResponse: 0,
     }
   },
   computed: {
@@ -45,16 +47,17 @@ export default {
   },
   created() {
 
-    this.setMenu({id:2,name:'چت آنلاین',des:'چت آنلاین مسابقات جام جهانی'})//TODO ba az ezafe shodane menu bardashte beshe & dar enter menu ezafe beshe
 
     router.beforeEach((to, from, next) => {
       this.currentName = to.name
+      console.log("      this.currentName" ,      this.currentName)
       if (to.name == 'pm') {
         next();
       } else next()
     });
 
     setTimeout(() => {
+
       this.setUserTv(this.UserTVInfo())
       this.setTvChannel(ROAST_CONFIG.TV_CHANNEL);
     }, 50)
@@ -62,7 +65,7 @@ export default {
     // this.manageInterceptor()
     this.$root.$on("tokenFindInStore", data => {
       console.log('tokenFindInStore',data)
-      this.$refs.routeview.manageTokenGet(data);//baraye local & tizen miad inja vali baraye andriod event sader mishe
+      this.$refs.routeview.manageTokenGet(data);//baraye local & tizen miad inja vali baraye andriod event sader mishe(PostMessages)
     })
 
     this.$root.$on("registerData", (data) => {
