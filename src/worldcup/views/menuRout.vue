@@ -23,7 +23,7 @@
 import {mapMutations, mapGetters} from 'vuex'
 
 export default {
-  name: "menu",
+  name: "menuRout",
 
   data() {
     return {

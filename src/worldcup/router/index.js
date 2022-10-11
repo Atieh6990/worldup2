@@ -3,7 +3,7 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import worldCupHome from '../views/worldCupHome.vue'
 import chat from '../views/chat'
-import menu from '../views/menu'
+import menuRout from '../views/menuRout'
 
 Vue.use(VueRouter)
 
@@ -12,10 +12,10 @@ const routes = [
         path: '/',
         name: 'worldCupHome',
         component: worldCupHome,
-        children: [{path: 'Pm', name: 'worldCupHome.Pm', component: chat}, {
-            path: 'menu',
-            name: 'worldCupHome.menu',
-            component: menu
+        children: [{path: 'Pm', name: 'Pm', component: chat}, {
+            path: 'menuRout',
+            name: 'menuRout',
+            component: menuRout
         }],
     },
 
@@ -23,10 +23,10 @@ const routes = [
         path: '/worldCupHome',
         name: 'worldCupHome',
         component: worldCupHome,
-        children: [{path: 'Pm', name: 'worldCupHome.Pm', component: chat}, {
-            path: 'menu',
-            name: 'worldCupHome.menu',
-            component: menu
+        children: [{path: 'Pm', name: 'Pm', component: chat}, {
+            path: 'menuRout',
+            name: 'menuRout',
+            component: menuRout
         }],
     },
 

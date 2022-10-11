@@ -9,15 +9,19 @@
            :class="[((userId == item.user_id) ? 'selfDirection':''),'chatItem']">
         <div class="userImg">
           <div class="userImgBg">
-            <img src="../../assets/images/userdefaul.png">
+            <img src="../../assets/images/Pm/profile.svg">
           </div>
         </div>
         <div class="userTxt">
           <div class="nameDate">
             <div class="name">{{item.user.name}}</div>
+          </div>
+          <div style="  word-wrap: break-word; overflow-wrap: break-word;padding: 10px 0 10px 0">{{item.text}}</div>
+
+          <div class="nameDate">
             <div class="date">{{item.created_at}}</div>
           </div>
-          <div style="  word-wrap: break-word; overflow-wrap: break-word;">{{item.text}}</div>
+
         </div>
       </div>
     </div>
@@ -134,8 +138,8 @@ export default {
 .chatBoxParent {
   position: absolute;
   width: 355px;
-  height:48%;
-  top: 85px;
+  height:630px;
+  top: 100px;
   left: 0px;
   padding: 15px;
   padding-top: 30px !important;
@@ -143,12 +147,13 @@ export default {
   /*display: flex;*/
   justify-content: center;
   overflow: hidden;
+  /*border: 1px solid red;*/
 }
 
 .chatBoxChild {
   position: absolute;
-  width: 85%;
-  padding: 20px;
+  width: 95%;
+  padding: 17px;
   padding-bottom: 30px !important;
 }
 .selfDirection {
@@ -210,14 +215,14 @@ export default {
 .nameDate {
   position: relative;
   width: 100%;
-  height: 50px;
+  height: 25px;
 }
 
 .name {
   display: flex;
   float: right;
-  width: 50%;
-  color: #891b56;
+  width:100%;
+  color: #116DFF;
   font-size: 15px;
   direction: rtl;
   text-align: right;
@@ -226,7 +231,7 @@ export default {
 .date {
   display: flex;
   float: left;
-  width: 50%;
+  width: 100%;
   color: #d7d7d9;
   font-size: 12px;
   direction: ltr;

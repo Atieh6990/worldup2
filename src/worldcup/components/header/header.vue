@@ -1,5 +1,7 @@
 <template>
-  <div class="headerParent">
+
+
+  <div class="headerParent" >
 
 
     <div class="logo child">
@@ -28,6 +30,7 @@ import {mapMutations, mapGetters} from 'vuex'
 
 export default {
   name: "header",
+
   methods: {
     ...mapGetters(['getMenu'])
   }
