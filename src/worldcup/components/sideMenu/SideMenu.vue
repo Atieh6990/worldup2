@@ -4,8 +4,8 @@
          v-on:click="clickItem(item)"
          :class="[((ypage==item && active == 1) ? 'sideItemsHover':''),((item==selectedItem)?('active'):('deactive')),'sidesItems']">
       <img
-          :src="selectedItem==item ? (require('../../assets/images/sideMenu/'+sideItemHoverImg[item])):(require('../../assets/images/sideMenu/'+sideItemImg[item]))">
-      <!--            <img src="../../assets/images/sideMenu/bourse.png">-->
+          :src="selectedItem==item ? (require('../../assets/images/menu/'+sideItemHoverImg[item])):(require('../../assets/images/menu/'+sideItemImg[item]))">
+      <!--            <img src="../../assets/images/menu/bourse.png">-->
     </div>
   </div>
 </template>

@@ -17,7 +17,7 @@ export const MainSocket = {
     mutations: {
         startSocket(state) {
             let userToken = User.state.userInfo.access_token;
-            console.log("start socket ",userToken , User.getters.getTcChannel(User.state))
+            // console.log("start socket ",userToken , User.getters.getTcChannel(User.state))
             state.socket = new io(ROAST_CONFIG.SOCKET_URL,{
                    auth:{
                     token: "Bearer " + userToken,

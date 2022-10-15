@@ -1,19 +1,16 @@
 <template>
   <div class="parent">
 
-<!--    <div style="position: absolute;width: 200px;height: 200px;background-color: #42b983"></div>-->
+    <!--    <div style="position: absolute;width: 200px;height: 200px;background-color: #42b983"></div>-->
 
 
     <div v-if="!userLoggedIn">
       <registering :type="registrationType" ref="registering" :activeRoute="activeRoute"
                    :yPage="yPage" :numberShow="numberShow"></registering>
     </div>
-
     <div v-if="userLoggedIn && messageList.length>0" class="">
-      <div class="roomTitle"> {{ roomName }}</div>
       <chats ref="chats" :messageList="messageList" :userId="getUserInfo().userId"></chats>
     </div>
-
 
     <div class="errorMdg">{{ errorMessage }}</div>
     <div class="fixedBottom" v-if="userLoggedIn">
@@ -27,7 +24,7 @@
         <div class="chatInp input" style="overflow: auto" id="chatTxtDiv">{{ chatTxt }}</div>
       </div>
       <div :class="[((yPage == 1 && activeRoute==1 && xPage == 1 && userLoggedIn) ?'inpParentHover':''),'submitBtn']"
-           v-on:click="sendMessage()"><img src="../assets/images/send.png"></div>
+           v-on:click="sendMessage()"><img src="../assets/images/Pm/sendBtn.svg"></div>
     </div>
 
     <div class="keyboardParent" v-if="userLoggedIn">
@@ -44,7 +41,7 @@ import chats from '../components/pm/chats'
 import func from '../mixins/mixin'
 import {mapGetters, mapMutations, mapActions} from 'vuex'
 import api from '../api/api'
-import SimpleKeyboard from "@/worldcup/components/pm/SimpleKeyboard";
+import SimpleKeyboard from "../components/pm/SimpleKeyboard";
 
 export default {
   name: "chat",
@@ -119,11 +116,14 @@ export default {
   },
   created() {
 
-    console.log("lkgdkjghaaaaaan")
     // this.roomName = "اتاق گفتگوی " + this.getTcChannel();
     this.roomName = "اتاق گفتگوی جام جهانی";
-    this.getTokenData();
+    // this.getToken()
 
+    setTimeout(() => {
+      console.log("lkgdkjghaaaaaan")
+      this.getToken()
+    }, 1000)
 
     // // this.setToken("");
     // if (ROAST_CONFIG.LOCAL_TEST == true) {
@@ -154,6 +154,7 @@ export default {
     this.$root.$on("set_error_msg", data => {
       this.errorMessage = data
     })
+
 
   },
   methods: {
@@ -373,7 +374,10 @@ export default {
       })
     },
     doSignUp() {
-      api.signup(this.userKey, this.verifyCode, this.phoneNumber, this.getUserTv().mac, this.getUserTv().android_id, this.getUserTv().ver).then(data => {
+
+
+      // console.log("doSignUp" , this.getUserTv())
+      api.signup(this.userKey, this.verifyCode, this.phoneNumber, this.getUserTv().mac, this.getUserTv().uid, this.getUserTv().version).then(data => {
         if (data.success == false) {
           this.errorMessage = data.data.message;
           return false
@@ -383,6 +387,8 @@ export default {
           access_token: data.access_token,
           refresh_token: data.refresh_token
         }
+        // console.log("param" , param)
+        // this.DeleteFile()
         this.setToken(JSON.stringify(param));
         this.setUserInfo(param);
         this.startSocket();
@@ -390,6 +396,7 @@ export default {
     },
     checkToken(key) {
       // let keyJson = JSON.parse(key);
+      // console.log("keyJson" ,key.expires_in)
       let keyJson = (key);
       let param = {
         expires_in: (keyJson.expires_in * 1000) + (new Date).getTime(),
@@ -397,10 +404,14 @@ export default {
         refresh_token: keyJson.refresh_token
       }
 
+      console.log('param', param)
+
       this.setUserInfo(param);
       // this.$root.$emit("hide_loading")
+      // if (1==1) {
       if ((new Date).getTime() >= keyJson.expires_in) {
-        // console.log("22")
+        console.log("22")
+        this.DeleteFile()
         this.registrationType = 0;
         this.userLoggedIn = false;
 
@@ -487,22 +498,23 @@ export default {
     cancel() {
     },
     getTokenData() {
-      setTimeout(() => {
-        this.manageTokenGet(this.getToken());//baraye local & tizen miad inja vali baraye andriod event sader mishe
-      }, 800);
+      // setTimeout(() => {
+      //   console.log("chat getTokenData" ,)
+      //   // this.DeleteFile()
+      //   //  this.manageTokenGet(this.getToken());//baraye local & tizen miad inja vali baraye andriod event sader mishe
+      // }, 10000);
     },
 
 
     manageTokenGet(data) {
-      console.log('manageTokenGet', data)
-      this.tokenData = JSON.parse(data.savedToken)
-      let Token = JSON.parse(data.savedToken).access_token
+      this.tokenData = (data.savedToken)
+      let Token = (data.savedToken).access_token
+      // console.log(Token)
       // if (this.tokenData == null || this.tokenData == 'null' || this.tokenData == '' || typeof this.tokenData == "undefined") {
       if (Token == null || Token == 'null' || Token == '' || typeof Token == "undefined") {
         this.registrationType = 0;
         this.userLoggedIn = false;
       } else {
-        // console.log("33")
         this.checkToken(this.tokenData);
       }
     }
@@ -512,18 +524,21 @@ export default {
 
 <style scoped>
 .parent {
-  width: 390px;
+  width: 350px;
   height: 100%;
-  background-color: #242328;
+  /*background-color: #000000;*/
+  /*opacity: 0.2;*/
   /*right: 110px;*/
   /*position: a  bsolute;*/
   overflow: hidden;
+  /*box-shadow: 0px 4px 20px 0px #00000073;*/
+
 }
 
 
 .fixedBottom {
   /*width: 95%; */
-  width: 383px;
+  width: 350px;
   height: 110px;
   right: 5px;
   position: absolute;
@@ -537,7 +552,7 @@ export default {
 
 .keyboardParent {
   /*width: 95%; *!*/
-  width: 389px;
+  width: 350px;
   height: 225px;
   right: 0px;
   position: absolute;
@@ -551,10 +566,8 @@ export default {
 }
 
 .inpParent {
-  width: 70%;
-  height: 70px;
-  border: 2px solid #3b3a3f;
-  border-radius: 15px;
+  height: 56px;
+  width: 250px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -562,14 +575,16 @@ export default {
 }
 
 .inpParentHover {
-  border: 2px solid #ffffff;
+  border: 1px solid #116DFF !important;
+  background-color: #116DFF !important;
 }
 
 .chatInp {
   line-height: 60px;
-  width: 100%;
-  height: 60px;
-  border: 0px;
+  height: 56px;
+  width: 250px;
+  border: 2px solid #FFFFFF;
+  border-radius: 7px;
   /*direction: rtl;*/
   font-size: 24px;
   background-color: transparent;
@@ -585,16 +600,24 @@ export default {
 }
 
 .submitBtn {
-  margin-left: 7px;
+  margin-left: 16px;
   float: left;
-  width: 30%;
-  height: 70px;
-  margin-top: 1px;
-  background-color: #039be6;
-  border-radius: 15px;
+  width: 90px;
+  height: 56px;
+  -ms-flex-pack: center;
   justify-content: center;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-align: center;
+  align-items: center;
+ border-radius: 7px;
+  background-color: transparent;
+  color: #FFFFFF;
+  border: 1px solid #FFFFFF;
   display: flex;
   align-items: center;
+  justify-content: center;
+
 }
 
 #chatTxt:focus {
@@ -602,7 +625,7 @@ export default {
 }
 
 .errorMdg {
-  width: 390px;
+  width: 350px;
   height: 60px;
   right: 0px;
   position: absolute;
@@ -612,12 +635,12 @@ export default {
   align-items: center;
   justify-content: center;
   font-size: 15px;
-  color: red;
+  color: #FF3939;
 }
 
 .roomTitle {
   /*width: 95%;*/
-  width: 390px;
+  width: 350px;
   height: 80px;
   right: 0px;
   position: absolute;
@@ -634,5 +657,9 @@ export default {
 
 a {
   display: none !important;
+}
+
+:focus {
+  outline: -webkit-focus-ring-color auto 0px !important;
 }
 </style>

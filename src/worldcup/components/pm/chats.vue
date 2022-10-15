@@ -1,60 +1,43 @@
 <template>
-  <iscroll-view class="scroll-view" v-on:click="clickList()" :scrollerStyle="{color: 'red'}" :options="options" ref="myScroll" v-if="messageList.length>0">
 
+
+
+  <div class="chatBoxParent">
+    <div class="chatBoxChild" v-on:click="clickList()">
       <div v-for="(item,index) in (messageList)"
            :id="'chatList_'+index"
            :class="[((userId == item.user_id) ? 'selfDirection':''),'chatItem']">
         <div class="userImg">
           <div class="userImgBg">
-            <img src="../../assets/images/userdefaul.png">
+            <img src="../../assets/images/Pm/profile.svg">
           </div>
         </div>
         <div class="userTxt">
           <div class="nameDate">
             <div class="name">{{item.user.name}}</div>
+          </div>
+          <div style="  word-wrap: break-word; overflow-wrap: break-word;padding: 10px 0 10px 0">{{item.text}}</div>
+
+          <div class="nameDate">
             <div class="date">{{item.created_at}}</div>
           </div>
-          <div style="  word-wrap: break-word; overflow-wrap: break-word;">{{item.text}}</div>
+
         </div>
       </div>
-
+    </div>
     <div style="width: 100%;height: 30px"></div>
-  </iscroll-view>
-  <!--    <div class="chatBoxParent">-->
-  <!--  <iscroll-view  class="chatBoxParent" :options="options">-->
-<!--      <div class="chatBoxChild" v-on:click="clickList()">-->
-<!--        <div v-for="(item,index) in (messageList)"-->
-<!--             :id="'chatList_'+index"-->
-<!--             :class="[((userId == item.user_id) ? 'selfDirection':''),'chatItem']">-->
-<!--          <div class="userImg">-->
-<!--            <div class="userImgBg">-->
-<!--              <img src="../../assets/images/userdefaul.png">-->
-<!--            </div>-->
-<!--          </div>-->
-<!--          <div class="userTxt">-->
-<!--            <div class="nameDate">-->
-<!--              <div class="name">{{item.user.name}}</div>-->
-<!--              <div class="date">{{item.created_at}}</div>-->
-<!--            </div>-->
-<!--            <div style="  word-wrap: break-word; overflow-wrap: break-word;">{{item.text}}</div>-->
-<!--          </div>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--      <div style="width: 100%;height: 30px"></div>-->
-  <!--  </iscroll-view>-->
-
-  <!--    </div>-->
+  </div>
 </template>
 
 <script>
 
-// import IScroll from '../../js/iscroll';
+import IScroll from '../../js/iscroll';
 import Vue from 'vue'
 import func from '../../mixins/mixin'
-import IScrollView from 'vue-iscroll-view'
-import IScroll from 'iscroll'
-
-Vue.use(IScrollView, IScroll)
+// import IScrollView from 'vue-iscroll-view'
+// import IScroll from 'iscroll'
+//
+// Vue.use(IScrollView, IScroll)
 
 
 export default {
@@ -81,66 +64,82 @@ export default {
     }
   },
   created() {
-
+    let self = this;
     this.activeRoute = 1
-    this.refreshScroll();
+    // this.refreshScroll();
+    setTimeout(() => {
+      self.scrollInit();
+    }, 600)
   },
-  methods: {
 
+  methods: {
+    scrollInit() {
+      let self = this;
+      this.myScroll = '';
+      if (this.myScroll == '' && this.messageList.length > 0) {
+        setTimeout(() => {
+          this.myScroll = new IScroll(".chatBoxParent", {
+            scrollY: true,
+            momentum: true,
+            preventDefault: false,
+            scrollbars: true,
+            mouseWheel: true,
+            interactiveScrollbars: true,
+            shrinkScrollbars: "none",
+            fadeScrollbars: false,
+            mouseMove: true,
+            bounce: false,
+          });
+
+        }, 10);
+        this.refreshScroll();
+      }
+    },
     showNewMessage(message) {
       this.messageList.push(message);
       // this.$refs.myScroll.refresh();
       this.refreshScroll()
     },
     down() {
-      if (this.$refs.myScroll.iscroll.maxScrollY !==this.$refs.myScroll.iscroll.y) {
-      // console.log( this.$refs.myScroll)
-      // console.log(this.$refs.myScroll.iscroll.maxScrollY,this.$refs.myScroll.iscroll.y)
-        this.$refs.myScroll.scrollBy(0, -100, 800, IScroll.utils.ease.back);
+      if (this.myScroll.y !== this.myScroll.maxScrollY) {
+        this.myScroll.moveDown(80);
         return true;
       }
       return false
     },
     up() {
-      // this.$refs.myScroll.moveUp(80);
-      this.$refs.myScroll.scrollBy(0, 100, 800, IScroll.utils.ease.back);
+      this.myScroll.moveUp(80);
+      // this.$refs.myScroll.scrollBy(0, 100, 800, IScroll.utils.ease.back);
     },
     clickList() {
       this.$root.$emit('remove_Hover', 0)
     },
     refreshScroll() {
+
       setTimeout(() => {
-        // this.myScroll.moveDown(-1 * this.myScroll.maxScrollY + 20)
-        // console.log((-1 * this.$refs.myScroll.iscroll.maxScrollY + 20) ,this.$refs.myScroll.iscroll.maxScrollY)
-        this.$refs.myScroll.scrollBy(0,this.$refs.myScroll.iscroll.maxScrollY, 800, IScroll.utils.ease.back)
+        this.myScroll.moveDown(-1 * this.myScroll.maxScrollY+20)
       }, 30);
+
+
+      // setTimeout(() => {
+        // this.myScroll.moveDown(-1 * this.myScroll.maxScrollY + 20)
+      //   console.log("refreshScroll", this.$refs.myScroll.iscroll.scrollerHeight)
+      //   this.$refs.myScroll.scrollBy(0, -300, 800, IScroll.utils.ease.back);
+      //   // this.$refs.myScroll.refresh()
+      //   // this.$refs.myScroll.scrollBy(0,this.$refs.myScroll.iscroll.maxScrollY, 800, IScroll.utils.ease.back)
+      // }, 3000);
     }
   }
 }
 </script>
 
 <style scoped>
-.scroll-view {
-  /* -- Attention: This line is extremely important in chrome 55+! -- */
-  touch-action: none;
-  overflow: hidden;
-  position: absolute;
-  width: 355px;
-  height: 53%;
-  top: 85px;
-  right: 0px;
-  padding: 15px;
-  padding-top: 30px !important;
-  padding-bottom: 30px !important;
-  /*display: flex;*/
-  justify-content: center;
-}
 
 .chatBoxParent {
   position: absolute;
   width: 355px;
-  height: 48%;
-  top: 85px;
+  height:630px;
+  top: 100px;
   left: 0px;
   padding: 15px;
   padding-top: 30px !important;
@@ -148,15 +147,15 @@ export default {
   /*display: flex;*/
   justify-content: center;
   overflow: hidden;
+  /*border: 1px solid red;*/
 }
 
 .chatBoxChild {
   position: absolute;
-  width: 85%;
-  padding: 20px;
+  width: 95%;
+  padding: 17px;
   padding-bottom: 30px !important;
 }
-
 .selfDirection {
   direction: rtl !important;
 }
@@ -216,14 +215,14 @@ export default {
 .nameDate {
   position: relative;
   width: 100%;
-  height: 50px;
+  height: 25px;
 }
 
 .name {
   display: flex;
   float: right;
-  width: 50%;
-  color: #891b56;
+  width:100%;
+  color: #116DFF;
   font-size: 15px;
   direction: rtl;
   text-align: right;
@@ -232,7 +231,7 @@ export default {
 .date {
   display: flex;
   float: left;
-  width: 50%;
+  width: 100%;
   color: #d7d7d9;
   font-size: 12px;
   direction: ltr;

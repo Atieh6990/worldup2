@@ -1,10 +1,16 @@
 <template>
   <div class="routParent">
-<!--    <div class="videoParent"></div>-->
-    <videoPlayer></videoPlayer>
-    <!--    <sideMenu ref="sideMenu"></sideMenu>-->
 
-    <router-view :key="$route.fullPath" ref="routeview"></router-view>
+    <videoPlayer v-if="!showPlayer"></videoPlayer>
+
+    <div class="nestedRoutParent">
+      <div class="nestedRoutBackground"></div>
+
+      {{currentName}}
+      <routHeader v-if="currentName != 'menuRout'"></routHeader>
+      <router-view :key="$route.fullPath" ref="routeview"></router-view>
+    </div>
+
 
   </div>
 </template>
@@ -15,17 +21,18 @@ import videoPlayer from '../components/video/videoPlayer'
 import func from '../mixins/mixin'
 import {mapMutations, mapGetters} from 'vuex'
 import {ROAST_CONFIG} from "@/worldcup/js/config";
-// import {ROAST_CONFIG} from "../js/config";
 import router from '../router/index'
 import axios from 'axios'
+import routHeader from "../components/header/header";
 
 export default {
   name: "worldCupHome",
-  components: {videoPlayer},
+  components: {videoPlayer,routHeader},
   mixins: [func],
   data() {
     return {
-      currentName: '',   loading: false, getResponse: 0,
+      showPlayer:ROAST_CONFIG.DEVELOP_MODE,
+      currentName: '', loading: false, getResponse: 0,
     }
   },
   computed: {
@@ -39,20 +46,27 @@ export default {
     }
   },
   created() {
-    console.log("worldCupHome Created")
-    this.$router.push('/worldCupHome/Pm')
+
+
     router.beforeEach((to, from, next) => {
       this.currentName = to.name
+      console.log("      this.currentName" ,      this.currentName)
       if (to.name == 'pm') {
         next();
       } else next()
     });
 
+    setTimeout(() => {
 
-    this.setUserTv(this.UserTVInfo())
-    this.setTvChannel(ROAST_CONFIG.TV_CHANNEL);
+      this.setUserTv(this.UserTVInfo())
+      this.setTvChannel(ROAST_CONFIG.TV_CHANNEL);
+    }, 50)
+
     // this.manageInterceptor()
-
+    this.$root.$on("tokenFindInStore", data => {
+      console.log('tokenFindInStore',data)
+      this.$refs.routeview.manageTokenGet(data);//baraye local & tizen miad inja vali baraye andriod event sader mishe(PostMessages)
+    })
 
     this.$root.$on("registerData", (data) => {
       // console.log("in registerData !!!")
@@ -79,8 +93,8 @@ export default {
     });
   },
   methods: {
-    ...mapMutations(['setUserTv', "setTvChannel","disconnectSocket"]),
-    ...mapGetters(["getSocket"]),
+    ...mapMutations(['setUserTv', "setTvChannel", "disconnectSocket","setMenu"]),
+    ...mapGetters(["getSocket", "getUserInfo"]),
     up() {
       this.$refs.routeview.up();
     },
@@ -99,16 +113,19 @@ export default {
     },
     back() {
 
-        this.$router.go(-1);
-        if(ROAST_CONFIG.DEVELOP_MODE == 0 && ROAST_CONFIG.OS_TYPE == 0 && this.currentName == "Pm"){//TODO currentName bayad beshe esme safe avale app
-          this.exitAndroidApp()
-        }
+      this.$router.go(-1);
+      if (ROAST_CONFIG.DEVELOP_MODE == 0 && ROAST_CONFIG.OS_TYPE == 0 && this.currentName == "Pm") {//TODO currentName bayad beshe esme safe avale app
+        this.exitAndroidApp()
+      }
 
       // this.$router.go(-1);
     },
     done() {
     },
     cancel() {
+    },
+    exit(){
+      this.handleExit();
     },
     numberShow(num) {
       this.$refs.routeview.showNum(num)
@@ -120,6 +137,7 @@ export default {
       });
       socket.on("connect_error", (err) => {
         console.log('message ->', err.message, 'data ->', err.data); // not authorized
+        this.DeleteFile()
         this.disconnectSocket();
         this.$refs.routeview.reconnectSocket()
       });
@@ -154,6 +172,7 @@ export default {
     },
     manageInterceptor() {
       axios.interceptors.request.use((config) => {
+        config.headers.Authorization = `Bearer ` + this.getUserInfo().access_token;
         this.getResponse = 0
         this.loading = true;
         return config
@@ -166,7 +185,17 @@ export default {
         this.getResponse = 1
         return response;
       }, error => {
-        this.loading = false
+        this.loading = false;
+
+        if (typeof error.response == "object") {//TODO
+          if (error.response.status == 401) {
+
+            this.DeleteFile()
+            this.disconnectSocket()
+            this.$router.push('/worldCupHome/Pm')
+
+          }
+        }
       })
     }
 
@@ -178,6 +207,7 @@ export default {
 <style scoped>
 
 @import "../styles/styles.css";
+@import "../styles/bootstrap.min.css";
 
 .routParent {
   position: fixed;
@@ -186,18 +216,55 @@ export default {
   width: 1920px;
   height: 1080px;
   direction: rtl;
-  border: 1px solid green;
+  /*border: 1px solid green;*/
 }
+.nestedRoutParent{
+  height: 1080px;
+  width: 350px;
+  right: 0px;
+  top: 0px;
+  border-radius: 0px;
+  position: absolute;
+  box-shadow: 0px 4px 20px 0px #00000073;
+
+}
+.nestedRoutBackground{
+  height: 1080px;
+  width: 350px;
+  right: 0px;
+  top: 0px;
+  border-radius: 0px;
+  position: absolute;
+  background-color: #11151A;
+  opacity: 0.8;
+}
+
 
 :focus {
   outline: -webkit-focus-ring-color auto 0px !important;
 }
 
 .simple-keyboard {
-  max-width: 390px !important;
+  max-width: 350px !important;
   position: absolute;
   left: 0px !important;
   direction: ltr !important;
 }
+.iScrollLoneScrollbar {
+  right: 0px !important;
+}
+@font-face {
+  font-family: 'BYekan';
+  font-weight: normal;
+  font-style: normal;
+  /*font-size: 18px;*/
+  src: url('../assets/font/BYekan.ttf');
+}
 
+body, input, select, label, div, span, p {
+  font-family: "BYekan" !important;
+}
+:focus {
+  outline: -webkit-focus-ring-color auto 0px !important;
+}
 </style>

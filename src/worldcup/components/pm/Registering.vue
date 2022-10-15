@@ -1,20 +1,20 @@
 <template>
   <div class="registerParent">
-    <img class="icon" :src="require('../../assets/images/Pm/'+icons[type])">
 
-    <div class="title">{{ title[type] }}</div>
+    <img class="icon" src="../../assets/images/Pm/vorteile-live-chat 2.png">
     <input :class="[((yPos == 0 && activeRoute == 1) ? 'inpHover':''),'content']" :value="contentTxt"
+           :placeholder="placeHolders[type]"
            type="text"
            @input="onInputChange"
            :id="'content_'+type" v-on:click="removeHover()" ref="content">
     <div :class="[((yPos == 1 && activeRoute == 1) ? 'submitBtnHover':''),'submitBtn']"
          v-on:click="submitBtn()">
-      {{ btnTxt[type] }}
-      <img src="../../assets/images/send.png">
+      <span style="padding-left: 15px">{{ btnTxt[type] }}</span>
+      <img :src="require('../../assets/images/Pm/'+icons[type]+'')">
     </div>
 
 
-    <div :class="[((yPos == 3 && activeRoute == 1) ? 'submitBtnHover':''),'submitBtn']" style="top:425px !important;"
+    <div :class="[((yPos == 3 && activeRoute == 1) ? 'clearBtnHover':''),'clearBtn']"
          v-if="type == 0 || type == 1"
          v-on:click="clearBtn()">
       پاک کردن
@@ -39,9 +39,9 @@ export default {
   mixins: [func],
   data() {
     return {
-      icons: ["mobile.png", "verification-code.png", "profile.png"],
-      title: ["شماره همراه خود را وارد کنید", "کد پیامک شده را وارد کنید", "نام کاربری خود را بنویسید"],
-      btnTxt: ["ارسال", "ثبت", "ثبت نهایی"],
+      icons:['majesticons_send.svg','dashicons_cloud-saved.svg','dashicons_cloud-saved.svg'],
+      placeHolders: ['شماره تلفن همراه خود را وارد کنید', 'کد چهار رقمی را وارد کنید','نام مستعار خود را انتخاب کنید.'],
+      btnTxt: ["ارسال", "ثبت", "ثبت"],
       des: ["", "بعد از ارسال شماره تلفن همراه کد فعال سازی 4 رقمی برای شما پیامک خواهد شد", ""],
       contentTxt: "",
       yPos: 0,//0->input 1->btn , 2->keyboard , 3->clear btn
@@ -201,7 +201,7 @@ export default {
 
 <style scoped>
 .registerParent {
-  width: 390px;
+  width: 350px;
   height: 760px;
   right: 0px;
   position: absolute;
@@ -213,77 +213,92 @@ export default {
 }
 
 .icon {
-  top: 65px;
+  top: 103px;
   position: absolute;
-  right: 130px;
-}
-
-.title {
-  position: absolute;
-  top: 140px;
-  font-size: 20px;
-  color: #ffffff;
-  width: 100%;
-  height: 60px;
-  direction: rtl;
-  text-align: center;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  justify-content: center;
+  right: 0px;
 }
 
 .content {
-  width: 88%;
-  height: 70px;
-  border: 2px solid #3b3a3f;
-  border-radius: 15px;
+  height: 56px;
+  width: 301px;
+  right: 17px;
+  top: 339px;
+  border-radius: 7px;
+  position: absolute;
+  background-color: #FFFFFF;
+  display: -ms-flexbox;
   display: flex;
+  -ms-flex-align: center;
   align-items: center;
+  -ms-flex-pack: center;
   justify-content: center;
   padding-right: 7px;
   padding-left: 7px;
   line-height: 60px;
   direction: rtl;
-  font-size: 24px;
-  background-color: transparent;
-  color: #ffffff;
-  position: absolute;
-  top: 215px;
-  left: 15px;
+  font-size: 18px;
+  text-align: center;
+
+
 }
 
 .submitBtn {
-  width: 92%;
-  height: 70px;
-  border-radius: 15px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  line-height: 60px;
-  direction: rtl;
-  font-size: 24px;
-  background-color: #039be6;
-  color: #ffffff;
   position: absolute;
-  top: 335px;
-  border: 2px solid transparent;
-  left: 15px;
-  text-indent: 25px;
-}
-
-.des {
-  width: 93%;
+  height: 56px;
+  width: 301px;
+  right: 17px;
+  top: 413px;
+  border-radius: 7px;
   display: flex;
   align-items: center;
   justify-content: center;
   line-height: 60px;
   direction: rtl;
   font-size: 18px;
-  color: #039be6;
+  background-color: #116DFF;
+  color: #ffffff;
+  text-indent: 25px;
+
+}
+.clearBtn{
+  height: 56px;
+  width: 119px;
+  right: 194px;
+  top: 487px;
+  border-radius: 7px;
   position: absolute;
-  top: 517px;
-  left: 10px;
+  background-color: transparent;
+  color: #FFFFFF;
+  border: 1px solid #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 60px;
+  direction: rtl;
+  font-size: 18px;
+}
+.clearBtnHover{
+  border: 1px solid #116DFF !important;
+  background-color: #116DFF !important;
+}
+
+
+.des {
+  width: 100%;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-align: center;
+  align-items: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  line-height: 60px;
+  direction: rtl;
+  font-size: 18px;
+  color: #ffffff;
+  position: absolute;
+  top: 672px;
+  /* left: 10px; */
+  padding: 40px;
 }
 
 .submitBtnHover {
@@ -295,7 +310,7 @@ export default {
 }
 
 .keyboardParent {
-  width: 95%;
+  width: 350px;
   height: 225px;
   right: 0px;
   position: absolute;
@@ -309,4 +324,16 @@ export default {
   direction: ltr;
 }
 
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: #2B2B2B;
+  opacity: 1; /* Firefox */
+}
+
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+  color: #2B2B2B;
+}
+
+::-ms-input-placeholder { /* Microsoft Edge */
+  color: #2B2B2B;
+}
 </style>
