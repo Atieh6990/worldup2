@@ -216,5 +216,11 @@ export default {
   padding: 10px !important;
   overflow: visible;
 }
+.hg-theme-default .hg-row {
+  display: -webkit-flex !important;;
+}
 
+.hg-row {
+  display: -webkit-flex !important;;
+}
 </style>

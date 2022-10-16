@@ -1,7 +1,6 @@
 <template>
 
 
-
   <div class="chatBoxParent">
     <div class="chatBoxChild" v-on:click="clickList()">
       <div v-for="(item,index) in (messageList)"
@@ -14,18 +13,17 @@
         </div>
         <div class="userTxt">
           <div class="nameDate">
-            <div class="name">{{item.user.name}}</div>
+            <div class="name">{{ item.user.name }}</div>
           </div>
-          <div style="  word-wrap: break-word; overflow-wrap: break-word;padding: 10px 0 10px 0">{{item.text}}</div>
+          <div style="  word-wrap: break-word; overflow-wrap: break-word;padding: 10px 0 10px 0">{{ item.text }}</div>
 
           <div class="nameDate">
-            <div class="date">{{item.created_at}}</div>
+            <div class="date">{{ item.created_at }}</div>
           </div>
 
         </div>
       </div>
     </div>
-    <div style="width: 100%;height: 30px"></div>
   </div>
 </template>
 
@@ -48,19 +46,7 @@ export default {
   data() {
     return {
       myScroll: '',
-      options: {
-        scrollY: true,
-        momentum: true,
-        preventDefault: false,
-        scrollbars: true,
-        mouseWheel: true,
-        interactiveScrollbars: true,
-        shrinkScrollbars: "none",
-        fadeScrollbars: false,
-        mouseMove: true,
-        bounce: true,
 
-      }
     }
   },
   created() {
@@ -101,6 +87,7 @@ export default {
       this.refreshScroll()
     },
     down() {
+      console.log(this.myScroll.y, this.myScroll.maxScrollY)
       if (this.myScroll.y !== this.myScroll.maxScrollY) {
         this.myScroll.moveDown(80);
         return true;
@@ -117,12 +104,12 @@ export default {
     refreshScroll() {
 
       setTimeout(() => {
-        this.myScroll.moveDown(-1 * this.myScroll.maxScrollY+20)
+        this.myScroll.moveDown(-1 * this.myScroll.maxScrollY + 20)
       }, 30);
 
 
       // setTimeout(() => {
-        // this.myScroll.moveDown(-1 * this.myScroll.maxScrollY + 20)
+      // this.myScroll.moveDown(-1 * this.myScroll.maxScrollY + 20)
       //   console.log("refreshScroll", this.$refs.myScroll.iscroll.scrollerHeight)
       //   this.$refs.myScroll.scrollBy(0, -300, 800, IScroll.utils.ease.back);
       //   // this.$refs.myScroll.refresh()
@@ -136,26 +123,29 @@ export default {
 <style scoped>
 
 .chatBoxParent {
-  position: absolute;
+  position: relative;
   width: 355px;
-  height:630px;
-  top: 100px;
+  height: 630px;
+  /*top: 100px;*/
   left: 0px;
   padding: 15px;
-  padding-top: 30px !important;
+  /*padding-top: 30px !important;*/
   padding-bottom: 30px !important;
-  /*display: flex;*/
+  display: flex;
   justify-content: center;
   overflow: hidden;
   /*border: 1px solid red;*/
+  display: -webkit-flex !important;;
 }
 
 .chatBoxChild {
   position: absolute;
-  width: 95%;
-  padding: 17px;
-  padding-bottom: 30px !important;
+  width: 100%;
+  overflow: hidden;
+  right: 0px;
+  padding: 0px 17px 30px 17px !important;
 }
+
 .selfDirection {
   direction: rtl !important;
 }
@@ -168,6 +158,7 @@ export default {
   margin-bottom: 20px;
   position: relative;
   direction: ltr;
+  display: -webkit-flex !important;
 }
 
 .userImg {
@@ -179,13 +170,14 @@ export default {
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
-  justify-content: flex-start;
-  align-items: stretch;
-  align-content: stretch;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
   width: 60px;
   height: 60px;
   background-color: #ffffff;
   border-radius: 50px;
+  display: -webkit-flex !important;
 }
 
 .userImgBg img {
@@ -194,7 +186,7 @@ export default {
 
 .userTxt {
   float: left;
-  width: 80%;
+  width: 75%;
   background-color: #ffffff;
   border-radius: 10px;
   display: flex;
@@ -209,7 +201,7 @@ export default {
   font-size: 15px;
   margin-right: 10px;
   margin-left: 10px;
-  /*white-space: pre-line;*/
+  display: -webkit-flex !important;
 }
 
 .nameDate {
@@ -221,11 +213,12 @@ export default {
 .name {
   display: flex;
   float: right;
-  width:100%;
+  width: 100%;
   color: #116DFF;
   font-size: 15px;
   direction: rtl;
   text-align: right;
+  display: -webkit-flex !important;
 }
 
 .date {
@@ -236,7 +229,14 @@ export default {
   font-size: 12px;
   direction: ltr;
   text-align: left;
+  display: -webkit-flex !important;
+}
+.hg-theme-default .hg-row {
+  display: -webkit-flex !important;;
 }
 
+.hg-row {
+  display: -webkit-flex !important;;
+}
 </style>
 

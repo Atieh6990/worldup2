@@ -5,10 +5,9 @@
 
     <div class="nestedRoutParent">
       <div class="nestedRoutBackground"></div>
-
-      {{currentName}}
-      <routHeader v-if="currentName != 'menuRout'"></routHeader>
+      <routHeader></routHeader>
       <router-view :key="$route.fullPath" ref="routeview"></router-view>
+
     </div>
 
 
@@ -27,12 +26,12 @@ import routHeader from "../components/header/header";
 
 export default {
   name: "worldCupHome",
-  components: {videoPlayer,routHeader},
+  components: {videoPlayer, routHeader},
   mixins: [func],
   data() {
     return {
-      showPlayer:ROAST_CONFIG.DEVELOP_MODE,
-      currentName: '', loading: false, getResponse: 0,
+      showPlayer: ROAST_CONFIG.DEVELOP_MODE,
+      currentName: 'menuRout', loading: false, getResponse: 0,
     }
   },
   computed: {
@@ -49,11 +48,9 @@ export default {
 
 
     router.beforeEach((to, from, next) => {
-      this.currentName = to.name
-      console.log("      this.currentName" ,      this.currentName)
-      if (to.name == 'pm') {
-        next();
-      } else next()
+      this.currentName = to.name;
+      console.log("this.currentName", this.currentName)
+      next();
     });
 
     setTimeout(() => {
@@ -64,7 +61,7 @@ export default {
 
     // this.manageInterceptor()
     this.$root.$on("tokenFindInStore", data => {
-      console.log('tokenFindInStore',data)
+      console.log('tokenFindInStore', data)
       this.$refs.routeview.manageTokenGet(data);//baraye local & tizen miad inja vali baraye andriod event sader mishe(PostMessages)
     })
 
@@ -93,7 +90,7 @@ export default {
     });
   },
   methods: {
-    ...mapMutations(['setUserTv', "setTvChannel", "disconnectSocket","setMenu"]),
+    ...mapMutations(['setUserTv', "setTvChannel", "disconnectSocket", "setMenu",'setMenu']),
     ...mapGetters(["getSocket", "getUserInfo"]),
     up() {
       this.$refs.routeview.up();
@@ -114,6 +111,15 @@ export default {
     back() {
 
       this.$router.go(-1);
+
+      if(this.currentName == 'Pm'){
+        this.disconnectSocket();
+      }
+
+      if(this.currentName == 'menuRout'){
+        this.setMenu({id: '', name: '', des: '', rout: ''})
+      }
+
       if (ROAST_CONFIG.DEVELOP_MODE == 0 && ROAST_CONFIG.OS_TYPE == 0 && this.currentName == "Pm") {//TODO currentName bayad beshe esme safe avale app
         this.exitAndroidApp()
       }
@@ -124,7 +130,7 @@ export default {
     },
     cancel() {
     },
-    exit(){
+    exit() {
       this.handleExit();
     },
     numberShow(num) {
@@ -218,7 +224,8 @@ export default {
   direction: rtl;
   /*border: 1px solid green;*/
 }
-.nestedRoutParent{
+
+.nestedRoutParent {
   height: 1080px;
   width: 350px;
   right: 0px;
@@ -228,7 +235,8 @@ export default {
   box-shadow: 0px 4px 20px 0px #00000073;
 
 }
-.nestedRoutBackground{
+
+.nestedRoutBackground {
   height: 1080px;
   width: 350px;
   right: 0px;
@@ -250,9 +258,11 @@ export default {
   left: 0px !important;
   direction: ltr !important;
 }
+
 .iScrollLoneScrollbar {
   right: 0px !important;
 }
+
 @font-face {
   font-family: 'BYekan';
   font-weight: normal;
@@ -264,7 +274,16 @@ export default {
 body, input, select, label, div, span, p {
   font-family: "BYekan" !important;
 }
+
 :focus {
   outline: -webkit-focus-ring-color auto 0px !important;
+}
+
+.hg-theme-default .hg-row {
+  display: -webkit-flex !important;;
+}
+
+.hg-row {
+  display: -webkit-flex !important;;
 }
 </style>
