@@ -4,6 +4,7 @@ import Home from '../views/Home.vue'
 import worldCupHome from '../views/worldCupHome.vue'
 import chat from '../views/chat'
 import menuRout from '../views/menuRout'
+import scores from '../views/scores'
 
 Vue.use(VueRouter)
 
@@ -12,22 +13,22 @@ const routes = [
         path: '/',
         name: 'worldCupHome',
         component: worldCupHome,
-        children: [{path: 'Pm', name: 'Pm', component: chat}, {
-            path: 'menuRout',
-            name: 'menuRout',
-            component: menuRout
-        }],
+        children: [
+            {path: 'Pm', name: 'Pm', component: chat},
+            {path: 'menuRout', name: 'menuRout', component: menuRout},
+            {path: 'scores', name: 'scores', component: scores},
+        ],
     },
 
     {
         path: '/worldCupHome',
         name: 'worldCupHome',
         component: worldCupHome,
-        children: [{path: 'Pm', name: 'Pm', component: chat}, {
-            path: 'menuRout',
-            name: 'menuRout',
-            component: menuRout
-        }],
+        children: [
+            {path: 'Pm', name: 'Pm', component: chat},
+            {path: 'menuRout', name: 'menuRout', component: menuRout},
+            {path: 'scores', name: 'scores', component: scores},
+        ],
     },
 
 

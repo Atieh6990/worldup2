@@ -10,3 +10,10 @@
 .iScrollIndicator {
     background-color: #049be2 !important;
 }
+.hg-theme-default .hg-row {
+    display: -webkit-flex !important;;
+}
+
+.hg-row {
+    display: -webkit-flex !important;;
+}

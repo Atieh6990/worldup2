@@ -3,33 +3,38 @@
 
     <!--    <div style="position: absolute;width: 200px;height: 200px;background-color: #42b983"></div>-->
 
-
     <div v-if="!userLoggedIn">
       <registering :type="registrationType" ref="registering" :activeRoute="activeRoute"
                    :yPage="yPage" :numberShow="numberShow"></registering>
     </div>
-    <div v-if="userLoggedIn && messageList.length>0" class="">
-      <chats ref="chats" :messageList="messageList" :userId="getUserInfo().userId"></chats>
-    </div>
 
-    <div class="errorMdg">{{ errorMessage }}</div>
-    <div class="fixedBottom" v-if="userLoggedIn">
-      <div :class="[((yPage == 1 && activeRoute==1 && xPage == 0 && userLoggedIn) ?'inpParentHover':''),'inpParent']">
+    <div v-else>
+
+      <div v-if="userLoggedIn && messageList.length>0" class="">
+        <chats ref="chats" :messageList="messageList" :userId="getUserInfo().userId"></chats>
+      </div>
+
+      <div class="errorMdg">{{ errorMessage }}</div>
+      <div class="fixedBottom" v-if="userLoggedIn">
+        <div :class="[((yPage == 1 && activeRoute==1 && xPage == 0 && userLoggedIn) ?'inpParentHover':''),'inpParent']">
                     <textarea style="display: none" :value="chatTxt" placeholder="اینجا بنویسید" class="chatInp input"
                               id="chatArea"
                               name="chatTxt" type="text" @input="onInputChange"
                               ref="contentTextArea"
                               autofocus
                               v-on:click="removeHover()"></textarea>
-        <div class="chatInp input" style="overflow: auto" id="chatTxtDiv">{{ chatTxt }}</div>
+          <div class="chatInp input" style="overflow: auto" id="chatTxtDiv">{{ chatTxt }}</div>
+        </div>
+        <div :class="[((yPage == 1 && activeRoute==1 && xPage == 1 && userLoggedIn) ?'inpParentHover':''),'submitBtn']"
+             v-on:click="sendMessage()"><img src="../assets/images/Pm/sendBtn.svg"></div>
       </div>
-      <div :class="[((yPage == 1 && activeRoute==1 && xPage == 1 && userLoggedIn) ?'inpParentHover':''),'submitBtn']"
-           v-on:click="sendMessage()"><img src="../assets/images/Pm/sendBtn.svg"></div>
+
+      <div class="keyboardParent" v-if="userLoggedIn">
+        <SimpleKeyboard @onChange="onChange" @onKeyPress="onKeyPress" :input="chatTxt" ref="SimpleKeyboard"/>
+      </div>
+
     </div>
 
-    <div class="keyboardParent" v-if="userLoggedIn">
-      <SimpleKeyboard @onChange="onChange" @onKeyPress="onKeyPress" :input="chatTxt" ref="SimpleKeyboard"/>
-    </div>
 
 
   </div>
@@ -57,7 +62,6 @@ export default {
       userKey: "",
       userLoggedIn: false,
       registrationType: 0,//0->phone , 1->verifycode , 2->username
-      hasItemToMove: true,
       yPage: 0,//0->chatList , 1->input&submit , 2->keyboard
       xPage: 1,
       phoneNumber: "",
@@ -68,12 +72,11 @@ export default {
       newMessage: "",
       numberShow: "", input: "",
       tokenData: "", roomName: '',
-
     };
   },
   components: {registering, chats, SimpleKeyboard},
   destroyed() {
-    this.disconnectSocket();
+    // this.disconnectSocket();
   },
 
   mounted() {
@@ -410,15 +413,15 @@ export default {
       // this.$root.$emit("hide_loading")
       // if (1==1) {
       if ((new Date).getTime() >= keyJson.expires_in) {
-        console.log("22")
+
         this.DeleteFile()
         this.registrationType = 0;
         this.userLoggedIn = false;
 
       } else {
-        // console.log("klklklklklklklklkl")
         this.startSocket();
       }
+
     },
     removeHover() {
       if (this.userLoggedIn) {
@@ -547,6 +550,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
+  display: -webkit-flex !important;;
   /*!* padding: 10px;*/
 }
 
@@ -556,11 +560,12 @@ export default {
   height: 225px;
   right: 0px;
   position: absolute;
-  bottom: 20px;
+  bottom: 0px;
   border-top: 1px solid #3b3a3f;
   display: flex;
   align-items: center;
   justify-content: center;
+  display: -webkit-flex !important;;
   /* padding: 10px; */
   direction: ltr;
 }
@@ -571,6 +576,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
+  display: -webkit-flex !important;;
   margin-left: 10px;
 }
 
@@ -610,13 +616,11 @@ export default {
   display: flex;
   -ms-flex-align: center;
   align-items: center;
- border-radius: 7px;
+  border-radius: 7px;
   background-color: transparent;
   color: #FFFFFF;
   border: 1px solid #FFFFFF;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: -webkit-flex !important;;
 
 }
 
@@ -636,6 +640,8 @@ export default {
   justify-content: center;
   font-size: 15px;
   color: #FF3939;
+  display: -webkit-flex !important;;
+
 }
 
 .roomTitle {
@@ -661,5 +667,13 @@ a {
 
 :focus {
   outline: -webkit-focus-ring-color auto 0px !important;
+}
+
+.hg-theme-default .hg-row {
+  display: -webkit-flex !important;;
+}
+
+.hg-row {
+  display: -webkit-flex !important;;
 }
 </style>
