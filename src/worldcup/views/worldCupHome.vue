@@ -19,7 +19,7 @@
 import videoPlayer from '../components/video/videoPlayer'
 import func from '../mixins/mixin'
 import {mapMutations, mapGetters} from 'vuex'
-import {ROAST_CONFIG} from "@/worldcup/js/config";
+import {ROAST_CONFIG} from "../js/config";
 import router from '../router/index'
 import axios from 'axios'
 import routHeader from "../components/header/header";
@@ -46,7 +46,12 @@ export default {
   },
   created() {
 
-
+    if(ROAST_CONFIG.OS_TYPE){
+      this.$root.$emit('sideMenu_deactive');
+      this.$root.$emit('sideMenu_hide');
+      this.$root.$emit('leftside_hide');
+      this.$root.$emit('header_hide');
+    }
     router.beforeEach((to, from, next) => {
       this.currentName = to.name;
       console.log("this.currentName", this.currentName)
@@ -124,6 +129,11 @@ export default {
         this.exitAndroidApp()
       }
 
+        if(ROAST_CONFIG.OS_TYPE){
+          this.$root.$emit('sideMenu_show');
+          this.$root.$emit('leftside_show');
+          this.$root.$emit('header_show');
+        }
       // this.$router.go(-1);
     },
     done() {
