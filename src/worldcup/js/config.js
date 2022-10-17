@@ -1,5 +1,5 @@
 var osType =0; // 0->android , 1->tizen
-var developMode = 1//baraye build geteftan beshe 0
+var developMode = 0//baraye build geteftan beshe 0
 var api_url = "https://sambazar.tvapps.ir/api/v2";
 var FileName = "online_chat_tk";
 var socketUrl = "wss://metadata.tvapps.ir";
