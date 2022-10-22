@@ -46,12 +46,7 @@ export default {
   },
   created() {
 
-    if(ROAST_CONFIG.OS_TYPE){
-      this.$root.$emit('sideMenu_deactive');
-      this.$root.$emit('sideMenu_hide');
-      this.$root.$emit('leftside_hide');
-      this.$root.$emit('header_hide');
-    }
+
     router.beforeEach((to, from, next) => {
       this.currentName = to.name;
       console.log("this.currentName", this.currentName)
@@ -80,6 +75,25 @@ export default {
     })
 
 
+      if (data.type && data.type == 'userData') {
+        // this.$root.$emit('loginUserData', data);
+        // alert(data.data)
+        this.$refs.routeview.manageTokenGet(data.data)
+      }
+
+      if (data.type && data.type == 'returnPage') {
+        this.back();
+        return false
+      }
+    });
+  }, activated() {
+    if(ROAST_CONFIG.OS_TYPE){
+      this.$root.$emit('sideMenu_deactive');
+      this.$root.$emit('sideMenu_hide');
+      this.$root.$emit('leftside_hide');
+      this.$root.$emit('header_hide');
+    }
+
   },
   methods: {
     ...mapMutations(['setUserTv', "setTvChannel", "disconnectSocket", "setMenu",'setMenu']),
@@ -102,6 +116,11 @@ export default {
     },
     back() {
 
+      if(ROAST_CONFIG.OS_TYPE && this.$route.name == 'menuRout'){
+        this.$root.$emit('sideMenu_show');
+        this.$root.$emit('leftside_show');
+        this.$root.$emit('header_show');
+      }
       this.$router.go(-1);
 
       if(this.currentName == 'Pm'){
@@ -116,11 +135,7 @@ export default {
         this.exitAndroidApp()
       }
 
-        if(ROAST_CONFIG.OS_TYPE){
-          this.$root.$emit('sideMenu_show');
-          this.$root.$emit('leftside_show');
-          this.$root.$emit('header_show');
-        }
+
       // this.$router.go(-1);
     },
     done() {
