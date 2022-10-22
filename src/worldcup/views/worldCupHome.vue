@@ -75,19 +75,18 @@ export default {
     })
 
 
-      if (data.type && data.type == 'userData') {
-        // this.$root.$emit('loginUserData', data);
-        // alert(data.data)
-        this.$refs.routeview.manageTokenGet(data.data)
-      }
+    if (data.type && data.type == 'userData') {
+      // this.$root.$emit('loginUserData', data);
+      // alert(data.data)
+      this.$refs.routeview.manageTokenGet(data.data)
+    }
 
-      if (data.type && data.type == 'returnPage') {
-        this.back();
-        return false
-      }
-    });
+    if (data.type && data.type == 'returnPage') {
+      this.back();
+      return false
+    }
   }, activated() {
-    if(ROAST_CONFIG.OS_TYPE){
+    if (ROAST_CONFIG.OS_TYPE) {
       this.$root.$emit('sideMenu_deactive');
       this.$root.$emit('sideMenu_hide');
       this.$root.$emit('leftside_hide');
@@ -96,7 +95,7 @@ export default {
 
   },
   methods: {
-    ...mapMutations(['setUserTv', "setTvChannel", "disconnectSocket", "setMenu",'setMenu']),
+    ...mapMutations(['setUserTv', "setTvChannel", "disconnectSocket", "setMenu", 'setMenu']),
     ...mapGetters(["getSocket", "getUserInfo"]),
     up() {
       this.$refs.routeview.up();
@@ -116,18 +115,18 @@ export default {
     },
     back() {
 
-      if(ROAST_CONFIG.OS_TYPE && this.$route.name == 'menuRout'){
+      if (ROAST_CONFIG.OS_TYPE && this.$route.name == 'menuRout') {
         this.$root.$emit('sideMenu_show');
         this.$root.$emit('leftside_show');
         this.$root.$emit('header_show');
       }
       this.$router.go(-1);
 
-      if(this.currentName == 'Pm'){
+      if (this.currentName == 'Pm') {
         this.disconnectSocket();
       }
 
-      if(this.currentName == 'menuRout'){
+      if (this.currentName == 'menuRout') {
         this.setMenu({id: '', name: '', des: '', rout: ''})
       }
 
@@ -142,7 +141,7 @@ export default {
     },
     cancel() {
     },
-    typeNumber(num){
+    typeNumber(num) {
       this.$refs.routeview.typeNumber(num);
     },
     exit() {
