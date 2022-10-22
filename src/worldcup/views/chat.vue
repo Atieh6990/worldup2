@@ -124,7 +124,7 @@ export default {
     // this.getToken()
 
     setTimeout(() => {
-      console.log("lkgdkjghaaaaaan")
+      // console.log("lkgdkjghaaaaaan")
       this.getToken()
     }, 1000)
 
@@ -338,6 +338,7 @@ export default {
       }
     },
     manageRegisterData(data) {
+      // alert('manageRegisterData' + data.type)
       this.errorMessage = "";
       this.numberShow = "";
       if (data.type == 0) {//enter phone & get verify code
@@ -379,7 +380,7 @@ export default {
     doSignUp() {
 
 
-      // console.log("doSignUp" , this.getUserTv())
+    // alert('mac : '+ this.getUserTv().mac + '  uid : ' + this.getUserTv().uid + '  version :' +this.getUserTv().version)
       api.signup(this.userKey, this.verifyCode, this.phoneNumber, this.getUserTv().mac, this.getUserTv().uid, this.getUserTv().version).then(data => {
         if (data.success == false) {
           this.errorMessage = data.data.message;
@@ -390,8 +391,9 @@ export default {
           access_token: data.access_token,
           refresh_token: data.refresh_token
         }
-        // console.log("param" , param)
+        // alert("param" + param)
         // this.DeleteFile()
+        this.errorMessage = ""
         this.setToken(JSON.stringify(param));
         this.setUserInfo(param);
         this.startSocket();
@@ -407,7 +409,7 @@ export default {
         refresh_token: keyJson.refresh_token
       }
 
-      console.log('param', param)
+      // console.log('param', param)
 
       this.setUserInfo(param);
       // this.$root.$emit("hide_loading")
@@ -512,7 +514,7 @@ export default {
     manageTokenGet(data) {
       this.tokenData = (data.savedToken)
       let Token = (data.savedToken).access_token
-      // console.log(Token)
+      // alert(Token)
       // if (this.tokenData == null || this.tokenData == 'null' || this.tokenData == '' || typeof this.tokenData == "undefined") {
       if (Token == null || Token == 'null' || Token == '' || typeof Token == "undefined") {
         this.registrationType = 0;

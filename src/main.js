@@ -8,7 +8,7 @@ try {
   window.$ = window.jQuery = require('jquery');
 } catch (e) {
 }
-new Vue({
+window.vm = new Vue({
   router,
   store,
   render: h => h(App)
