@@ -34,6 +34,7 @@ export default {
         UserTVInfo() {
             let urlParams;
             let url_string = window.location.href;
+            // alert('url_string' + url_string)
             // console.log(ROAST_CONFIG.OS_TYPE, ROAST_CONFIG.DEVELOP_MODE)
             if (ROAST_CONFIG.OS_TYPE == 0) {//android
 
@@ -69,7 +70,7 @@ export default {
                     };
                 }
             }
-            // console.log('urlParams',urlParams)
+            // alert('urlParams'+urlParams)
             return urlParams;
         },
         getUrlParams(url) {
@@ -82,6 +83,8 @@ export default {
                 var pair = vars[i].split('=');
                 params[pair[0]] = decodeURIComponent(pair[1]);
             }
+
+            // alert('getUrlParams' + JSON.stringify(params))
             return params;
         },
         setParam(key, value) {

@@ -66,7 +66,7 @@ export default {
     })
 
     this.$root.$on("registerData", (data) => {
-      // console.log("in registerData !!!")
+      // alert("in registerData !!!"+data)
       this.$refs.routeview.manageRegisterData(data)
     });
 
@@ -74,8 +74,6 @@ export default {
       this.$refs.routeview.sendMessage()
     })
 
-    this.$root.$on('PostMessages', (data) => {
-      // alert("PostMessages" + data.type)
 
       if (data.type && data.type == 'userData') {
         // this.$root.$emit('loginUserData', data);
@@ -95,6 +93,7 @@ export default {
       this.$root.$emit('leftside_hide');
       this.$root.$emit('header_hide');
     }
+
   },
   methods: {
     ...mapMutations(['setUserTv', "setTvChannel", "disconnectSocket", "setMenu",'setMenu']),
@@ -142,6 +141,9 @@ export default {
     done() {
     },
     cancel() {
+    },
+    typeNumber(num){
+      this.$refs.routeview.typeNumber(num);
     },
     exit() {
       this.handleExit();
@@ -233,20 +235,24 @@ export default {
   top: 0px;
   right: 0px;
   width: 1920px;
-  height: 1080px;
   direction: rtl;
-  /*border: 1px solid green;*/
+
+  display: flex;
+  display: -webkit-flex !important;
+  height: 100%;
+
 }
 
 .nestedRoutParent {
-  height: 1080px;
+  overflow: hidden;
+  height: 100%;
   width: 350px;
   right: 0px;
   top: 0px;
   border-radius: 0px;
-  position: absolute;
+  position: relative;
   box-shadow: 0px 4px 20px 0px #00000073;
-
+  z-index: 10000000;
 }
 
 .nestedRoutBackground {
