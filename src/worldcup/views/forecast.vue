@@ -28,6 +28,7 @@ export default {
       this.$refs.upcomingGames.left();
     },
     enter() {
+      this.$refs.upcomingGames.enter();
     },
     typeNumber(number) {
       this.$refs.upcomingGames.typeNumber(number);
