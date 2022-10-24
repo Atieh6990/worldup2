@@ -109,7 +109,7 @@ export default {
 
 .matchesParent {
   width: 350px;
-  height: 837px;
+  height: 930px;
   position: relative;
   top: 38px;
   left: 0px;
