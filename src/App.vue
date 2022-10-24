@@ -36,26 +36,28 @@ export default {
       if (typeof error.response == "object") {//TODO
         if (error.response.status == 401) {
 
+
           this.setParam("Token","")
           this.$router.push('/worldCupHome/login/')
 
         }
       }
     })
-    this.$root.$on('PostMessages', (data) => {
-      // alert("PostMessages App vue" + data.type + data.data)
 
+
+
+    this.$root.$on('PostMessages', (data) => {
+      console.log(data.type , data.type)
       if (data.type && data.type == 'userData') {
-        // this.$root.$emit('loginUserData', data);
-        // alert(data.data)
         this.$refs.routeview.manageTokenGet(data.data)
       }
 
       if (data.type && data.type == 'returnPage') {
-        this.back();
+
+        this.$refs.routeview.back();
         return false
       }
-    });
+    })
 
   },
   methods: {
