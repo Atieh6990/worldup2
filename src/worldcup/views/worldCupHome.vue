@@ -108,10 +108,12 @@ export default {
     },
     enter() {
 
+
+
       this.$refs.routeview.enter();
     },
     back() {
-      console.log('back', this.currentName)
+      // console.log('back', this.currentName)
       if (ROAST_CONFIG.OS_TYPE && this.$route.name == 'menuRout') {
         this.$root.$emit('sideMenu_show');
         this.$root.$emit('leftside_show');
