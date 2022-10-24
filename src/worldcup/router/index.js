@@ -6,7 +6,7 @@ import chat from '../views/chat'
 import menuRout from '../views/menuRout'
 import scores from '../views/scores'
 import forecast from '../views/forecast'
-
+import login from '../views/Login'
 Vue.use(VueRouter)
 
 const routes = [
@@ -19,6 +19,7 @@ const routes = [
             {path: 'menuRout', name: 'menuRout', component: menuRout},
             {path: 'scores', name: 'scores', component: scores},
             {path: 'forecast', name: 'forecast', component: forecast},
+            {path: 'login', name: 'login', component: login},
         ],
     },
 
@@ -31,6 +32,7 @@ const routes = [
             {path: 'menuRout', name: 'menuRout', component: menuRout},
             {path: 'scores', name: 'scores', component: scores},
             {path: 'forecast', name: 'forecast', component: forecast},
+            {path: 'login', name: 'login', component: login},
         ],
     },
 

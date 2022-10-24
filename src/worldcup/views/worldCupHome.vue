@@ -50,8 +50,10 @@ export default {
     router.beforeEach((to, from, next) => {
       this.currentName = to.name;
       console.log("this.currentName", this.currentName)
+
       if (this.$route.name == 'menuRout' ||this.currentName == 'menuRout') {
         this.setMenu({id: '', name: '', des: '', rout: ''})
+
       }
       next();
     });
@@ -195,7 +197,7 @@ export default {
     },
     manageInterceptor() {
       axios.interceptors.request.use((config) => {
-        config.headers.Authorization = `Bearer ` + this.getUserInfo().access_token;
+        config.headers.Authorization = `Bearer ` + this.getParam("Token");
         this.getResponse = 0
         this.loading = true;
         return config
@@ -213,9 +215,8 @@ export default {
         if (typeof error.response == "object") {//TODO
           if (error.response.status == 401) {
 
-            this.DeleteFile()
-            this.disconnectSocket()
-            this.$router.push('/worldCupHome/Pm')
+            this.setParam("Token","")
+            this.$router.push('/worldCupHome/login/')
 
           }
         }

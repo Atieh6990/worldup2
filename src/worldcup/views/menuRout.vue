@@ -21,13 +21,15 @@
 
 <script>
 import {mapMutations, mapGetters} from 'vuex'
+import func from "../mixins/mixin";
 
 export default {
   name: "menuRout",
-
+  mixins: [func],
   data() {
     return {
       select: 0,
+    loginItem:{id: 0, name: 'ثبت نام', des: 'ثبت نام', rout: '/worldCupHome/login/' },
       menuItem: [
         {id: 0, name: 'گردونه شانس', des: 'گردونه رو بچرخون و شانست رو امتحان کن', rout: '/worldCupHome/Pm/' },
         {id: 1, name: 'پیش بینی', des: 'پیش بینی لحظه ای مسابقات فوتبال', rout: '/worldCupHome/forecast/'},
@@ -55,9 +57,33 @@ export default {
       }
     },
     enter() {
-      this.setMenu(this.menuItem[this.select]);
-      this.$router.push(this.menuItem[this.select].rout)
-    }
+      if(this.checkToken()){
+        this.setMenu(this.menuItem[this.select]);
+        this.$router.push(this.menuItem[this.select].rout)
+      }else{
+        this.setMenu(this.loginItem);
+        this.$router.push({path: this.loginItem.rout,query: {path:this.menuItem[this.select].rout}})
+
+      }
+
+    },   checkToken() {
+      let key=this.getParam("Token")
+      if(key == null || key == 'null' || key == '' || typeof key == "undefined"){
+        return false
+      }
+      let keyJson = (key);
+      let param = {
+        expires_in: (keyJson.expires_in * 1000) + (new Date).getTime(),
+        access_token: keyJson.access_token,
+        refresh_token: keyJson.refresh_token
+      }
+      if ((new Date).getTime() >= keyJson.expires_in) {
+        return false
+      } else {
+        return true
+      }
+    },
+
   }
 }
 </script>
