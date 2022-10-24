@@ -50,6 +50,9 @@ export default {
     router.beforeEach((to, from, next) => {
       this.currentName = to.name;
       console.log("this.currentName", this.currentName)
+      if (this.$route.name == 'menuRout' ||this.currentName == 'menuRout') {
+        this.setMenu({id: '', name: '', des: '', rout: ''})
+      }
       next();
     });
 
@@ -61,7 +64,7 @@ export default {
 
     // this.manageInterceptor()
     this.$root.$on("tokenFindInStore", data => {
-      console.log('tokenFindInStore', data)
+      // console.log('tokenFindInStore', data)
       this.$refs.routeview.manageTokenGet(data);//baraye local & tizen miad inja vali baraye andriod event sader mishe(PostMessages)
     })
 
@@ -75,16 +78,6 @@ export default {
     })
 
 
-    if (data.type && data.type == 'userData') {
-      // this.$root.$emit('loginUserData', data);
-      // alert(data.data)
-      this.$refs.routeview.manageTokenGet(data.data)
-    }
-
-    if (data.type && data.type == 'returnPage') {
-      this.back();
-      return false
-    }
   }, activated() {
     if (ROAST_CONFIG.OS_TYPE) {
       this.$root.$emit('sideMenu_deactive');
@@ -97,6 +90,10 @@ export default {
   methods: {
     ...mapMutations(['setUserTv', "setTvChannel", "disconnectSocket", "setMenu", 'setMenu']),
     ...mapGetters(["getSocket", "getUserInfo"]),
+    manageTokenGet(data){
+      this.$refs.routeview.manageTokenGet(data)
+    },
+
     up() {
       this.$refs.routeview.up();
     },
@@ -114,25 +111,29 @@ export default {
       this.$refs.routeview.enter();
     },
     back() {
-
+      console.log('back', this.currentName)
       if (ROAST_CONFIG.OS_TYPE && this.$route.name == 'menuRout') {
         this.$root.$emit('sideMenu_show');
         this.$root.$emit('leftside_show');
         this.$root.$emit('header_show');
       }
-      this.$router.go(-1);
+
 
       if (this.currentName == 'Pm') {
         this.disconnectSocket();
       }
 
-      if (this.currentName == 'menuRout') {
-        this.setMenu({id: '', name: '', des: '', rout: ''})
+
+
+
+
+      // alert(ROAST_CONFIG.OS_TYPE + this.currentName +this.$route.name)
+      if (ROAST_CONFIG.OS_TYPE == 0 && this.$route.name == "menuRout") {
+        this.exitAndroidApp()
+      }else{
+        this.$router.go(-1);
       }
 
-      if (ROAST_CONFIG.DEVELOP_MODE == 0 && ROAST_CONFIG.OS_TYPE == 0 && this.currentName == "Pm") {//TODO currentName bayad beshe esme safe avale app
-        this.exitAndroidApp()
-      }
 
 
       // this.$router.go(-1);

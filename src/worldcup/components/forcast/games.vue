@@ -21,13 +21,26 @@
             <div class="teamsName">{{ match.teamb.name }}</div>
           </div>
           <div class="scoreParent">
+
             <div class="scoreBox">
-              <input :id="'teamA_'+[m]" v-model="teamA[m]"
+
+              <div :id="'teamA_'+[m]" v-if="osType== 0"
+                   :class="[(yPos==2&&yMatch==m&&yScore==0&&xScore==0) ?'scoreHvr':'','scoreTxt']">{{ teamA[m] }}
+              </div>
+              <input :id="'teamA_'+[m]" v-model="teamA[m]" v-else
                      :class="[(yPos==2&&yMatch==m&&yScore==0&&xScore==0) ?'scoreHvr':'','scoreTxt']">
+
             </div>
+
+
             <div class="scoreBox">
-              <input :id="'teamB_'+[m]" v-model="teamB[m]"
+
+              <div :id="'teamA_'+[m]" v-if="osType== 0"
+                   :class="[(yPos==2&&yMatch==m&&yScore==0&&xScore==1) ?'scoreHvr':'','scoreTxt']">{{ teamB[m] }}
+              </div>
+              <input :id="'teamB_'+[m]" v-model="teamB[m]" v-else
                      :class="[(yPos==2&&yMatch==m&&yScore==0&&xScore==1) ?'scoreHvr':'','scoreTxt']">
+
             </div>
           </div>
         </div>
@@ -45,6 +58,7 @@
 
 <script>
 import IScroll from "../../js/iscroll";
+import {ROAST_CONFIG} from '../../js/config';
 
 export default {
   name: "games",
@@ -60,6 +74,7 @@ export default {
       ballDeactive: require('../../assets/images/forecast/vectorDeactive.png'),
       teamA: [],
       teamB: [],
+      osType: ROAST_CONFIG.OS_TYPE
     }
   },
   watch: {
@@ -156,7 +171,7 @@ export default {
     },
 
     typeNumber(number) {
-
+      // console.log('number', number)
       if (this.yScore == 0) {
         if (number > 9) {
 
