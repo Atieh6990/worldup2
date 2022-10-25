@@ -20,7 +20,8 @@
 </template>
 
 <script>
-import {mapMutations, mapGetters} from 'vuex'
+import {mapMutations} from 'vuex'
+import {ROAST_CONFIG} from "../js/config";
 
 export default {
   name: "menuRout",
@@ -29,21 +30,22 @@ export default {
     return {
       select: 0,
       menuItem: [
-        {id: 0, name: 'گردونه شانس', des: 'گردونه رو بچرخون و شانست رو امتحان کن', rout: '/worldCupHome/Pm/' },
+        {id: 0, name: 'گردونه شانس', des: 'گردونه رو بچرخون و شانست رو امتحان کن', rout: '/worldCupHome/Pm/'},
         {id: 1, name: 'پیش بینی', des: 'پیش بینی لحظه ای مسابقات فوتبال', rout: '/worldCupHome/forecast/'},
         {id: 2, name: 'چت آنلاین', des: 'چت آنلاین حین تماشای فوتبال', rout: '/worldCupHome/Pm/'},
-        {id: 3, name: 'پخش آنلاین', des: 'پخش آنلاین مسابقات جام جهانی', rout: '/worldCupHome/Pm/'},
-        {id: 4, name: 'اسامی برندگان', des: 'معرفی بردنگان دوره های پیش بینی', rout: '/worldCupHome/Pm/'},
+        {id: 3, name: 'پخش آنلاین', des: 'پخش آنلاین مسابقات جام جهانی', rout: '/worldCupHome/onlinePlay/'},
+        {id: 4, name: 'اسامی برندگان', des: 'معرفی برندگان دوره های پیش بینی', rout: '/worldCupHome/Pm/'},
         {id: 5, name: 'امتیازات', des: 'محاسبه امتیاز', rout: '/worldCupHome/scores/'},
         {id: 6, name: 'دیجی کلاب بت', des: 'سفارش آنلاین غذا و تنقلات', rout: '/worldCupHome/Pm/'},
       ],
+      osType: ROAST_CONFIG.OS_TYPE
     }
   },
   created() {
 
   },
   methods: {
-    ...mapMutations(['setMenu']),
+    ...mapMutations(['setMenu', 'setOnlinePlay']),
     down() {
       if (this.select < this.menuItem.length - 1) {
         this.select++
@@ -55,8 +57,22 @@ export default {
       }
     },
     enter() {
+
       this.setMenu(this.menuItem[this.select]);
-      this.$router.push(this.menuItem[this.select].rout)
+      this.$router.push(this.menuItem[this.select].rout);
+
+      if (this.menuItem[this.select]['id'] == 3) {
+        this.setOnlinePlay(true);
+        if (this.osType == 0)
+          setTimeout(function () {
+            window.ReactNativeWebView && window.ReactNativeWebView.postMessage(JSON.stringify({
+              type: "fullscreen",
+              data: true
+            }))
+          }, 200);
+      }
+
+
     }
   }
 }
@@ -69,7 +85,7 @@ export default {
   margin-right: 0px;
   margin-top: 0px;
   width: 350px;
-  border:3px solid green;
+  border: 3px solid green;
   /*display: flex;*/
   /*flex-direction: column;*/
   /*flex-wrap: nowrap;*/
@@ -79,9 +95,11 @@ export default {
   z-index: 100;
 
 }
-.icon{
+
+.icon {
   width: 100%;
 }
+
 .line {
   width: 100%;
   height: 4px;

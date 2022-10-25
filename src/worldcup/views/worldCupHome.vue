@@ -3,11 +3,10 @@
 
     <videoPlayer v-if="!showPlayer"></videoPlayer>
 
-    <div class="nestedRoutParent">
+    <div v-show="!showOnlinePlay" class="nestedRoutParent">
       <div class="nestedRoutBackground"></div>
       <routHeader></routHeader>
       <router-view :key="$route.fullPath" ref="routeview"></router-view>
-
     </div>
 
 
@@ -31,7 +30,7 @@ export default {
   data() {
     return {
       showPlayer: ROAST_CONFIG.DEVELOP_MODE,
-      currentName: 'menuRout', loading: false, getResponse: 0,
+      currentName: 'menuRout', loading: false, getResponse: 0, showOnlinePlay: this.getOnlinePlay(), osType: ROAST_CONFIG.OS_TYPE
     }
   },
   computed: {
@@ -45,7 +44,6 @@ export default {
     }
   },
   created() {
-
 
     router.beforeEach((to, from, next) => {
       this.currentName = to.name;
@@ -95,8 +93,8 @@ export default {
 
   },
   methods: {
-    ...mapMutations(['setUserTv', "setTvChannel", "disconnectSocket", "setMenu", 'setMenu']),
-    ...mapGetters(["getSocket", "getUserInfo"]),
+    ...mapMutations(['setUserTv', "setTvChannel", "disconnectSocket", "setMenu", 'setOnlinePlay']),
+    ...mapGetters(["getSocket", "getUserInfo", "getOnlinePlay"]),
     up() {
       this.$refs.routeview.up();
     },
@@ -110,11 +108,23 @@ export default {
       this.$refs.routeview.right();
     },
     enter() {
+      if (this.showOnlinePlay) {
+        this.setOnlinePlay(false);
+        this.setMenu({id: '', name: '', des: '', rout: ''});
+        this.$router.push('/worldCupHome/menuRout');
+        if (this.osType == 0)
+          setTimeout(function () {
+            window.ReactNativeWebView && window.ReactNativeWebView.postMessage(JSON.stringify({
+              type: "fullscreen",
+              data: false
+            }))
+          }, 200);
 
-      this.$refs.routeview.enter();
+      } else
+        this.$refs.routeview.enter();
     },
     back() {
-
+      // alert(this.currentName)
       if (ROAST_CONFIG.OS_TYPE && this.$route.name == 'menuRout') {
         this.$root.$emit('sideMenu_show');
         this.$root.$emit('leftside_show');
