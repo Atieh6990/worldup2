@@ -8,9 +8,6 @@ export default {
   methods:{
     enter(){
     },
-    back(){
-
-    }
   }
 }
 </script>
