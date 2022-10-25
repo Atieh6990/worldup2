@@ -83,6 +83,10 @@ export default {
     }
   },
 
+  created() {
+    this.scrollInit();
+  },
+
   methods: {
     scrollInit() {
       this.myScroll = '';
@@ -221,7 +225,7 @@ export default {
   top: 38px;
   left: 0px;
   overflow: hidden;
-  border: 1px solid red;
+  /*border: 1px solid red;*/
 }
 
 .matchesScroll {
