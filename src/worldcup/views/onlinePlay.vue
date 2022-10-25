@@ -7,7 +7,9 @@ export default {
   name: "onlinePlay",
   methods:{
     enter(){
-      alert()
+    },
+    back(){
+
     }
   }
 }

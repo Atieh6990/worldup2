@@ -53,7 +53,7 @@ export default {
       console.log("this.currentName", this.currentName)
 
 
-      if (this.$route.name == 'menuRout' || this.currentName == 'menuRout') {
+      if ( this.currentName == 'menuRout') {
 
         this.setMenu({id: '', name: '', des: '', rout: ''})
 
@@ -109,6 +109,7 @@ export default {
     enter() {
 
       if (this.showOnlinePlay) {
+        console.log("----------")
         this.setOnlinePlay(false);
         this.setMenu({id: '', name: '', des: '', rout: ''});
         this.$router.push('/worldCupHome/menuRout');
@@ -142,12 +143,6 @@ export default {
         this.$router.go(-1);
       }
 
-      // alert(ROAST_CONFIG.OS_TYPE + this.currentName +this.$route.name)
-      if (ROAST_CONFIG.OS_TYPE == 0 && this.$route.name == "menuRout") {
-        this.exitAndroidApp()
-      }else{
-        this.$router.go(-1);
-      }
 
       // this.$router.go(-1);
     },
