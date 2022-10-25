@@ -8,11 +8,41 @@
 <script>
 
 
+import axios from "axios";
+import func from "./worldcup/mixins/mixin";
+
 export default {
+  mixins: [func],
   created() {
     console.log("app vue Created")
     window.addEventListener("keydown", this.keyEvent);
     this.$router.push('/worldCupHome/menuRout').catch(err => {})
+    axios.interceptors.request.use((config) => {
+      config.headers.Authorization = `Bearer ` + this.getParam("Token");
+      this.getResponse = 0
+      this.loading = true;
+      return config
+    }, error => {
+      this.loading = false;
+      return Promise.reject(error)
+    });
+    axios.interceptors.response.use((response) => {
+      this.loading = false;
+      this.getResponse = 1
+      return response;
+    }, error => {
+      this.loading = false;
+
+      if (typeof error.response == "object") {//TODO
+        if (error.response.status == 401) {
+
+
+          this.setParam("Token","")
+          this.$router.push('/worldCupHome/login/')
+
+        }
+      }
+    })
 
 
 
