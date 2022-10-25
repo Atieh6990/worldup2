@@ -31,19 +31,11 @@ export default {
   data() {
     return {
       select: 0,
-      loginItem: {id: 0, name: 'ثبت نام', des: 'ثبت نام', rout: '/worldCupHome/login/'},
-      menuItem: [
-        {id: 0, name: 'گردونه شانس', des: 'گردونه رو بچرخون و شانست رو امتحان کن', rout: '/worldCupHome/Pm/'},
-        {id: 1, name: 'پیش بینی', des: 'پیش بینی لحظه ای مسابقات فوتبال', rout: '/worldCupHome/forecast/'},
-        {id: 2, name: 'چت آنلاین', des: 'چت آنلاین حین تماشای فوتبال', rout: '/worldCupHome/Pm/'},
-        {id: 3, name: 'پخش آنلاین', des: 'پخش آنلاین مسابقات جام جهانی', rout: '/worldCupHome/onlinePlay/'},
-        {id: 4, name: 'اسامی برندگان', des: 'معرفی بردنگان دوره های پیش بینی', rout: '/worldCupHome/Pm/'},
-        {id: 5, name: 'امتیازات', des: 'محاسبه امتیاز', rout: '/worldCupHome/scores/'},
-        {id: 6, name: 'دیجی کلاب بت', des: 'سفارش آنلاین غذا و تنقلات', rout: '/worldCupHome/Pm/'},
-      ],
+      loginItem: {id: 0, name: 'ثبت نام', des: 'ثبت نام', rout: '/worldCupHome/login/'},menuItem:[],
     }
   },
   created() {
+    this.menuItem=ROAST_CONFIG.menuItems
   },
   methods: {
 
@@ -83,7 +75,7 @@ export default {
         console.log("-----0",this.getMenu());
         this.setMenu(this.loginItem);
         console.log("-----1",this.getMenu());
-        this.$router.push({path: this.loginItem.rout, query: {path: this.menuItem[this.select].rout}})
+        this.$router.push({path: this.loginItem.rout, query: {path: this.select}})
 
       }
 
