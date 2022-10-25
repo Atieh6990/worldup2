@@ -5,35 +5,35 @@
 
     <div >
       <registering   v-on:set_error_msgL="set_error_msg"  v-on:manageRegisterData="manageRegisterData"  :type="registrationType" ref="registering" :activeRoute="activeRoute"
-                     :yPage="yPage" :numberShow="numberShow"></registering>
+                   :yPage="yPage" :numberShow="numberShow"></registering>
     </div>
 
-    <!--    <div v-else>-->
+<!--    <div v-else>-->
 
-    <!--      <div v-if="userLoggedIn && messageList.length>0" class="">-->
-    <!--        <chats ref="chats" :messageList="messageList" :userId="getUserInfo().userId"></chats>-->
-    <!--      </div>-->
+<!--      <div v-if="userLoggedIn && messageList.length>0" class="">-->
+<!--        <chats ref="chats" :messageList="messageList" :userId="getUserInfo().userId"></chats>-->
+<!--      </div>-->
 
-    <!--      <div class="errorMdg">{{ errorMessage }}</div>-->
-    <!--      <div class="fixedBottom" v-if="userLoggedIn">-->
-    <!--        <div :class="[((yPage == 1 && activeRoute==1 && xPage == 0 && userLoggedIn) ?'inpParentHover':''),'inpParent']">-->
-    <!--                    <textarea style="display: none" :value="chatTxt" placeholder="اینجا بنویسید" class="chatInp input"-->
-    <!--                              id="chatArea"-->
-    <!--                              name="chatTxt" type="text" @input="onInputChange"-->
-    <!--                              ref="contentTextArea"-->
-    <!--                              autofocus-->
-    <!--                              v-on:click="removeHover()"></textarea>-->
-    <!--          <div class="chatInp input" style="overflow: auto" id="chatTxtDiv">{{ chatTxt }}</div>-->
-    <!--        </div>-->
-    <!--        <div :class="[((yPage == 1 && activeRoute==1 && xPage == 1 && userLoggedIn) ?'inpParentHover':''),'submitBtn']"-->
-    <!--             v-on:click="sendMessage()"><img src="../assets/images/Pm/sendBtn.svg"></div>-->
-    <!--      </div>-->
+<!--      <div class="errorMdg">{{ errorMessage }}</div>-->
+<!--      <div class="fixedBottom" v-if="userLoggedIn">-->
+<!--        <div :class="[((yPage == 1 && activeRoute==1 && xPage == 0 && userLoggedIn) ?'inpParentHover':''),'inpParent']">-->
+<!--                    <textarea style="display: none" :value="chatTxt" placeholder="اینجا بنویسید" class="chatInp input"-->
+<!--                              id="chatArea"-->
+<!--                              name="chatTxt" type="text" @input="onInputChange"-->
+<!--                              ref="contentTextArea"-->
+<!--                              autofocus-->
+<!--                              v-on:click="removeHover()"></textarea>-->
+<!--          <div class="chatInp input" style="overflow: auto" id="chatTxtDiv">{{ chatTxt }}</div>-->
+<!--        </div>-->
+<!--        <div :class="[((yPage == 1 && activeRoute==1 && xPage == 1 && userLoggedIn) ?'inpParentHover':''),'submitBtn']"-->
+<!--             v-on:click="sendMessage()"><img src="../assets/images/Pm/sendBtn.svg"></div>-->
+<!--      </div>-->
 
-    <!--      <div class="keyboardParent" v-if="userLoggedIn">-->
-    <!--        <SimpleKeyboard @onChange="onChange" @onKeyPress="onKeyPress" :input="chatTxt" ref="SimpleKeyboard"/>-->
-    <!--      </div>-->
+<!--      <div class="keyboardParent" v-if="userLoggedIn">-->
+<!--        <SimpleKeyboard @onChange="onChange" @onKeyPress="onKeyPress" :input="chatTxt" ref="SimpleKeyboard"/>-->
+<!--      </div>-->
 
-    <!--    </div>-->
+<!--    </div>-->
 
 
 
@@ -196,12 +196,12 @@ export default {
     //   this.setUserNameID({item: "userId", amount: data.data.user_id});
     // },
     enter() {
-      console.log("----------out")
-      this.$refs.registering.enter()
+        console.log("----------out")
+        this.$refs.registering.enter()
     },
     up() {
 
-      this.$refs.registering.up()
+        this.$refs.registering.up()
 
     },
     right() {
@@ -253,7 +253,7 @@ export default {
     doSignUp() {
 
 
-      // alert('mac : '+ this.getUserTv().mac + '  uid : ' + this.getUserTv().uid + '  version :' +this.getUserTv().version)
+    // alert('mac : '+ this.getUserTv().mac + '  uid : ' + this.getUserTv().uid + '  version :' +this.getUserTv().version)
       api.signup(this.userKey, this.verifyCode, this.phoneNumber, this.getUserTv().mac, this.getUserTv().uid, this.getUserTv().version).then(data => {
         if (data.success == false) {
           this.errorMessage = data.data.message;
@@ -268,9 +268,9 @@ export default {
         // this.DeleteFile()
         this.errorMessage = ""
         this.setParam("Token",param)
-        // this.setToken(JSON.stringify(param));
-        // this.setUserInfo(param);
-        //this.startSocket();
+       // this.setToken(JSON.stringify(param));
+       // this.setUserInfo(param);
+       //this.startSocket();
         this.goPages(this.path);
       })
     },

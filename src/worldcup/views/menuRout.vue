@@ -1,31 +1,3 @@
-Skip to content
-Search or jump to…
-Pull requests
-Issues
-Marketplace
-Explore
-
-@mahsa6990
-Atieh6990
-/
-worldup2
-Public
-Code
-Issues
-Pull requests
-Actions
-Projects
-Wiki
-Security
-Insights
-worldup2/src/worldcup/views/menuRout.vue
-@zandAkbari
-zandAkbari complete register
-Latest commit 7b385db 17 hours ago
-History
-2 contributors
-@zandAkbari@Atieh6990
-159 lines (141 sloc)  4.18 KB
 
 <template>
 

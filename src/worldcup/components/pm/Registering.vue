@@ -88,7 +88,8 @@ export default {
         return false
       }
     }, enter() {
-
+console.log("this.type",this.type)
+      console.log("this.yPos",this.yPos)
       if (this.type == 2) {
         if (this.yPos == 2) {
           this.$refs.SimpleKeyboard.enter();
@@ -163,22 +164,23 @@ export default {
       this.nextStep();
     },
     nextStep() {
+
       this.hideIme("content_" + this.type);
-      this.$root.$emit("set_error_msg", "");
+      this.$emit("set_error_msgL", "");
       this.yPos = 0;
 
       if (this.contentTxt != "") {
         let send = {type: this.type, content: this.contentTxt};
         setTimeout(() => {
-          this.$root.$emit("registerData", send);
+          this.$emit("manageRegisterData", send);
         }, 600)
 
       } else {
-        this.$root.$emit("set_error_msg", "فیلد هارا پر کنید.");
+        this.$emit("set_error_msgL", "فیلد هارا پر کنید.");
       }
     },
     removeHover() {
-      this.$root.$emit("set_error_msg", "");
+      this.$emit("set_error_msgL", "");
       if (this.type == 2)
         this.$refs.SimpleKeyboard.toggleHover(0);
       this.yPos = 0;

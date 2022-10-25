@@ -261,9 +261,9 @@ var newY;
     // console.log('ffffffffffffffffff', options);
     this.pos = 0;
     this.wrapper = typeof el == 'string' ? document.querySelector(el) : el;
-
+    // console.log('ffffscrollerscrollerffffffffffffff', (this.wrapper.children[0]));
     this.scroller = this.wrapper.children[0];
-   // console.log('ffffscrollerscrollerffffffffffffff', el + '====' + options);
+   // console.log('ffffscrollerscrollerffffffffffffff',  JSON.stringify(this.wrapper) + '====' + this.wrapper.children[0]);
     this.scrollerStyle = this.scroller.style;		// cache style for better performance
 
     this.options = {
