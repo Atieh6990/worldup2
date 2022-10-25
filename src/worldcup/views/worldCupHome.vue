@@ -141,25 +141,6 @@ export default {
       } else {
         this.$router.go(-1);
       }
-
-
-
-      if (this.currentName == 'Pm') {
-        this.disconnectSocket();
-      }
-
-
-
-
-
-      // alert(ROAST_CONFIG.OS_TYPE + this.currentName +this.$route.name)
-      if (ROAST_CONFIG.OS_TYPE == 0 && this.$route.name == "menuRout") {
-        this.exitAndroidApp()
-      }else{
-        this.$router.go(-1);
-      }
-
-      // this.$router.go(-1);
     },
     done() {
     },
