@@ -61,17 +61,12 @@ export default {
       }
     },
     enter() {
-      if (this.checkToken()) {
-        this.setMenu(this.menuItem[this.select]);
-        this.$router.push(this.menuItem[this.select].rout)
-      } else {
-        this.setMenu(this.loginItem);
-        this.$router.push({path: this.loginItem.rout, query: {path: this.menuItem[this.select].rout}})
-      }
-      this.setMenu(this.menuItem[this.select]);
-      this.$router.push(this.menuItem[this.select].rout);
+
+
 
       if (this.menuItem[this.select]['id'] == 3) {
+        this.setMenu(this.menuItem[this.select]);
+        this.$router.push(this.menuItem[this.select].rout);
         this.setOnlinePlay(true);
         if (this.osType == 0)
           setTimeout(function () {
@@ -81,9 +76,21 @@ export default {
             }))
           }, 200);
       }
+     else if (this.checkToken()) {
+        this.setMenu(this.menuItem[this.select]);
+        this.$router.push(this.menuItem[this.select].rout)
+      } else {
+
+        this.setMenu(this.loginItem);
+
+        this.$router.push({path: this.loginItem.rout, query: {path: this.menuItem[this.select].rout}})
+
+      }
+
     },
     checkToken() {
       let key = this.getParam("Token")
+
       if (key == null || key == 'null' || key == '' || typeof key == "undefined") {
         return false
       }

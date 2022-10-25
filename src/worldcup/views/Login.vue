@@ -119,7 +119,7 @@ export default {
     }
   },
   created() {
-
+    console.log("55555555")
     // this.roomName = "اتاق گفتگوی " + this.getTcChannel();
     // this.roomName = "اتاق گفتگوی جام جهانی";
     // this.getToken()
@@ -187,7 +187,7 @@ export default {
       }
     },
     goPages(path){
-      this.$router.push({path:
+      this.$router.replace({path:
 
         path})
     },
