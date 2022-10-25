@@ -118,7 +118,9 @@ export default {
   margin-right: 0px;
   margin-top: 0px;
   width: 350px;
-  border: 3px solid green;
+
+  /*border:3px solid green;*/
+
   /*display: flex;*/
   /*flex-direction: column;*/
   /*flex-wrap: nowrap;*/
