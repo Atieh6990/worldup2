@@ -1,7 +1,7 @@
 module.exports = {
     // options...
     publicPath: process.env.NODE_ENV === 'production'
-        ? 'https://tvapps.ir/worldcup/mahsa/'
+        ? 'https://tvapps.ir/worldcup/test_2/js/'
         : './',
     pwa: {
         name: 'Geary Factory Lofts', // <---- this is PWA name
