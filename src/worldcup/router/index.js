@@ -6,8 +6,8 @@ import chat from '../views/chat'
 import menuRout from '../views/menuRout'
 import scores from '../views/scores'
 import forecast from '../views/forecast'
+import login from '../views/Login'
 import onlinePlay from "../views/onlinePlay";
-
 Vue.use(VueRouter)
 
 const routes = [
@@ -20,6 +20,7 @@ const routes = [
             {path: 'menuRout', name: 'menuRout', component: menuRout},
             {path: 'scores', name: 'scores', component: scores},
             {path: 'forecast', name: 'forecast', component: forecast},
+            {path: 'login', name: 'login', component: login},
             {path: 'onlinePlay', name: 'onlinePlay', component: onlinePlay},
         ],
     },
@@ -33,6 +34,7 @@ const routes = [
             {path: 'menuRout', name: 'menuRout', component: menuRout},
             {path: 'scores', name: 'scores', component: scores},
             {path: 'forecast', name: 'forecast', component: forecast},
+            {path: 'login', name: 'login', component: login},
             {path: 'onlinePlay', name: 'onlinePlay', component: onlinePlay},
         ],
     },

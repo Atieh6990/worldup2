@@ -1,3 +1,32 @@
+Skip to content
+Search or jump to…
+Pull requests
+Issues
+Marketplace
+Explore
+
+@mahsa6990
+Atieh6990
+/
+worldup2
+Public
+Code
+Issues
+Pull requests
+Actions
+Projects
+Wiki
+Security
+Insights
+worldup2/src/worldcup/views/menuRout.vue
+@zandAkbari
+zandAkbari complete register
+Latest commit 7b385db 17 hours ago
+History
+2 contributors
+@zandAkbari@Atieh6990
+159 lines (141 sloc)  4.18 KB
+
 <template>
 
   <div class="parent">
@@ -20,29 +49,29 @@
 </template>
 
 <script>
-import {mapMutations} from 'vuex'
+import {mapMutations, mapGetters} from 'vuex'
+import func from "../mixins/mixin";
 import {ROAST_CONFIG} from "../js/config";
 
 export default {
   name: "menuRout",
-
+  mixins: [func],
   data() {
     return {
       select: 0,
+      loginItem: {id: 0, name: 'ثبت نام', des: 'ثبت نام', rout: '/worldCupHome/login/'},
       menuItem: [
         {id: 0, name: 'گردونه شانس', des: 'گردونه رو بچرخون و شانست رو امتحان کن', rout: '/worldCupHome/Pm/'},
         {id: 1, name: 'پیش بینی', des: 'پیش بینی لحظه ای مسابقات فوتبال', rout: '/worldCupHome/forecast/'},
         {id: 2, name: 'چت آنلاین', des: 'چت آنلاین حین تماشای فوتبال', rout: '/worldCupHome/Pm/'},
         {id: 3, name: 'پخش آنلاین', des: 'پخش آنلاین مسابقات جام جهانی', rout: '/worldCupHome/onlinePlay/'},
-        {id: 4, name: 'اسامی برندگان', des: 'معرفی برندگان دوره های پیش بینی', rout: '/worldCupHome/Pm/'},
+        {id: 4, name: 'اسامی برندگان', des: 'معرفی بردنگان دوره های پیش بینی', rout: '/worldCupHome/Pm/'},
         {id: 5, name: 'امتیازات', des: 'محاسبه امتیاز', rout: '/worldCupHome/scores/'},
         {id: 6, name: 'دیجی کلاب بت', des: 'سفارش آنلاین غذا و تنقلات', rout: '/worldCupHome/Pm/'},
       ],
-      osType: ROAST_CONFIG.OS_TYPE
     }
   },
   created() {
-
   },
   methods: {
     ...mapMutations(['setMenu', 'setOnlinePlay']),
@@ -57,7 +86,13 @@ export default {
       }
     },
     enter() {
-
+      if (this.checkToken()) {
+        this.setMenu(this.menuItem[this.select]);
+        this.$router.push(this.menuItem[this.select].rout)
+      } else {
+        this.setMenu(this.loginItem);
+        this.$router.push({path: this.loginItem.rout, query: {path: this.menuItem[this.select].rout}})
+      }
       this.setMenu(this.menuItem[this.select]);
       this.$router.push(this.menuItem[this.select].rout);
 
@@ -71,9 +106,25 @@ export default {
             }))
           }, 200);
       }
-
-
+    },
+    checkToken() {
+      let key = this.getParam("Token")
+      if (key == null || key == 'null' || key == '' || typeof key == "undefined") {
+        return false
+      }
+      let keyJson = (key);
+      let param = {
+        expires_in: (keyJson.expires_in * 1000) + (new Date).getTime(),
+        access_token: keyJson.access_token,
+        refresh_token: keyJson.refresh_token
+      }
+      if ((new Date).getTime() >= keyJson.expires_in) {
+        return false
+      } else {
+        return true
+      }
     }
+    ,
   }
 }
 </script>
@@ -93,7 +144,6 @@ export default {
   /*align-items: center;*/
   /*align-content: center;*/
   z-index: 100;
-
 }
 
 .icon {
@@ -132,7 +182,6 @@ export default {
 }
 
 .title {
-
   color: #FFFFFF;
   text-align: right;
   direction: rtl;
