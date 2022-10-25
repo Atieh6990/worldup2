@@ -1,3 +1,4 @@
+
 <template>
 
   <div class="parent">
@@ -22,6 +23,7 @@
 <script>
 import {mapMutations, mapGetters} from 'vuex'
 import func from "../mixins/mixin";
+import {ROAST_CONFIG} from "../js/config";
 
 export default {
   name: "menuRout",
@@ -29,12 +31,12 @@ export default {
   data() {
     return {
       select: 0,
-    loginItem:{id: 0, name: 'ثبت نام', des: 'ثبت نام', rout: '/worldCupHome/login/' },
+      loginItem: {id: 0, name: 'ثبت نام', des: 'ثبت نام', rout: '/worldCupHome/login/'},
       menuItem: [
-        {id: 0, name: 'گردونه شانس', des: 'گردونه رو بچرخون و شانست رو امتحان کن', rout: '/worldCupHome/Pm/' },
+        {id: 0, name: 'گردونه شانس', des: 'گردونه رو بچرخون و شانست رو امتحان کن', rout: '/worldCupHome/Pm/'},
         {id: 1, name: 'پیش بینی', des: 'پیش بینی لحظه ای مسابقات فوتبال', rout: '/worldCupHome/forecast/'},
         {id: 2, name: 'چت آنلاین', des: 'چت آنلاین حین تماشای فوتبال', rout: '/worldCupHome/Pm/'},
-        {id: 3, name: 'پخش آنلاین', des: 'پخش آنلاین مسابقات جام جهانی', rout: '/worldCupHome/Pm/'},
+        {id: 3, name: 'پخش آنلاین', des: 'پخش آنلاین مسابقات جام جهانی', rout: '/worldCupHome/onlinePlay/'},
         {id: 4, name: 'اسامی برندگان', des: 'معرفی بردنگان دوره های پیش بینی', rout: '/worldCupHome/Pm/'},
         {id: 5, name: 'امتیازات', des: 'محاسبه امتیاز', rout: '/worldCupHome/scores/'},
         {id: 6, name: 'دیجی کلاب بت', des: 'سفارش آنلاین غذا و تنقلات', rout: '/worldCupHome/Pm/'},
@@ -42,10 +44,9 @@ export default {
     }
   },
   created() {
-
   },
   methods: {
-    ...mapMutations(['setMenu']),
+    ...mapMutations(['setMenu', 'setOnlinePlay']),
     down() {
       if (this.select < this.menuItem.length - 1) {
         this.select++
@@ -57,18 +58,30 @@ export default {
       }
     },
     enter() {
-      if(this.checkToken()){
+      if (this.checkToken()) {
         this.setMenu(this.menuItem[this.select]);
         this.$router.push(this.menuItem[this.select].rout)
-      }else{
+      } else {
         this.setMenu(this.loginItem);
-        this.$router.push({path: this.loginItem.rout,query: {path:this.menuItem[this.select].rout}})
-
+        this.$router.push({path: this.loginItem.rout, query: {path: this.menuItem[this.select].rout}})
       }
+      this.setMenu(this.menuItem[this.select]);
+      this.$router.push(this.menuItem[this.select].rout);
 
-    },   checkToken() {
-      let key=this.getParam("Token")
-      if(key == null || key == 'null' || key == '' || typeof key == "undefined"){
+      if (this.menuItem[this.select]['id'] == 3) {
+        this.setOnlinePlay(true);
+        if (this.osType == 0)
+          setTimeout(function () {
+            window.ReactNativeWebView && window.ReactNativeWebView.postMessage(JSON.stringify({
+              type: "fullscreen",
+              data: true
+            }))
+          }, 200);
+      }
+    },
+    checkToken() {
+      let key = this.getParam("Token")
+      if (key == null || key == 'null' || key == '' || typeof key == "undefined") {
         return false
       }
       let keyJson = (key);
@@ -82,8 +95,8 @@ export default {
       } else {
         return true
       }
-    },
-
+    }
+    ,
   }
 }
 </script>
@@ -95,7 +108,7 @@ export default {
   margin-right: 0px;
   margin-top: 0px;
   width: 350px;
-  border:3px solid green;
+  border: 3px solid green;
   /*display: flex;*/
   /*flex-direction: column;*/
   /*flex-wrap: nowrap;*/
@@ -103,11 +116,12 @@ export default {
   /*align-items: center;*/
   /*align-content: center;*/
   z-index: 100;
-
 }
-.icon{
+
+.icon {
   width: 100%;
 }
+
 .line {
   width: 100%;
   height: 4px;
@@ -140,7 +154,6 @@ export default {
 }
 
 .title {
-
   color: #FFFFFF;
   text-align: right;
   direction: rtl;

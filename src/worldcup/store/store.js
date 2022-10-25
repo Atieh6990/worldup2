@@ -19,7 +19,8 @@ export const User = {
         timeInfo:
             {
                 timeData1: "", timeData2: ""
-            }
+            },
+        showOnlinePlay: false
     },
 
     getters: {
@@ -74,7 +75,10 @@ export const User = {
         },
         getMenu(state) {
             return state.menuInfo
-        }
+        },
+        getOnlinePlay(state) {
+            return state.showOnlinePlay
+        },
     }
     ,
 
@@ -114,7 +118,10 @@ export const User = {
             state.menuInfo.name = info.name
             state.menuInfo.des = info.des
             state.menuInfo.rout = info.rout
-        }
+        },
+        setOnlinePlay(state, index) {
+            state.showOnlinePlay = index
+        },
     }
     ,
 
