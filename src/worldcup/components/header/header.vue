@@ -1,7 +1,7 @@
 <template>
 
 
-  <div class="headerParent" v-if="getMenu().id != ''">
+  <div class="headerParent" v-if="getMenu().id !== ''">
 
 
     <div class="logo child">
@@ -37,7 +37,7 @@ export default {
   },
   created() {
     this.menuData = this.getMenu()
-    console.log('header created', this.menuData, 'len', this.menuData.length)
+    console.log('header created', this.getMenu(), 'len', this.getMenu().length)
   },
   methods: {
     ...mapGetters(['getMenu'])

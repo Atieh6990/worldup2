@@ -80,9 +80,9 @@ export default {
         this.setMenu(this.menuItem[this.select]);
         this.$router.push(this.menuItem[this.select].rout)
       } else {
-
+        console.log("-----0",this.getMenu());
         this.setMenu(this.loginItem);
-
+        console.log("-----1",this.getMenu());
         this.$router.push({path: this.loginItem.rout, query: {path: this.menuItem[this.select].rout}})
 
       }
