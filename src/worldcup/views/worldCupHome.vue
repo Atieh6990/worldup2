@@ -140,9 +140,12 @@ export default {
       if (ROAST_CONFIG.OS_TYPE == 0 && this.$route.name == "menuRout") {
         this.exitAndroidApp()
       } else {
+        if (this.showOnlinePlay) {
+          this.setOnlinePlay(false);
+        }
         this.$router.go(-1);
-      }
 
+      }
 
       // this.$router.go(-1);
     },
