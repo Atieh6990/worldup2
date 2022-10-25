@@ -52,7 +52,9 @@ export default {
       this.currentName = to.name;
       console.log("this.currentName", this.currentName)
 
+
       if (this.$route.name == 'menuRout' || this.currentName == 'menuRout') {
+
         this.setMenu({id: '', name: '', des: '', rout: ''})
 
       }

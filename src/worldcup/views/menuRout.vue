@@ -46,7 +46,10 @@ export default {
   created() {
   },
   methods: {
+
     ...mapMutations(['setMenu', 'setOnlinePlay']),
+     ...mapGetters(['getMenu']),
+
     down() {
       if (this.select < this.menuItem.length - 1) {
         this.select++
