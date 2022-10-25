@@ -46,6 +46,7 @@ export default {
   },
   methods: {
     ...mapMutations(['setMenu']),
+    ...mapGetters(['getMenu']),
     down() {
       if (this.select < this.menuItem.length - 1) {
         this.select++

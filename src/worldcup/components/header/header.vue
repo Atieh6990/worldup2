@@ -1,18 +1,18 @@
 <template>
 
 
-  <div class="headerParent" v-if="menuData.id != ''">
+  <div class="headerParent" v-if="getMenu().id != ''">
 
 
     <div class="logo child">
-      <img :src="require('../../assets/images/menu/menu_'+menuData.id+'.png')">
+      <img :src="require('../../assets/images/menu/menu_'+getMenu().id+'.png')">
       <!--      <img src="../../assets/images/menu/menu.png">-->
     </div>
 
 
     <div class="des child">
-      <div class="title" style="  font-size: 18px;"><b>{{ menuData.name }}</b></div>
-      <div class="title" style="  font-size: 14px;">{{ menuData.des }}</div>
+      <div class="title" style="  font-size: 18px;"><b>{{ getMenu().name }}</b></div>
+      <div class="title" style="  font-size: 14px;">{{ getMenu().des }}</div>
     </div>
 
 
