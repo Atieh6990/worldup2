@@ -3,7 +3,7 @@
 
     <videoPlayer v-if="!showPlayer"></videoPlayer>
 
-    <div class="nestedRoutParent">
+    <div v-show="!showOnlinePlay" class="nestedRoutParent">
       <div class="nestedRoutBackground"></div>
       <routHeader></routHeader>
       <router-view :key="$route.fullPath" ref="routeview"></router-view>
@@ -15,7 +15,6 @@
 </template>
 
 <script>
-
 import videoPlayer from '../components/video/videoPlayer'
 import func from '../mixins/mixin'
 import {mapMutations, mapGetters} from 'vuex'
@@ -31,7 +30,11 @@ export default {
   data() {
     return {
       showPlayer: ROAST_CONFIG.DEVELOP_MODE,
-      currentName: 'menuRout', loading: false, getResponse: 0,
+      currentName: 'menuRout',
+      loading: false,
+      getResponse: 0,
+      showOnlinePlay: this.getOnlinePlay(),
+      osType: ROAST_CONFIG.OS_TYPE
     }
   },
   computed: {
@@ -45,40 +48,34 @@ export default {
     }
   },
   created() {
-
-
     router.beforeEach((to, from, next) => {
       this.currentName = to.name;
       console.log("this.currentName", this.currentName)
 
-      if (this.currentName == 'menuRout') {
+
+      if (this.$route.name == 'menuRout' || this.currentName == 'menuRout') {
+
         this.setMenu({id: '', name: '', des: '', rout: ''})
 
       }
       next();
     });
-
     setTimeout(() => {
-
       this.setUserTv(this.UserTVInfo())
       this.setTvChannel(ROAST_CONFIG.TV_CHANNEL);
     }, 50)
-
     // this.manageInterceptor()
     this.$root.$on("tokenFindInStore", data => {
       // console.log('tokenFindInStore', data)
       this.$refs.routeview.manageTokenGet(data);//baraye local & tizen miad inja vali baraye andriod event sader mishe(PostMessages)
     })
-
     this.$root.$on("registerData", (data) => {
       // alert("in registerData !!!"+data)
       this.$refs.routeview.manageRegisterData(data)
     });
-
     this.$root.$on("press_submit", () => {
       this.$refs.routeview.sendMessage()
     })
-
 
   }, activated() {
     if (ROAST_CONFIG.OS_TYPE) {
@@ -87,14 +84,15 @@ export default {
       this.$root.$emit('leftside_hide');
       this.$root.$emit('header_hide');
     }
-
   },
   methods: {
-    ...mapMutations(['setUserTv', "setTvChannel", "disconnectSocket", "setMenu", 'setMenu']),
-    ...mapGetters(["getSocket", "getUserInfo"]),
-    manageTokenGet(data){
+
+    ...mapMutations(['setUserTv', "setTvChannel", "disconnectSocket", "setMenu", "setOnlinePlay"]),
+    ...mapGetters(["getSocket", "getUserInfo", "getOnlinePlay"]),
+    manageTokenGet(data) {
       this.$refs.routeview.manageTokenGet(data)
     },
+
 
     up() {
       this.$refs.routeview.up();
@@ -110,17 +108,40 @@ export default {
     },
     enter() {
 
+      if (this.showOnlinePlay) {
+        this.setOnlinePlay(false);
+        this.setMenu({id: '', name: '', des: '', rout: ''});
+        this.$router.push('/worldCupHome/menuRout');
+        if (this.osType == 0)
+          setTimeout(function () {
+            window.ReactNativeWebView && window.ReactNativeWebView.postMessage(JSON.stringify({
+              type: "fullscreen",
+              data: false
+            }))
+          }, 200);
 
-
-      this.$refs.routeview.enter();
+      } else
+        this.$refs.routeview.enter();
     },
     back() {
       // console.log('back', this.currentName)
+
       if (ROAST_CONFIG.OS_TYPE && this.$route.name == 'menuRout') {
         this.$root.$emit('sideMenu_show');
         this.$root.$emit('leftside_show');
         this.$root.$emit('header_show');
       }
+
+      if (this.currentName == 'Pm') {
+        this.disconnectSocket();
+      }
+      // alert(ROAST_CONFIG.OS_TYPE + this.currentName +this.$route.name)
+      if (ROAST_CONFIG.OS_TYPE == 0 && this.$route.name == "menuRout") {
+        this.exitAndroidApp()
+      } else {
+        this.$router.go(-1);
+      }
+
 
 
       if (this.currentName == 'Pm') {
@@ -138,8 +159,6 @@ export default {
         this.$router.go(-1);
       }
 
-
-
       // this.$router.go(-1);
     },
     done() {
@@ -155,7 +174,6 @@ export default {
     numberShow(num) {
       this.$refs.routeview.showNum(num)
     },
-
     onSocket(socket) {
       socket.on("disconnect", (data) => {
         console.log('disconnect ->', data); // not authorized
@@ -193,7 +211,6 @@ export default {
       socket.on("typing", (data) => {
         console.log('typing', data)
       })
-
     },
     manageInterceptor() {
       axios.interceptors.request.use((config) => {
@@ -211,25 +228,21 @@ export default {
         return response;
       }, error => {
         this.loading = false;
-
         if (typeof error.response == "object") {//TODO
           if (error.response.status == 401) {
 
-            this.setParam("Token","")
+            this.setParam("Token", "")
             this.$router.push('/worldCupHome/login/')
 
           }
         }
       })
     }
-
   }
-
 }
 </script>
 
 <style scoped>
-
 @import "../styles/styles.css";
 @import "../styles/bootstrap.min.css";
 
@@ -239,11 +252,9 @@ export default {
   right: 0px;
   width: 1920px;
   direction: rtl;
-
   display: flex;
   display: -webkit-flex !important;
   height: 100%;
-
 }
 
 .nestedRoutParent {
@@ -268,7 +279,6 @@ export default {
   background-color: #11151A;
   opacity: 0.8;
 }
-
 
 :focus {
   outline: -webkit-focus-ring-color auto 0px !important;
