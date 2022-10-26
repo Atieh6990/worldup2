@@ -8,6 +8,7 @@ import scores from '../views/scores'
 import forecast from '../views/forecast'
 import login from '../views/Login'
 import onlinePlay from "../views/onlinePlay";
+import winners from "../views/winners";
 
 
 Vue.use(VueRouter)
@@ -24,6 +25,7 @@ const routes = [
             {path: 'forecast', name: 'forecast', component: forecast},
             {path: 'login', name: 'login', component: login},
             {path: 'onlinePlay', name: 'onlinePlay', component: onlinePlay},
+            {path: 'winners', name: 'winners', component: winners},
 
         ],
     },
@@ -39,6 +41,7 @@ const routes = [
             {path: 'forecast', name: 'forecast', component: forecast},
             {path: 'login', name: 'login', component: login},
             {path: 'onlinePlay', name: 'onlinePlay', component: onlinePlay},
+            {path: 'winners', name: 'winners', component: winners},
 
         ],
     },
