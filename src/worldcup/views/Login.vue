@@ -46,6 +46,7 @@ import registering from '../components/pm/Registering'
 import func from '../mixins/mixin'
 import {mapGetters, mapMutations, mapActions} from 'vuex'
 import api from '../api/api'
+import {ROAST_CONFIG} from "../js/config";
 // import SimpleKeyboard from "../components/pm/SimpleKeyboard";
 
 export default {
@@ -163,7 +164,7 @@ export default {
   },
   methods: {
     ...mapGetters(["getUserTv", "getUserInfo", "getSocket", "getTcChannel"]),
-    ...mapMutations(["setUserInfo", "startSocket", "setUserNameID", "disconnectSocket"]),
+    ...mapMutations(["setUserInfo", "startSocket", "setUserNameID", "disconnectSocket","setMenu"]),
     ...mapActions(["setUserName", "sendUserMessage"]),
     manageRegisterData(data) {
       // alert('manageRegisterData' + data.type)
@@ -187,9 +188,10 @@ export default {
       }
     },
     goPages(path){
+      this.setMenu(ROAST_CONFIG.menuItems[path]);
       this.$router.replace({path:
-
-        path})
+        ROAST_CONFIG.menuItems[path].rout
+        })
     },
     // saveUserChatDetail(data) {
     //   this.setUserNameID({item: "userName", amount: data.data.name});
@@ -271,6 +273,8 @@ export default {
        // this.setToken(JSON.stringify(param));
        // this.setUserInfo(param);
        //this.startSocket();
+
+
         this.goPages(this.path);
       })
     },

@@ -54,7 +54,7 @@ export default {
 
 
       if ( this.currentName == 'menuRout') {
-
+          console.log("---------55")
         this.setMenu({id: '', name: '', des: '', rout: ''})
 
       }
