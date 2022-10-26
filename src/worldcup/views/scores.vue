@@ -6,12 +6,12 @@
            :class="[(select == index ? 'over':'') , (item.self == 1 ? 'self':'')]" :id="'scoreList_'+index">
 
         <div class="nameBox innerItem">
-          <img src="../assets/images/scores/name.svg" style="padding-left: 10px">
+          <img src="../assets/images/scores/name.png" style="padding-left: 10px">
           <div class="nameTxt">{{ item.name }}</div>
         </div>
         <div class="rankBox innerItem">
           <div class="scoreTxt">{{ item.rank }}</div>
-          <img src="../assets/images/scores/score.svg" style="padding-right: 10px">
+          <img src="../assets/images/scores/score.png" style="padding-right: 10px">
         </div>
 
       </div>

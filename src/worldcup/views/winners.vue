@@ -8,12 +8,12 @@
     </div>
     <div class="scoreItem" style="top: 105px;">
       <div class="nameBox innerItem">
-        <img src="../assets/images/scores/name.svg" style="padding-left: 10px">
+        <img src="../assets/images/scores/name.png" style="padding-left: 10px">
         <div class="nameTxt">مهسا همتی</div>
       </div>
       <div class="rankBox innerItem">
         <div class="scoreTxt">5000</div>
-        <img src="../assets/images/scores/score.svg" style="padding-right: 10px">
+        <img src="../assets/images/scores/score.png" style="padding-right: 10px">
       </div>
     </div>
     <div class="winnerParent" style="top: 140px;">
@@ -22,12 +22,12 @@
     </div>
     <div class="scoreItem" style="top: 155px;">
       <div class="nameBox innerItem">
-        <img src="../assets/images/scores/name.svg" style="padding-left: 10px">
+        <img src="../assets/images/scores/name.png" style="padding-left: 10px">
         <div class="nameTxt">مهسا همتی</div>
       </div>
       <div class="rankBox innerItem">
         <div class="scoreTxt">5000</div>
-        <img src="../assets/images/scores/score.svg" style="padding-right: 10px">
+        <img src="../assets/images/scores/score.png" style="padding-right: 10px">
       </div>
     </div>
   </div>
@@ -3236,6 +3236,7 @@ export default {
   box-shadow: 0px 4px 4px 0px #00000040;
   border-radius: 8px;
   display: flex;
+  display: -webkit-flex !important;
   flex-direction: row;
   flex-wrap: nowrap;
   justify-content: center;
@@ -3247,6 +3248,7 @@ export default {
 
 .innerItem {
   display: flex;
+  display: -webkit-flex !important;
   flex-direction: row;
   flex-wrap: nowrap;
   align-items: center;
