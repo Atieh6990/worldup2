@@ -207,7 +207,7 @@ export default {
     },
     manageInterceptor() {
       axios.interceptors.request.use((config) => {
-        config.headers.Authorization = `Bearer ` + this.getParam("Token");
+        config.headers.Authorization = `Bearer ` + this.getParam("Tokenw");
         this.getResponse = 0
         this.loading = true;
         return config
@@ -224,7 +224,7 @@ export default {
         if (typeof error.response == "object") {//TODO
           if (error.response.status == 401) {
 
-            this.setParam("Token", "")
+            this.setParam("Tokenw", "")
             this.$router.push('/worldCupHome/login/')
 
           }

@@ -90,7 +90,7 @@ export default {
 
     },
     checkToken() {
-      let key = this.getParam("Token")
+      let key = this.getParam("Tokenw")
 
       if (key == null || key == 'null' || key == '' || typeof key == "undefined") {
         return false
