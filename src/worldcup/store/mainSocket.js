@@ -16,11 +16,14 @@ export const MainSocket = {
 
     mutations: {
         startSocket(state) {
-            let userToken = User.state.userInfo.access_token;
-            // console.log("start socket ",userToken , User.getters.getTcChannel(User.state))
+         let userToken = JSON.parse(localStorage.getItem("Token"));
+          //   console.log(userToken.access_token )
+            if(!userToken || !userToken.access_token){
+                return
+            }
             state.socket = new io(ROAST_CONFIG.SOCKET_URL,{
                    auth:{
-                    token: "Bearer " + userToken,
+                    token: "Bearer " + userToken.access_token,
                     room: User.getters.getTcChannel(User.state),
                 }
             })

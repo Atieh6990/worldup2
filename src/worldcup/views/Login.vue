@@ -235,6 +235,7 @@ export default {
 
     getCode() {
       api.code(this.phoneNumber).then((data) => {
+        console.log("-=====2========",data)
         if (data.success) {
           this.userKey = data.data.key;
           this.registrationType = 1
@@ -257,6 +258,7 @@ export default {
 
     // alert('mac : '+ this.getUserTv().mac + '  uid : ' + this.getUserTv().uid + '  version :' +this.getUserTv().version)
       api.signup(this.userKey, this.verifyCode, this.phoneNumber, this.getUserTv().mac, this.getUserTv().uid, this.getUserTv().version).then(data => {
+        console.log("-=============",data)
         if (data.success == false) {
           this.errorMessage = data.data.message;
           return false
@@ -269,7 +271,7 @@ export default {
         // alert("param" + param)
         // this.DeleteFile()
         this.errorMessage = ""
-        this.setParam("Token",param)
+        this.setParam("Token",JSON.stringify(param))
        // this.setToken(JSON.stringify(param));
        // this.setUserInfo(param);
        //this.startSocket();
