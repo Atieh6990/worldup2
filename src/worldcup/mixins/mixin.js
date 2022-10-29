@@ -187,10 +187,6 @@ export default {
                 }))
             }, 100);
 
-            // setTimeout(() => {
-            //     console.log(" exitAndroidApp !!!! ")
-            //     window.AndroidFunction.minimizeApp();
-            // }, 0);
         },
 
         loadFile() {
@@ -336,6 +332,29 @@ export default {
 
             (ROAST_CONFIG.OS_TYPE == 0) ? (this.exitAndroidApp()) : (tizen.application.getCurrentApplication().exit())
         },
+
+
+        fullScreenVideo(status){
+            setTimeout(function () {
+                window.ReactNativeWebView && window.ReactNativeWebView.postMessage(JSON.stringify({
+                    type: "fullscreen",
+                    data: status
+                }))
+            }, 100)
+        },
+
+
+        checkFullScreen(){
+            // alert('checkFullScreen')
+            setTimeout(function () {
+                window.ReactNativeWebView && window.ReactNativeWebView.postMessage(JSON.stringify({
+                    type: "checkFullScreen",
+                    data: ''
+                }))
+            }, 100)
+        },
+
+
 
     },
     filters: {

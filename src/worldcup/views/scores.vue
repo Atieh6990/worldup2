@@ -1,17 +1,23 @@
 <template>
   <div class="parent">
     <div class="ListChild">
-
+<!--      (select == index ? 'over':'')-->
       <div class="scoreItem" v-for="(item , index) in list"
-           :class="[(select == index ? 'over':'') , (item.self == 1 ? 'self':'')]" :id="'scoreList_'+index">
+           :class="[(item.self == 1 ? 'self':'')]" :id="'scoreList_'+index">
 
         <div class="nameBox innerItem">
-          <img src="../assets/images/scores/name.png" style="padding-left: 10px">
+
           <div class="nameTxt">{{ item.name }}</div>
         </div>
+
         <div class="rankBox innerItem">
           <div class="scoreTxt">{{ item.rank }}</div>
-          <img src="../assets/images/scores/score.png" style="padding-right: 10px">
+
+          <img v-if="index == 0" src="../assets/images/scores/1.png" style="padding-right: 10px">
+          <img v-else-if="index == 1" src="../assets/images/scores/2.png" style="padding-right: 10px">
+          <img v-else-if="index == 2" src="../assets/images/scores/3.png" style="padding-right: 10px">
+          <img v-else src="../assets/images/scores/all.png" style="padding-right: 10px">
+
         </div>
 
       </div>
@@ -39,9 +45,6 @@ export default {
         {id: 7, name: 'مهرداد پگاه وند', rank: 1580, rankTxt: 'نفر اول', self: 0},
         {id: 8, name: 'مهرداد پگاه وند', rank: 1580, rankTxt: 'نفر اول', self: 0},
         {id: 9, name: 'مهرداد پگاه وند', rank: 1580, rankTxt: 'نفر اول', self: 0},
-        {id: 10, name: 'مهرداد پگاه وند', rank: 1580, rankTxt: 'نفر اول', self: 0},
-        {id: 11, name: 'مهرداد پگاه وند', rank: 1580, rankTxt: 'نفر اول', self: 0},
-        {id: 12, name: 'مهرداد پگاه وند', rank: 1580, rankTxt: 'نفر اول', self: 0},
       ]
     }
   },
@@ -55,7 +58,7 @@ export default {
     scrollInit() {
       let self = this;
       this.myScroll = '';
-      if (this.myScroll == '' && this.list.length > 0) {
+      if (this.myScroll == '' && this.list.length > 10) {
         setTimeout(() => {
           this.myScroll = new IScroll(".parent", {
             scrollY: true,
@@ -74,27 +77,36 @@ export default {
         // this.refreshScroll();
       }
     },
-    refreshScroll() {
-
-      setTimeout(() => {
-        this.myScroll.moveDown(-1 * this.myScroll.maxScrollY + 20)
-      }, 30);
-    },
+    // refreshScroll() {
+    //
+    //   setTimeout(() => {
+    //     this.myScroll.moveDown(-1 * this.myScroll.maxScrollY + 20)
+    //   }, 30);
+    // },
     down() {
-      if (this.select < this.list.length - 1) {
-        this.select++;
-        this.myScroll.scrollToElement('#scoreList_' + this.select, 1000, false, true);
-        return true;
-      }
-      return false;
+      this.myScroll.moveDown(80);
+
+      // if (this.select < this.list.length - 1) {
+      //   this.select++;
+      //   this.myScroll.scrollToElement('#scoreList_' + this.select, 1000, false, true);
+      //   return true;
+      // }
+      // return false;
     },
     up() {
-      if (this.select > 0) {
-        this.select--;
-        this.myScroll.scrollToElement('#scoreList_' + this.select, 1000, false, true);
-        return true;
+      this.myScroll.moveUp(80);
+
+      if (this.myScroll.y === 0) {
+        return false
+      }else {
+        return true
       }
-      return false;
+      // if (this.select > 0) {
+      //   this.select--;
+      //   this.myScroll.scrollToElement('#scoreList_' + this.select, 1000, false, true);
+      //   return true;
+      // }
+      // return false;
     },
   }
 }
@@ -126,6 +138,7 @@ export default {
   width: 315px;
   height: 77px;
   border: 2px solid #FFFFFF4D;
+
   box-shadow: 0px 4px 4px 0px #00000040;
   border-radius: 8px;
   margin-top: 13px;
@@ -165,7 +178,7 @@ export default {
 }
 
 .scoreTxt {
-  color: #FFCE31;
+  color: #FFFFFF;
   font-size: 18px;
   line-height: 50%;
 }
