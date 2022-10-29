@@ -1,7 +1,7 @@
 <template>
   <div class="routParent">
 
-    <videoPlayer v-if="!showPlayer"></videoPlayer>
+    <videoPlayer ref="player" v-if="!showPlayer"></videoPlayer>
 
     <div v-show="!showOnlinePlay" class="nestedRoutParent">
       <div class="nestedRoutBackground"></div>
@@ -71,6 +71,7 @@ export default {
     })
     this.$root.$on("registerData", (data) => {
       // alert("in registerData !!!"+data)
+
       this.$refs.routeview.manageRegisterData(data)
     });
     this.$root.$on("press_submit", () => {
@@ -131,6 +132,7 @@ export default {
         this.$root.$emit('sideMenu_show');
         this.$root.$emit('leftside_show');
         this.$root.$emit('header_show');
+        this.$refs.player.stop()
       }
 
       if (this.currentName == 'Pm') {

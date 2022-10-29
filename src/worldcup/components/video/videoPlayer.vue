@@ -1,7 +1,7 @@
 <template>
-  <div class="videoParent">
+  <div className="videoParent">
 
-    <object v-if="url != '' && osType == 1" id="av-player" type="application/avplayer" class="playBox"></object>
+    <object v-if="url != '' && osType == 1" id="av-player" type="application/avplayer" className="playBox"></object>
 
   </div>
 </template>
@@ -25,10 +25,14 @@ export default {
     }
   },
   created() {
+    if (this.osType == 0) {
+      this.playVideo()
+    }
 
-    this.playVideo()
-
-
+  }, activated() {
+    if (this.osType == 1) {
+      this.playVideo()
+    }
   },
   methods: {
     playVideo() {
@@ -46,7 +50,9 @@ export default {
         }, 200);
       }
       ;
-    },
+    }, stop() {
+      this.playerObj.stop();
+    }
   }
 }
 </script>
