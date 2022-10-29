@@ -1,4 +1,3 @@
-
 <template>
 
   <div class="parent">
@@ -21,7 +20,7 @@
 </template>
 
 <script>
-import {mapMutations, mapGetters} from 'vuex'
+import {mapGetters, mapMutations, mapActions} from 'vuex'
 import func from "../mixins/mixin";
 import {ROAST_CONFIG} from "../js/config";
 
@@ -30,6 +29,7 @@ export default {
   mixins: [func],
   data() {
     return {
+      osType: ROAST_CONFIG.OS_TYPE,
       select: 0,
       loginItem: {id: 0, name: 'ثبت نام', des: 'ثبت نام', rout: '/worldCupHome/login/'},
       menuItem: [
@@ -44,11 +44,14 @@ export default {
     }
   },
   created() {
+    this.$root.$on("doFullScreenVideo", () => {
+      this.enter()
+    });
   },
   methods: {
 
     ...mapMutations(['setMenu', 'setOnlinePlay']),
-     ...mapGetters(['getMenu']),
+    ...mapGetters(['getMenu', 'getOnlinePlay']),
 
     down() {
       if (this.select < this.menuItem.length - 1) {
@@ -61,22 +64,23 @@ export default {
       }
     },
     enter() {
-
-
-
+      // alert("enter menu rout")
       if (this.menuItem[this.select]['id'] == 3) {
+
         this.setMenu(this.menuItem[this.select]);
+
         this.$router.push(this.menuItem[this.select].rout);
+
         this.setOnlinePlay(true);
-        if (this.osType == 0)
-          setTimeout(function () {
-            window.ReactNativeWebView && window.ReactNativeWebView.postMessage(JSON.stringify({
-              type: "fullscreen",
-              data: true
-            }))
-          }, 200);
-      }
-     else if (this.checkToken()) {
+
+
+        if (this.osType == 0) {
+
+          this.fullScreenVideo(true)
+
+        }
+
+      } else if (this.checkToken()) {
         this.setMenu(this.menuItem[this.select]);
         this.$router.push(this.menuItem[this.select].rout)
       } else {

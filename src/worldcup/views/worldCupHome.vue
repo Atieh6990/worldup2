@@ -4,6 +4,7 @@
     <videoPlayer v-if="!showPlayer"></videoPlayer>
 
     <div v-show="!showOnlinePlay" class="nestedRoutParent">
+
       <div class="nestedRoutBackground"></div>
       <routHeader></routHeader>
       <router-view :key="$route.fullPath" ref="routeview"></router-view>
@@ -17,7 +18,7 @@
 <script>
 import videoPlayer from '../components/video/videoPlayer'
 import func from '../mixins/mixin'
-import {mapMutations, mapGetters} from 'vuex'
+import {mapGetters, mapMutations, mapActions} from 'vuex'
 import {ROAST_CONFIG} from "../js/config";
 import router from '../router/index'
 import axios from 'axios'
@@ -34,7 +35,8 @@ export default {
       loading: false,
       getResponse: 0,
       showOnlinePlay: this.getOnlinePlay(),
-      osType: ROAST_CONFIG.OS_TYPE
+      osType: ROAST_CONFIG.OS_TYPE,
+
     }
   },
   computed: {
@@ -48,12 +50,10 @@ export default {
     }
   },
   created() {
+
     router.beforeEach((to, from, next) => {
       this.currentName = to.name;
-      console.log("this.currentName", this.currentName)
-
-
-      if ( this.currentName == 'menuRout') {
+      if (this.currentName == 'menuRout') {
 
         this.setMenu({id: '', name: '', des: '', rout: ''})
 
@@ -63,21 +63,22 @@ export default {
     setTimeout(() => {
       this.setUserTv(this.UserTVInfo())
       this.setTvChannel(ROAST_CONFIG.TV_CHANNEL);
-    }, 50)
+    }, 50);
     // this.manageInterceptor()
     this.$root.$on("tokenFindInStore", data => {
-      // console.log('tokenFindInStore', data)
       this.$refs.routeview.manageTokenGet(data);//baraye local & tizen miad inja vali baraye andriod event sader mishe(PostMessages)
     })
+
     this.$root.$on("registerData", (data) => {
-      // alert("in registerData !!!"+data)
       this.$refs.routeview.manageRegisterData(data)
     });
+
     this.$root.$on("press_submit", () => {
       this.$refs.routeview.sendMessage()
     })
 
-  }, activated() {
+  },
+  activated() {
     if (ROAST_CONFIG.OS_TYPE) {
       this.$root.$emit('sideMenu_deactive');
       this.$root.$emit('sideMenu_hide');
@@ -108,21 +109,28 @@ export default {
     },
     enter() {
 
+      if (this.osType == 0) {//just android ke event sader kone
+        this.checkFullScreen();
+        return false
+      }
+
+
       if (this.showOnlinePlay) {
-        console.log("----------")
-        this.setOnlinePlay(false);
+
         this.setMenu({id: '', name: '', des: '', rout: ''});
         this.$router.push('/worldCupHome/menuRout');
-        if (this.osType == 0)
-          setTimeout(function () {
-            window.ReactNativeWebView && window.ReactNativeWebView.postMessage(JSON.stringify({
-              type: "fullscreen",
-              data: false
-            }))
-          }, 200);
-
-      } else
+        this.setOnlinePlay(false);
+        // if (this.osType == 0)
+        //   setTimeout(function () {
+        //     window.ReactNativeWebView && window.ReactNativeWebView.postMessage(JSON.stringify({
+        //       type: "fullscreen",
+        //       data: false
+        //     }))
+        //   }, 200);
+      } else {
         this.$refs.routeview.enter();
+      }
+
     },
     back() {
       // console.log('back', this.currentName)
@@ -136,15 +144,13 @@ export default {
       if (this.currentName == 'Pm') {
         this.disconnectSocket();
       }
-      // alert(ROAST_CONFIG.OS_TYPE + this.currentName +this.$route.name)
-      if (ROAST_CONFIG.OS_TYPE == 0 && this.$route.name == "menuRout") {
-        this.exitAndroidApp()
+
+      if (this.$route.name == "menuRout") {
+        this.handleExit()
       } else {
         this.$router.go(-1);
       }
 
-
-      // this.$router.go(-1);
     },
     done() {
     },
@@ -222,7 +228,15 @@ export default {
           }
         }
       })
-    }
+    },
+
+    exitFullscreenAndroid() {
+      this.setMenu({id: '', name: '', des: '', rout: ''});
+      this.$router.push('/worldCupHome/menuRout');
+      this.setOnlinePlay(false);
+      this.fullScreenVideo(false)
+    },
+
   }
 }
 </script>
@@ -240,6 +254,7 @@ export default {
   display: flex;
   display: -webkit-flex !important;
   height: 100%;
+
 }
 
 .nestedRoutParent {

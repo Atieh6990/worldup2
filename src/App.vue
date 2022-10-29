@@ -10,13 +10,17 @@
 
 import axios from "axios";
 import func from "./worldcup/mixins/mixin";
+import {mapGetters, mapMutations} from "vuex";
 
 export default {
   mixins: [func],
   created() {
     console.log("app vue Created")
     window.addEventListener("keydown", this.keyEvent);
-    this.$router.push('/worldCupHome/menuRout').catch(err => {})
+    this.$router.push('/worldCupHome/menuRout').catch(err => {
+    })
+
+
     axios.interceptors.request.use((config) => {
       config.headers.Authorization = `Bearer ` + this.getParam("Token");
       this.getResponse = 0
@@ -37,7 +41,7 @@ export default {
         if (error.response.status == 401) {
 
 
-          this.setParam("Token","")
+          this.setParam("Token", "")
           this.$router.push('/worldCupHome/login/')
 
         }
@@ -45,9 +49,8 @@ export default {
     })
 
 
-
     this.$root.$on('PostMessages', (data) => {
-      console.log(data.type , data.type)
+      // console.log(data.type, data.type)
       if (data.type && data.type == 'userData') {
         this.$refs.routeview.manageTokenGet(data.data)
       }
@@ -57,10 +60,27 @@ export default {
         this.$refs.routeview.back();
         return false
       }
+
+      if (data.type && data.type == 'checkFullScreen') {
+        if (data.data == true) {
+          this.$refs.routeview.exitFullscreenAndroid()
+        }else{
+          this.$root.$emit("doFullScreenVideo",'')
+        }
+        return false
+      }
     })
 
   },
   methods: {
+    ...mapMutations(['setOnlinePlay']),
+    ...mapGetters(['getOnlinePlay']),
+
+    handleOnlinePlay() {
+
+    },
+
+
     keyEvent(event) {
       const keyCode = event.keyCode;
       // console.log("keyCode = " + keyCode);
@@ -188,8 +208,6 @@ export default {
 <style>
 
 
-
-
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -210,6 +228,7 @@ export default {
 #nav a.router-link-exact-active {
   /*color: #42b983;*/
 }
+
 :focus {
   outline: -webkit-focus-ring-color auto 0px !important; /*remove input border focuse*/
 }
