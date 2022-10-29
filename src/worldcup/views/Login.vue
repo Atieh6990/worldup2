@@ -271,7 +271,7 @@ export default {
         // alert("param" + param)
         // this.DeleteFile()
         this.errorMessage = ""
-        this.setParam("Token",JSON.stringify(param))
+        this.setParam("Tokenw",JSON.stringify(param))
        // this.setToken(JSON.stringify(param));
        // this.setUserInfo(param);
        //this.startSocket();

@@ -23,8 +23,8 @@ export default {
 
     axios.interceptors.request.use((config) => {
       let userToken = "";
-      if( this.getParam("Token")){
-        let json = JSON.parse( this.getParam("Token"));
+      if( this.getParam("Tokenw")){
+        let json = JSON.parse( this.getParam("Tokenw"));
         //   console.log(userToken.access_token )
         if(json && json.access_token){
        userToken = json.access_token;
@@ -50,7 +50,7 @@ export default {
         if (error.response.status == 401) {
 
 
-          this.setParam("Token", "")
+          this.setParam("Tokenw", "")
           this.$router.push('/worldCupHome/login/')
 
         }
