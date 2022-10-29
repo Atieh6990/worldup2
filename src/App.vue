@@ -22,7 +22,16 @@ export default {
 
 
     axios.interceptors.request.use((config) => {
-      config.headers.Authorization = `Bearer ` + this.getParam("Token");
+      let userToken = "";
+      if( this.getParam("Token")){
+        let json = JSON.parse( this.getParam("Token"));
+        //   console.log(userToken.access_token )
+        if(json && json.access_token){
+       userToken = json.access_token;
+        }
+      }
+     //console.log("-----",userToken)
+      config.headers.Authorization = `Bearer ` + userToken;
       this.getResponse = 0
       this.loading = true;
       return config

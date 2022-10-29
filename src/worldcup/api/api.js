@@ -11,6 +11,7 @@ export default {
     code(phone) {
         let Url = ROAST_CONFIG.API_URL + '/code'
         let Orgdata = {'mobile': phone}
+        console.log("000000000",Orgdata)
         return axios({
             method: "POST",
             url: Url,

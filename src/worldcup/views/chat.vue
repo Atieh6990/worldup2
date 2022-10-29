@@ -3,12 +3,9 @@
 
     <!--    <div style="position: absolute;width: 200px;height: 200px;background-color: #42b983"></div>-->
 
-    <div v-if="!userLoggedIn">
-      <registering :type="registrationType" ref="registering" :activeRoute="activeRoute"
-                   :yPage="yPage" :numberShow="numberShow"></registering>
-    </div>
 
-    <div v-else>
+
+    <div v-if="userLoggedIn">
 
       <div v-if="userLoggedIn && messageList.length>0" class="">
         <chats ref="chats" :messageList="messageList" :userId="getUserInfo().userId"></chats>
@@ -41,7 +38,7 @@
 </template>
 
 <script>
-import registering from '../components/pm/Registering'
+// import registering from '../components/pm/Registering'
 import chats from '../components/pm/chats'
 import func from '../mixins/mixin'
 import {mapGetters, mapMutations, mapActions} from 'vuex'
@@ -74,7 +71,7 @@ export default {
       tokenData: "", roomName: '',
     };
   },
-  components: {registering, chats, SimpleKeyboard},
+  components: {chats, SimpleKeyboard},
   destroyed() {
     // this.disconnectSocket();
   },
@@ -82,8 +79,7 @@ export default {
   mounted() {
 
     setTimeout(() => {
-      this.$nextTick(() => {
-      })
+    this.userLoggedIn=true
     }, 2000)
   },
   watch: {
@@ -123,10 +119,10 @@ export default {
     this.roomName = "اتاق گفتگوی جام جهانی";
     // this.getToken()
 
-    setTimeout(() => {
-      // console.log("lkgdkjghaaaaaan")
-      this.getToken()
-    }, 1000)
+        this.errorMessage = ""
+      //  this.setToken(JSON.stringify(param));
+       // this.setUserInfo(param);
+        this.startSocket();
 
     // // this.setToken("");
     // if (ROAST_CONFIG.LOCAL_TEST == true) {
@@ -137,18 +133,18 @@ export default {
     //     this.getTokenData();
     // }
 
-
-    this.$root.$on('loginUserData', (data) => {
-      // alert('loginUserData'+data.data)
-      if (data.data == null || data.data == 'null' || data.data == '') {
-        // alert("00")
-        this.registrationType = 0;
-        this.userLoggedIn = false;
-      } else {
-        // alert("111")
-        this.checkToken(data.data);
-      }
-    });
+    //
+    // this.$root.$on('loginUserData', (data) => {
+    //   // alert('loginUserData'+data.data)
+    //   if (data.data == null || data.data == 'null' || data.data == '') {
+    //     // alert("00")
+    //     this.registrationType = 0;
+    //     this.userLoggedIn = false;
+    //   } else {
+    //     // alert("111")
+    //     this.checkToken(data.data);
+    //   }
+    // });
 
     this.$root.$on("remove_Hover", (index) => {
       this.yPage = index;
@@ -358,73 +354,73 @@ export default {
         this.setUserName(data.content);
       }
     },
-    getCode() {
-      api.code(this.phoneNumber).then((data) => {
-        if (data.success) {
-          this.userKey = data.data.key;
-          this.registrationType = 1
-        } else {
-          if (typeof data.data.message == "string") {
-            this.errorMessage = data.data.message
-          } else {
-            for (let key in data.data.message) {
-              if (data.data.message.hasOwnProperty(key)) {
-                this.errorMessage = data.data.message[key][0];
-                break;
-              }
-            }
-          }
-        }
-      })
-    },
-    doSignUp() {
-
-
-    // alert('mac : '+ this.getUserTv().mac + '  uid : ' + this.getUserTv().uid + '  version :' +this.getUserTv().version)
-      api.signup(this.userKey, this.verifyCode, this.phoneNumber, this.getUserTv().mac, this.getUserTv().uid, this.getUserTv().version).then(data => {
-        if (data.success == false) {
-          this.errorMessage = data.data.message;
-          return false
-        }
-        let param = {
-          expires_in: (data.expires_in * 1000) + (new Date).getTime(),
-          access_token: data.access_token,
-          refresh_token: data.refresh_token
-        }
-        // alert("param" + param)
-        // this.DeleteFile()
-        this.errorMessage = ""
-        this.setToken(JSON.stringify(param));
-        this.setUserInfo(param);
-        this.startSocket();
-      })
-    },
-    checkToken(key) {
-      // let keyJson = JSON.parse(key);
-      // console.log("keyJson" ,key.expires_in)
-      let keyJson = (key);
-      let param = {
-        expires_in: (keyJson.expires_in * 1000) + (new Date).getTime(),
-        access_token: keyJson.access_token,
-        refresh_token: keyJson.refresh_token
-      }
-
-      // console.log('param', param)
-
-      this.setUserInfo(param);
-      // this.$root.$emit("hide_loading")
-      // if (1==1) {
-      if ((new Date).getTime() >= keyJson.expires_in) {
-
-        this.DeleteFile()
-        this.registrationType = 0;
-        this.userLoggedIn = false;
-
-      } else {
-        this.startSocket();
-      }
-
-    },
+    // getCode() {
+    //   api.code(this.phoneNumber).then((data) => {
+    //     if (data.success) {
+    //       this.userKey = data.data.key;
+    //       this.registrationType = 1
+    //     } else {
+    //       if (typeof data.data.message == "string") {
+    //         this.errorMessage = data.data.message
+    //       } else {
+    //         for (let key in data.data.message) {
+    //           if (data.data.message.hasOwnProperty(key)) {
+    //             this.errorMessage = data.data.message[key][0];
+    //             break;
+    //           }
+    //         }
+    //       }
+    //     }
+    //   })
+    // },
+    // doSignUp() {
+    //
+    //
+    // // alert('mac : '+ this.getUserTv().mac + '  uid : ' + this.getUserTv().uid + '  version :' +this.getUserTv().version)
+    //   api.signup(this.userKey, this.verifyCode, this.phoneNumber, this.getUserTv().mac, this.getUserTv().uid, this.getUserTv().version).then(data => {
+    //     if (data.success == false) {
+    //       this.errorMessage = data.data.message;
+    //       return false
+    //     }
+    //     let param = {
+    //       expires_in: (data.expires_in * 1000) + (new Date).getTime(),
+    //       access_token: data.access_token,
+    //       refresh_token: data.refresh_token
+    //     }
+    //     // alert("param" + param)
+    //     // this.DeleteFile()
+    //     this.errorMessage = ""
+    //     this.setToken(JSON.stringify(param));
+    //     this.setUserInfo(param);
+    //     this.startSocket();
+    //   })
+    // },
+    // checkToken(key) {
+    //   // let keyJson = JSON.parse(key);
+    //   // console.log("keyJson" ,key.expires_in)
+    //   let keyJson = (key);
+    //   let param = {
+    //     expires_in: (keyJson.expires_in * 1000) + (new Date).getTime(),
+    //     access_token: keyJson.access_token,
+    //     refresh_token: keyJson.refresh_token
+    //   }
+    //
+    //   // console.log('param', param)
+    //
+    //   this.setUserInfo(param);
+    //   // this.$root.$emit("hide_loading")
+    //   // if (1==1) {
+    //   if ((new Date).getTime() >= keyJson.expires_in) {
+    //
+    //     this.DeleteFile()
+    //     this.registrationType = 0;
+    //     this.userLoggedIn = false;
+    //
+    //   } else {
+    //     this.startSocket();
+    //   }
+    //
+    // },
     removeHover() {
       if (this.userLoggedIn) {
         this.yPage = 1;
@@ -460,16 +456,16 @@ export default {
       }
       // this.userHasNameBefore = type;
     },
-    manageSetName(data) {
-      if (data.success == false) {
-        this.errorMessage = data.message;
-        this.registrationType = 2;
-        this.userLoggedIn = false;
-        return false;
-      } else {
-        this.userLoggedIn = true
-      }
-    },
+    // manageSetName(data) {
+    //   if (data.success == false) {
+    //     this.errorMessage = data.message;
+    //     this.registrationType = 2;
+    //     this.userLoggedIn = false;
+    //     return false;
+    //   } else {
+    //     this.userLoggedIn = true
+    //   }
+    // },
     canJoinRoom(data) {
       this.userLoggedIn = data.success;
       (this.userLoggedIn) ? (setTimeout(() => {
@@ -502,27 +498,27 @@ export default {
     },
     cancel() {
     },
-    getTokenData() {
-      // setTimeout(() => {
-      //   console.log("chat getTokenData" ,)
-      //   // this.DeleteFile()
-      //   //  this.manageTokenGet(this.getToken());//baraye local & tizen miad inja vali baraye andriod event sader mishe
-      // }, 10000);
-    },
+    // getTokenData() {
+    //   // setTimeout(() => {
+    //   //   console.log("chat getTokenData" ,)
+    //   //   // this.DeleteFile()
+    //   //   //  this.manageTokenGet(this.getToken());//baraye local & tizen miad inja vali baraye andriod event sader mishe
+    //   // }, 10000);
+    // },
 
 
-    manageTokenGet(data) {
-      this.tokenData = (data.savedToken)
-      let Token = (data.savedToken).access_token
-      // alert(Token)
-      // if (this.tokenData == null || this.tokenData == 'null' || this.tokenData == '' || typeof this.tokenData == "undefined") {
-      if (Token == null || Token == 'null' || Token == '' || typeof Token == "undefined") {
-        this.registrationType = 0;
-        this.userLoggedIn = false;
-      } else {
-        this.checkToken(this.tokenData);
-      }
-    }
+    // manageTokenGet(data) {
+    //   this.tokenData = (data.savedToken)
+    //   let Token = (data.savedToken).access_token
+    //   // alert(Token)
+    //   // if (this.tokenData == null || this.tokenData == 'null' || this.tokenData == '' || typeof this.tokenData == "undefined") {
+    //   if (Token == null || Token == 'null' || Token == '' || typeof Token == "undefined") {
+    //     this.registrationType = 0;
+    //     this.userLoggedIn = false;
+    //   } else {
+    //     this.checkToken(this.tokenData);
+    //   }
+    // }
   }
 }
 </script>
