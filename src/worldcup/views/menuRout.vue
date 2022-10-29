@@ -10,8 +10,8 @@
         <img :src="require('../assets/images/menu/menu_'+item.id+'.png')" style="margin-top: 15%">
       </div>
       <div class="child" style="width: 70%;float: left">
-        <div class="title" style="  font-size: 16px;margin-top: 8%"><b>{{ item.name }}</b></div>
-        <div class="title" style="  font-size: 12px;margin-top: 0%">{{ item.des }}</div>
+        <div class="title" style="font-size: 16px;margin-top: 8%"><b>{{ item.name }}</b></div>
+        <div class="title" style="font-size: 12px;margin-top: 0%">{{ item.des }}</div>
       </div>
     </div>
 
@@ -31,22 +31,19 @@ export default {
     return {
       osType: ROAST_CONFIG.OS_TYPE,
       select: 0,
+      menuItem: [],
       loginItem: {id: 0, name: 'ثبت نام', des: 'ثبت نام', rout: '/worldCupHome/login/'},
-      menuItem: [
-        {id: 0, name: 'گردونه شانس', des: 'گردونه رو بچرخون و شانست رو امتحان کن', rout: '/worldCupHome/Pm/'},
-        {id: 1, name: 'پیش بینی', des: 'پیش بینی لحظه ای مسابقات فوتبال', rout: '/worldCupHome/forecast/'},
-        {id: 2, name: 'چت آنلاین', des: 'چت آنلاین حین تماشای فوتبال', rout: '/worldCupHome/Pm/'},
-        {id: 3, name: 'پخش آنلاین', des: 'پخش آنلاین مسابقات جام جهانی', rout: '/worldCupHome/onlinePlay/'},
-        {id: 4, name: 'اسامی برندگان', des: 'معرفی بردنگان دوره های پیش بینی', rout: '/worldCupHome/Pm/'},
-        {id: 5, name: 'امتیازات', des: 'محاسبه امتیاز', rout: '/worldCupHome/scores/'},
-        {id: 6, name: 'دیجی کلاب بت', des: 'سفارش آنلاین غذا و تنقلات', rout: '/worldCupHome/Pm/'},
-      ],
+
     }
   },
   created() {
+
     this.$root.$on("doFullScreenVideo", () => {
       this.enter()
     });
+
+    this.menuItem=ROAST_CONFIG.menuItems
+
   },
   methods: {
 
@@ -84,10 +81,10 @@ export default {
         this.setMenu(this.menuItem[this.select]);
         this.$router.push(this.menuItem[this.select].rout)
       } else {
-
+        console.log("-----0",this.getMenu());
         this.setMenu(this.loginItem);
-
-        this.$router.push({path: this.loginItem.rout, query: {path: this.menuItem[this.select].rout}})
+        console.log("-----1",this.getMenu());
+        this.$router.push({path: this.loginItem.rout, query: {path: this.select}})
 
       }
 

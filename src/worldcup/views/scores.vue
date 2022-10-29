@@ -6,15 +6,18 @@
            :class="[(item.self == 1 ? 'self':'')]" :id="'scoreList_'+index">
 
         <div class="nameBox innerItem">
+
           <div class="nameTxt">{{ item.name }}</div>
         </div>
 
         <div class="rankBox innerItem">
           <div class="scoreTxt">{{ item.rank }}</div>
+
           <img v-if="index == 0" src="../assets/images/scores/1.png" style="padding-right: 10px">
           <img v-else-if="index == 1" src="../assets/images/scores/2.png" style="padding-right: 10px">
           <img v-else-if="index == 2" src="../assets/images/scores/3.png" style="padding-right: 10px">
           <img v-else src="../assets/images/scores/all.png" style="padding-right: 10px">
+
         </div>
 
       </div>
