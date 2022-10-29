@@ -10,8 +10,8 @@
         <img :src="require('../assets/images/menu/menu_'+item.id+'.png')" style="margin-top: 15%">
       </div>
       <div class="child" style="width: 70%;float: left">
-        <div class="title" style="  font-size: 16px;margin-top: 8%"><b>{{ item.name }}</b></div>
-        <div class="title" style="  font-size: 12px;margin-top: 0%">{{ item.des }}</div>
+        <div class="title" style="font-size: 16px;margin-top: 8%"><b>{{ item.name }}</b></div>
+        <div class="title" style="font-size: 12px;margin-top: 0%">{{ item.des }}</div>
       </div>
     </div>
 
