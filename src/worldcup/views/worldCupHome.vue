@@ -50,7 +50,12 @@ export default {
     }
   },
   created() {
-
+    if (ROAST_CONFIG.OS_TYPE) {
+      this.$root.$emit('sideMenu_deactive');
+      this.$root.$emit('sideMenu_hide');
+      this.$root.$emit('leftside_hide');
+      this.$root.$emit('header_hide');
+    }
     router.beforeEach((to, from, next) => {
       this.currentName = to.name;
       if (this.currentName == 'menuRout') {
@@ -79,14 +84,7 @@ export default {
     })
 
   },
-  activated() {
-    if (ROAST_CONFIG.OS_TYPE) {
-      this.$root.$emit('sideMenu_deactive');
-      this.$root.$emit('sideMenu_hide');
-      this.$root.$emit('leftside_hide');
-      this.$root.$emit('header_hide');
-    }
-  },
+
   methods: {
 
     ...mapMutations(['setUserTv', "setTvChannel", "disconnectSocket", "setMenu", "setOnlinePlay"]),
@@ -147,7 +145,7 @@ export default {
         this.disconnectSocket();
       }
 
-      if (this.$route.name == "menuRout") {
+      if (!ROAST_CONFIG.OS_TYPE && this.$route.name == "menuRout") {
         this.handleExit()
       } else {
         this.$router.go(-1);
