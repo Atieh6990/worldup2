@@ -54,7 +54,7 @@ export default {
   mixins: [func],
   deactivated() {
     // console.log("disconnectSocket")
-    this.disconnectSocket();
+    this.disconnectSocketW();
   },
   data() {
     return {
@@ -163,8 +163,8 @@ export default {
 
   },
   methods: {
-    ...mapGetters(["getUserTv", "getUserInfo", "getSocket", "getTcChannel"]),
-    ...mapMutations(["setUserInfo", "startSocket", "setUserNameID", "disconnectSocket","setMenu"]),
+    ...mapGetters(["getUserTv", "getUserInfo", "getSocketW", "getTcChannel"]),
+    ...mapMutations(["setUserInfo", "startSocketW", "setUserNameID", "disconnectSocketW","setMenu"]),
     ...mapActions(["setUserName", "sendUserMessage"]),
     manageRegisterData(data) {
       // alert('manageRegisterData' + data.type)
