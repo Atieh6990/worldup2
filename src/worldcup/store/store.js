@@ -85,7 +85,7 @@ export const User = {
 
     mutations: {
 
-        setUserTv(state, param) {
+        setUserTvW(state, param) {
             // alert("in setUserTv : " + param)
             // alert("in setUserTv : " + JSON.stringify(param))
             state.userTv2 = param

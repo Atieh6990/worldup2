@@ -8,14 +8,14 @@ export const MainSocket = {
         socket: "",
     },
     getters: {
-        getSocket(state) {
+        getSocketW(state) {
             return state.socket;
         },
 
     },
 
     mutations: {
-        startSocket(state) {
+        startSocketW(state) {
          let userToken = JSON.parse(localStorage.getItem("Tokenw"));
           //   console.log(userToken.access_token )
             if(!userToken || !userToken.access_token){
@@ -30,7 +30,7 @@ export const MainSocket = {
 
 
         },
-        disconnectSocket(state) {
+        disconnectSocketW(state) {
 
             if (state.socket != "") {
                 state.socket.disconnect();

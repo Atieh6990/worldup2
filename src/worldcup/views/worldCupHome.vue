@@ -41,12 +41,12 @@ export default {
   },
   computed: {
     computedSocket() {
-      return this.getSocket();
+      return this.getSocketW();
     }
   },
   watch: {
     computedSocket: function (val, oldVal) {
-      this.onSocket(this.getSocket())
+      this.onSocket(this.getSocketW())
     }
   },
   created() {
@@ -66,7 +66,7 @@ export default {
       next();
     });
     setTimeout(() => {
-      this.setUserTv(this.UserTVInfo())
+      this.setUserTvW(this.UserTVInfo())
       this.setTvChannel(ROAST_CONFIG.TV_CHANNEL);
     }, 50);
     // this.manageInterceptor()
@@ -87,8 +87,8 @@ export default {
 
   methods: {
 
-    ...mapMutations(['setUserTv', "setTvChannel", "disconnectSocket", "setMenu", "setOnlinePlay"]),
-    ...mapGetters(["getSocket", "getUserInfo", "getOnlinePlay"]),
+    ...mapMutations(['setUserTvW', "setTvChannel", "disconnectSocketW", "setMenu", "setOnlinePlay"]),
+    ...mapGetters(["getSocketW", "getUserInfo", "getOnlinePlay"]),
     manageTokenGet(data) {
       this.$refs.routeview.manageTokenGet(data)
     },
@@ -142,7 +142,7 @@ export default {
       }
 
       if (this.currentName == 'Pm') {
-        this.disconnectSocket();
+        this.disconnectSocketW();
       }
 
       if (!ROAST_CONFIG.OS_TYPE && this.$route.name == "menuRout") {
@@ -172,7 +172,7 @@ export default {
       socket.on("connect_error", (err) => {
         console.log('message ->', err.message, 'data ->', err.data); // not authorized
         this.DeleteFile()
-        this.disconnectSocket();
+        this.disconnectSocketW();
         this.$refs.routeview.reconnectSocket()
       });
       socket.on("get_name", (data) => {
