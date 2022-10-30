@@ -7,7 +7,8 @@
 
     <div class="menuItem" v-for="(item, index) in menuItem" :class="[(index == select) ? 'over':'']">
       <div class="child" style="width: 30%;float: right">
-        <img :src="require('../assets/images/menu/menu_'+item.id+'.png')" style="margin-top: 15%">
+        <img :src="require('../assets/images/menu/menuHover_'+item.id+'.png')" style="margin-top: 15%" v-if="index == select">
+        <img :src="require('../assets/images/menu/menu_'+item.id+'.png')" style="margin-top: 15%" v-else>
       </div>
       <div class="child" style="width: 70%;float: left">
         <div class="title" style="font-size: 16px;margin-top: 8%"><b>{{ item.name }}</b></div>

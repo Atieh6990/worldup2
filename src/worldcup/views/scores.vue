@@ -1,7 +1,7 @@
 <template>
   <div class="parent">
     <div class="ListChild">
-<!--      (select == index ? 'over':'')-->
+      <!--      (select == index ? 'over':'')-->
       <div class="scoreItem" v-for="(item , index) in list"
            :class="[(item.self == 1 ? 'self':'')]" :id="'scoreList_'+index">
 
@@ -84,7 +84,8 @@ export default {
     //   }, 30);
     // },
     down() {
-      this.myScroll.moveDown(80);
+      if (this.list.length > 10)
+        this.myScroll.moveDown(80);
 
       // if (this.select < this.list.length - 1) {
       //   this.select++;
@@ -94,13 +95,14 @@ export default {
       // return false;
     },
     up() {
-      this.myScroll.moveUp(80);
+      if (this.list.length > 10)
+        this.myScroll.moveUp(80);
 
-      if (this.myScroll.y === 0) {
-        return false
-      }else {
-        return true
-      }
+      // if (this.myScroll.y === 0) {
+      //   return false
+      // } else {
+      //   return true
+      // }
       // if (this.select > 0) {
       //   this.select--;
       //   this.myScroll.scrollToElement('#scoreList_' + this.select, 1000, false, true);

@@ -109,7 +109,7 @@ export default {
 
 .matchesParent {
   width: 350px;
-  height: 930px;
+  height: 840px;
   position: relative;
   top: 38px;
   left: 0px;
@@ -155,13 +155,29 @@ export default {
   height: 75px;
   position: relative;
   top: 15px;
+
+  display: -webkit-flex !important;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+  align-content: stretch;
 }
 
 .icon {
   position: relative;
-  top: 3px;
+  width: 64px;
+  height: 64px;
+  /*top: 3px;*/
 }
-
+.line {
+  border-left: 1px solid #ffffff;
+  height: 62px;
+  position: relative;
+  top: 22px;
+  right: 85px;
+}
 .teamsNameParent {
   position: absolute;
   top: 102px;

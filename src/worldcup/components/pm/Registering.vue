@@ -39,7 +39,7 @@ export default {
   mixins: [func],
   data() {
     return {
-      icons:['majesticons_send.svg','dashicons_cloud-saved.svg','dashicons_cloud-saved.svg'],
+      icons:['sendBtn.png','dashicons_cloud-saved.png','sendBtn.png'],
       placeHolders: ['شماره تلفن همراه خود را وارد کنید', 'کد چهار رقمی را وارد کنید','نام مستعار خود را انتخاب کنید.'],
       btnTxt: ["ارسال", "ثبت", "ثبت"],
       des: ["", "بعد از ارسال شماره تلفن همراه کد فعال سازی 4 رقمی برای شما پیامک خواهد شد", ""],
