@@ -23,7 +23,7 @@
           <div class="chatInp input" style="overflow: auto" id="chatTxtDiv">{{ chatTxt }}</div>
         </div>
         <div :class="[((yPage == 1 && activeRoute==1 && xPage == 1 && userLoggedIn) ?'inpParentHover':''),'submitBtn']"
-             v-on:click="sendMessage()"><img src="../assets/images/Pm/sendBtn.svg"></div>
+             v-on:click="sendMessage()"><img src="../assets/images/Pm/sendBtn.png"></div>
       </div>
 
       <div class="keyboardParent" v-if="userLoggedIn">

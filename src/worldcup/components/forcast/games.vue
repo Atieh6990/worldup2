@@ -1,5 +1,7 @@
 <template>
   <div class="matchesParent" v-if="matches.length>0">
+
+
     <div class="matchesScroll">
       <div :id="'match_' + m" v-for="(match,m) in matches"
            class="matches"
@@ -51,9 +53,15 @@
           <div>ثبت پیش بینی</div>
         </div>
       </div>
+    </div>
 
+
+    <div class="popupParent" v-if="showSuccessPopup == true">
+      <div class="popupBack"></div>
+      <div class="popBox">پیش بینی با موفقیت ثبت شد</div>
     </div>
   </div>
+
 </template>
 
 <script>
@@ -74,7 +82,8 @@ export default {
       ballDeactive: require('../../assets/images/forecast/vectorDeactive.png'),
       teamA: [],
       teamB: [],
-      osType: ROAST_CONFIG.OS_TYPE
+      osType: ROAST_CONFIG.OS_TYPE,
+      showSuccessPopup: false , //bad az sabte pish bini bareye 3sanie true mishe
     }
   },
   watch: {
@@ -212,6 +221,14 @@ export default {
       }
     },
 
+
+    hidePopUp() {
+      setTimeout(function (){
+        this.showSuccessPopup = false
+      },3000)
+
+    }
+
   }
 }
 </script>
@@ -220,7 +237,7 @@ export default {
 
 .matchesParent {
   width: 350px;
-  height: 930px;
+  height: 840px;
   position: relative;
   top: 38px;
   left: 0px;
@@ -233,6 +250,21 @@ export default {
   position: absolute;
   top: 0px;
   left: 0px;
+}
+
+.popupParent {
+  width: 350px;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  height: 840px;
+  display: -webkit-flex !important;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+  align-content: stretch;
 }
 
 .matches {
@@ -267,19 +299,29 @@ export default {
   height: 75px;
   position: relative;
   top: 15px;
+
+  display: -webkit-flex !important;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+  align-content: stretch;
 }
 
 .icon {
   position: relative;
-  top: 3px;
+  width: 64px;
+  height: 64px;
+  /*top: 3px;*/
 }
 
 .line {
   border-left: 1px solid #ffffff;
-  height: 62.5px;
+  height: 62px;
   position: relative;
   top: 22px;
-  right: 76px;
+  right: 85px;
 }
 
 .teamsNameParent {
@@ -364,5 +406,35 @@ export default {
 
 .scoreHvr {
   border: 3px solid rgba(77, 205, 44, 1);
+}
+
+.popupBack {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  background-color: #000000;
+  opacity: 0.8;
+
+}
+
+.popBox {
+  box-sizing: border-box;
+  width: 290px;
+  height: 170px;
+  background: #FFFFFF;
+  border-radius: 11px;
+  z-index: 10;
+  display: flex;
+  display: -webkit-flex !important;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+  align-content: stretch;
+  color: rgba(77, 205, 44, 1);
+  font-size: 20px;
+  white-space: nowrap;
 }
 </style>

@@ -16,11 +16,11 @@
     </div>
 
 
-    <div class="back child">
-      <div class="circle">
-        <img src="../../assets/images/menu/backArrow.svg">
-      </div>
-    </div>
+<!--    <div class="back child">-->
+<!--      <div class="circle">-->
+<!--        <img src="../../assets/images/menu/backArrow.svg">-->
+<!--      </div>-->
+<!--    </div>-->
 
 
   </div>
