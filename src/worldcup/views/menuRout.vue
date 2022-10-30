@@ -14,6 +14,7 @@
         <div class="title" style="font-size: 16px;margin-top: 8%"><b>{{ item.name }}</b></div>
         <div class="title" style="font-size: 12px;margin-top: 0%">{{ item.des }}</div>
       </div>
+
     </div>
 
   </div>
@@ -91,7 +92,7 @@ export default {
 
     },
     checkToken() {
-      let key = this.getParam("Token")
+      let key = this.getParam("Tokenw")
 
       if (key == null || key == 'null' || key == '' || typeof key == "undefined") {
         return false
