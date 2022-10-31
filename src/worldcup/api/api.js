@@ -90,7 +90,18 @@ export default {
         });
     },
 
-
+    matches() {
+        let Url = ROAST_CONFIG.main_api_url + 'match/daily'
+        return axios({
+            method: "GET",
+            url: Url,
+        }).then(response => {
+            let data = response['data'];
+            return data
+        }).catch(response => {
+            console.log("signup catch", response)
+        });
+    },
     //
     // getCurrency(url) {
     //     let Url = url
