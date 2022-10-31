@@ -257,7 +257,7 @@ export default {
 
 
     // alert('mac : '+ this.getUserTv().mac + '  uid : ' + this.getUserTv().uid + '  version :' +this.getUserTv().version)
-      api.signup(this.userKey, this.verifyCode, this.phoneNumber, this.getUserTv().mac, this.getUserTv().uid, this.getUserTv().version).then(data => {
+      api.signup(this.userKey, this.verifyCode, this.phoneNumber, this.getUserTv().mac, this.getUserTv().uid, this.getUserTv().version,this.getUserTv().macLan).then(data => {
         console.log("-=============",data)
         if (data.success == false) {
           this.errorMessage = data.data.message;

@@ -15,7 +15,7 @@ import {mapGetters, mapMutations} from "vuex";
 export default {
   mixins: [func],
   created() {
-    console.log("app vue Created")
+    // console.log("app vue Created")
     window.addEventListener("keydown", this.keyEvent);
     this.$router.push('/worldCupHome/menuRout').catch(err => {
     })

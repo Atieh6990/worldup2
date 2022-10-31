@@ -134,7 +134,16 @@ export default {
 
     },
     back() {
-      // console.log('back', this.currentName)
+      // console.log('back', this.currentName , this.$route.name)
+      //
+      if(this.$route.name == 'onlinePlay'){
+        if (this.showOnlinePlay) {
+          this.setMenu({id: '', name: '', des: '', rout: ''});
+          this.$router.push('/worldCupHome/menuRout');
+          this.setOnlinePlay(false);
+        }
+        return false
+      }
 
       if (ROAST_CONFIG.OS_TYPE && this.$route.name == 'menuRout') {
         this.$root.$emit('sideMenu_show');
@@ -143,7 +152,7 @@ export default {
         this.$refs.player.stop()
       }
 
-      if (this.currentName == 'Pm') {
+      if (this.$route.name == 'Pm') {
         this.disconnectSocket();
       }
 

@@ -1,8 +1,8 @@
 module.exports = {
-    // options...
+    // 'https://tvapps.ir/worldcup/test_1/'
     publicPath: process.env.NODE_ENV === 'production'
 
-        ? 'https://tvapps.ir/worldcup/test_1/'
+        ? 'https://samyar.rasgames.ir/worldcup/android/'
 
         : './',
     pwa: {

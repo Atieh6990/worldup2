@@ -8,7 +8,7 @@
            :class="[((userId == item.user_id) ? 'selfDirection':''),'chatItem']">
         <div class="userImg">
           <div class="userImgBg">
-            <img src="../../assets/images/Pm/profile.svg">
+            <img src="../../assets/images/Pm/carbon_user-avatar-filled.png">
           </div>
         </div>
         <div class="userTxt">
@@ -68,7 +68,7 @@ export default {
             scrollY: true,
             momentum: true,
             preventDefault: false,
-            scrollbars: true,
+            scrollbars: false,
             mouseWheel: true,
             interactiveScrollbars: true,
             shrinkScrollbars: "none",
@@ -125,7 +125,8 @@ export default {
 .chatBoxParent {
   position: relative;
   width: 355px;
-  height: 630px;
+  /*height: 630px;*/
+  height: 470px;
   /*top: 100px;*/
   left: 0px;
   padding: 15px;
