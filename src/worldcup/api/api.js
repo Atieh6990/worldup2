@@ -77,6 +77,18 @@ export default {
             console.log("signup catch", response)
         });
     },
+    winners() {
+        let Url = ROAST_CONFIG.main_api_url + 'winner/daily'
+        return axios({
+            method: "GET",
+            url: Url,
+        }).then(response => {
+            let data = response['data'];
+            return data
+        }).catch(response => {
+            console.log("signup catch", response)
+        });
+    },
 
 
     //

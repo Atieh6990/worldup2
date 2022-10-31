@@ -51,7 +51,7 @@ export default {
   mixins: [func],
   deactivated() {
     // console.log("disconnectSocket")
-    this.disconnectSocket();
+    this.disconnectSocketW();
   },
   data() {
     return {
@@ -123,7 +123,7 @@ export default {
         this.errorMessage = ""
       //  this.setToken(JSON.stringify(param));
        // this.setUserInfo(param);
-        this.startSocket();
+        this.startSocketW();
 
     // // this.setToken("");
     // if (ROAST_CONFIG.LOCAL_TEST == true) {
@@ -158,8 +158,8 @@ export default {
 
   },
   methods: {
-    ...mapGetters(["getUserTv", "getUserInfo", "getSocket", "getTcChannel"]),
-    ...mapMutations(["setUserInfo", "startSocket", "setUserNameID", "disconnectSocket"]),
+    ...mapGetters(["getUserTv", "getUserInfo", "getSocketW", "getTcChannel"]),
+    ...mapMutations(["setUserInfo", "startSocketW", "setUserNameID", "disconnectSocketW"]),
     ...mapActions(["setUserName", "sendUserMessage"]),
     setCaretPosition(start, end) {
 

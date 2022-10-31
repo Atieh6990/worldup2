@@ -41,16 +41,21 @@ export default {
   },
   computed: {
     computedSocket() {
-      return this.getSocket();
+      return this.getSocketW();
     }
   },
   watch: {
     computedSocket: function (val, oldVal) {
-      this.onSocket(this.getSocket())
+      this.onSocket(this.getSocketW())
     }
   },
   created() {
-
+    if (ROAST_CONFIG.OS_TYPE) {
+      this.$root.$emit('sideMenu_deactive');
+      this.$root.$emit('sideMenu_hide');
+      this.$root.$emit('leftside_hide');
+      this.$root.$emit('header_hide');
+    }
     router.beforeEach((to, from, next) => {
       this.currentName = to.name;
       if (this.currentName == 'menuRout') {
@@ -61,7 +66,7 @@ export default {
       next();
     });
     setTimeout(() => {
-      this.setUserTv(this.UserTVInfo())
+      this.setUserTvW(this.UserTVInfo())
       this.setTvChannel(ROAST_CONFIG.TV_CHANNEL);
     }, 50);
     // this.manageInterceptor()
@@ -79,18 +84,11 @@ export default {
     })
 
   },
-  activated() {
-    if (ROAST_CONFIG.OS_TYPE) {
-      this.$root.$emit('sideMenu_deactive');
-      this.$root.$emit('sideMenu_hide');
-      this.$root.$emit('leftside_hide');
-      this.$root.$emit('header_hide');
-    }
-  },
+
   methods: {
 
-    ...mapMutations(['setUserTv', "setTvChannel", "disconnectSocket", "setMenu", "setOnlinePlay"]),
-    ...mapGetters(["getSocket", "getUserInfo", "getOnlinePlay"]),
+    ...mapMutations(['setUserTvW', "setTvChannel", "disconnectSocketW", "setMenu", "setOnlinePlay"]),
+    ...mapGetters(["getSocketW", "getUserInfo", "getOnlinePlay"]),
     manageTokenGet(data) {
       this.$refs.routeview.manageTokenGet(data)
     },
@@ -152,11 +150,13 @@ export default {
         this.$refs.player.stop()
       }
 
-      if (this.$route.name == 'Pm') {
-        this.disconnectSocket();
+
+      if (this.currentName == 'Pm') {
+        this.disconnectSocketW();
+
       }
 
-      if (this.$route.name == "menuRout") {
+      if (!ROAST_CONFIG.OS_TYPE && this.$route.name == "menuRout") {
         this.handleExit()
       } else {
         this.$router.go(-1);
@@ -183,7 +183,7 @@ export default {
       socket.on("connect_error", (err) => {
         console.log('message ->', err.message, 'data ->', err.data); // not authorized
         this.DeleteFile()
-        this.disconnectSocket();
+        this.disconnectSocketW();
         this.$refs.routeview.reconnectSocket()
       });
       socket.on("get_name", (data) => {

@@ -15,7 +15,18 @@ import {mapGetters, mapMutations} from "vuex";
 export default {
   mixins: [func],
   created() {
-    // console.log("app vue Created")
+
+    //pouria
+    // let token={
+    //   "token_type": "Bearer",
+    //   "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiYThlYWRhMzUyOTk2NWM4OTQzMjUxMTcxZjUwZjU0NzU3Y2ExODNkNTZhNDliNDNlNDMwMWRhYTM4NDg1MWM0YjNhYzgyMGM3NDg1NWZjZTUiLCJpYXQiOjE2NjcxOTc5MTMuMTU1OTQ5LCJuYmYiOjE2NjcxOTc5MTMuMTU1OTU5LCJleHAiOjE2OTg3MzM5MTMuMTM5NTMxLCJzdWIiOiI1Iiwic2NvcGVzIjpbXX0.Dc-ZMfCF_xXYaiQy3aAIhiDjM38KRC1hLNnq4xssSoRDMds9uQZh4GX7-_4PhCLXRIF4lj7O0KbiD23_vaGI6jJNStqvPgeaBsDJqR6y2HzUaCAeoVd5LjClihMp3Gq55VqNe1hpcAGPh6ST1mkVg1N8eqDARxXJkKhpN35sV1QKI5bPgFjrT6FgHH1iZ6mUkDjQfD-M81G2ZVNxLkGwuslnK5oBlBSsx8eCxZsaUjevKufNyvdRMw4XC4QNqfLiMHYEiBXl1uqt1dVrazr-M4NVe3l3258tm57u9cuwrK43fMGKzIc2B-VKru2BZ-u_hsdhR5kfhDCZayhyKindX2aKMVehWIw3oKHIpub1OwdqFSYUqXa0kEEvD8OECgXWkCCr1SOe5HNWpWK4_xp-pKV7YKJu9kyEXGxg9g-sonx7JWQX1jdwQTlu9rj6L9gAfqtJysarmE3k2pfR9ZX5uNcEC4yjCrKq4GkADXvUXvoFXGWnUjFCwJm2okH7jSaL4bwN8ewl8pcum6skCNuR3fOjxr2Pbq7QyEO9gMQu4ERCQf7YZiQ0dqA7MvA7PMvS1PLxAInYpLid6tszzO0ebIMGWnWuE47AzvNvmhZn698vsrtdhiycmGylzMxifOmGq1J6XTZtfHasyvsrX-bZXrtXtYeIpiguiPN4qI9I9bA"
+    // }
+    // this.setParam("Tokenw", JSON.stringify(token))
+    //atie
+      //this.setParam("Tokenw", `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiYThlYWRhMzUyOTk2NWM4OTQzMjUxMTcxZjUwZjU0NzU3Y2ExODNkNTZhNDliNDNlNDMwMWRhYTM4NDg1MWM0YjNhYzgyMGM3NDg1NWZjZTUiLCJpYXQiOjE2NjcxOTc5MTMuMTU1OTQ5LCJuYmYiOjE2NjcxOTc5MTMuMTU1OTU5LCJleHAiOjE2OTg3MzM5MTMuMTM5NTMxLCJzdWIiOiI1Iiwic2NvcGVzIjpbXX0.Dc-ZMfCF_xXYaiQy3aAIhiDjM38KRC1hLNnq4xssSoRDMds9uQZh4GX7-_4PhCLXRIF4lj7O0KbiD23_vaGI6jJNStqvPgeaBsDJqR6y2HzUaCAeoVd5LjClihMp3Gq55VqNe1hpcAGPh6ST1mkVg1N8eqDARxXJkKhpN35sV1QKI5bPgFjrT6FgHH1iZ6mUkDjQfD-M81G2ZVNxLkGwuslnK5oBlBSsx8eCxZsaUjevKufNyvdRMw4XC4QNqfLiMHYEiBXl1uqt1dVrazr-M4NVe3l3258tm57u9cuwrK43fMGKzIc2B-VKru2BZ-u_hsdhR5kfhDCZayhyKindX2aKMVehWIw3oKHIpub1OwdqFSYUqXa0kEEvD8OECgXWkCCr1SOe5HNWpWK4_xp-pKV7YKJu9kyEXGxg9g-sonx7JWQX1jdwQTlu9rj6L9gAfqtJysarmE3k2pfR9ZX5uNcEC4yjCrKq4GkADXvUXvoFXGWnUjFCwJm2okH7jSaL4bwN8ewl8pcum6skCNuR3fOjxr2Pbq7QyEO9gMQu4ERCQf7YZiQ0dqA7MvA7PMvS1PLxAInYpLid6tszzO0ebIMGWnWuE47AzvNvmhZn698vsrtdhiycmGylzMxifOmGq1J6XTZtfHasyvsrX-bZXrtXtYeIpiguiPN4qI9I9bA`)
+
+    console.log("app vue Created")
+
     window.addEventListener("keydown", this.keyEvent);
     this.$router.push('/worldCupHome/menuRout').catch(err => {
     })

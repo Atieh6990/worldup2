@@ -1,6 +1,7 @@
 var osType = 1; // 0->android , 1->tizen
 var developMode = 1//baraye build geteftan beshe 0
 var api_url = "https://sambazar.tvapps.ir/api/v2";
+var main_api_url = "https://fifa.tvapps.ir/api/";
 var FileName = "online_chat_tk";
 var socketUrl = "wss://metadata.tvapps.ir";
 var TVChannel = "Apps";
@@ -20,5 +21,7 @@ export const ROAST_CONFIG = {
     FILE_NAME: FileName,
     SOCKET_URL: socketUrl,
     TV_CHANNEL: TVChannel,
-    menuItems:menuItems
+    menuItems:menuItems,
+    main_api_url:main_api_url
+
 }
