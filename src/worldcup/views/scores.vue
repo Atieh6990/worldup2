@@ -140,7 +140,7 @@ export default {
   width: 315px;
   height: 77px;
   border: 2px solid #FFFFFF4D;
-
+  display: -webkit-flex !important;
   box-shadow: 0px 4px 4px 0px #00000040;
   border-radius: 8px;
   margin-top: 13px;
@@ -154,12 +154,14 @@ export default {
 }
 
 .innerItem {
+
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
   align-items: center;
   align-content: center;
   height: 100%;
+  display: -webkit-flex !important;
   /*border: 1px solid red;*/
 }
 

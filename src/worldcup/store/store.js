@@ -25,42 +25,42 @@ export const User = {
 
     getters: {
         getUserTv: (state) => {
-            if (ROAST_CONFIG.OS_TYPE == 0) {
-                // alert("ingetter uid :" + state.userTv2)
-                // alert("ingetter uid :" + JSON.stringify(state.userTv2))
 
-                let data = {
-                    mac: state.userTv2.mac,
-                    version: state.userTv2.ver,
-                    uid: state.userTv2.android_id,
-                };
+            return state.userTv2
 
 
-                return data
-            } else {
-                let data = {
-                    mac: state.userTv2.mac,
-                    uid: state.userTv2.uid,
-                    year: state.userTv2.year,
-                    isOld: state.userTv2.isOld,
-                    ps: state.userTv2.ps,
-                    real: state.userTv2.real,
-                    model: state.userTv2.model,
-                    firmware: state.userTv2.firmware,
-                    // IsCompletePrf: "1",
-                    version: state.userTv2.year,
-                    android_id: state.userTv2.android_id,
-                    android_version: state.userTv2.android_version,
-                    ver: state.userTv2.ver
-                };
-                // console.log("getter ---------------data", data)
+            // if (ROAST_CONFIG.OS_TYPE == 0) {
+            //
+            //     let data = {
+            //         mac: state.userTv2.mac,
+            //         version: state.userTv2.ver,
+            //         uid: state.userTv2.android_id,
+            //     };
+            //
+            //
+            //     return data
+            // } else {
+            //     let data = {
+            //         mac: state.userTv2.mac,
+            //         uid: state.userTv2.uid,
+            //         year: state.userTv2.year,
+            //         isOld: state.userTv2.isOld,
+            //         ps: state.userTv2.ps,
+            //         real: state.userTv2.real,
+            //         model: state.userTv2.model,
+            //         firmware: state.userTv2.firmware,
+            //         // IsCompletePrf: "1",
+            //         version: state.userTv2.year,
+            //         android_id: state.userTv2.android_id,
+            //         android_version: state.userTv2.android_version,
+            //         ver: state.userTv2.ver
+            //     };
+            //     // console.log("getter ---------------data", data)
+            //
+            //     return data
+            // }
 
-                return data
-            }
 
-
-            // console.log("getter ---------------2", this.state.userTv2)
-            // console.log("getter ---------------3", this.state.userTv2.mac)
         },
         getUserInfo(state) {
             return state.userInfo;

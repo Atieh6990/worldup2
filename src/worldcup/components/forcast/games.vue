@@ -300,13 +300,14 @@ export default {
   position: relative;
   top: 15px;
 
-  display: -webkit-flex !important;
+
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
   justify-content: center;
   align-items: center;
   align-content: stretch;
+  display: -webkit-flex !important;
 }
 
 .icon {

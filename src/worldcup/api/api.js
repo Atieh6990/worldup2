@@ -11,7 +11,7 @@ export default {
     code(phone) {
         let Url = ROAST_CONFIG.API_URL + '/code'
         let Orgdata = {'mobile': phone}
-        console.log("000000000",Orgdata)
+        console.log("000000000", Orgdata)
         return axios({
             method: "POST",
             url: Url,
@@ -23,11 +23,19 @@ export default {
             console.log("code catch", response)
         });
     },
-    signup(key, code, mobile, mac, uid, version) {
+    signup(key, code, mobile, mac, uid, version, maclan) {
         let Url = ROAST_CONFIG.API_URL + '/signup'
 
         // console.log('key', key, 'code', code, 'mobile', mobile, 'mac', mac, 'uid', uid, 'version', version)
-        let Orgdata = {'key': key, 'code': code, 'mobile': mobile, 'mac': mac, 'uid': uid, 'version': version}
+        let Orgdata = {
+            'key': key,
+            'code': code,
+            'mobile': mobile,
+            'mac': mac,
+            'uid': uid,
+            'version': version,
+            'macLan': maclan
+        }
         return axios({
             method: "POST",
             url: Url,

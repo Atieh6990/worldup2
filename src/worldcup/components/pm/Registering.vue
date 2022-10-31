@@ -6,7 +6,21 @@
            :placeholder="placeHolders[type]"
            type="text"
            @input="onInputChange"
-           :id="'content_'+type" v-on:click="removeHover()" ref="content">
+           :id="'content_'+type" v-on:click="removeHover()" ref="content" v-if="osType== 1">
+
+    <div  v-else>
+      {{contentTxt}}
+      <input :class="[((yPos == 0 && activeRoute == 1) ? 'inpHover':''),'content']" v-model="contentTxt"
+             :placeholder="placeHolders[type]"
+             type="text"
+             :id="'content_'+type" v-on:click="removeHover()" ref="content" v-if="typeInpShow == 1">
+
+      <div :class="[((yPos == 0 && activeRoute == 1) ? 'inpHover':''),'content']"
+           :id="'content_'+type" v-on:click="removeHover()" ref="content" v-if="typeInpShow == 0">{{ showContentTxt }}
+      </div>
+    </div>
+
+
     <div :class="[((yPos == 1 && activeRoute == 1) ? 'submitBtnHover':''),'submitBtn']"
          v-on:click="submitBtn()">
       <span style="padding-left: 15px">{{ btnTxt[type] }}</span>
@@ -32,6 +46,7 @@
 <script>
 import func from "../../mixins/mixin";
 import SimpleKeyboard from "./SimpleKeyboard";
+import {ROAST_CONFIG} from "@/worldcup/js/config";
 
 export default {
   name: "Registering",
@@ -45,7 +60,17 @@ export default {
       des: ["", "بعد از ارسال شماره تلفن همراه کد فعال سازی 4 رقمی برای شما پیامک خواهد شد", ""],
       contentTxt: "",
       yPos: 0,//0->input 1->btn , 2->keyboard , 3->clear btn
+      osType:0,
+      typeInpShow: 0,
+      contentDivTxt: ['شماره تلفن همراه خود را وارد کنید', 'کد چهار رقمی را وارد کنید','نام مستعار خود را انتخاب کنید.']
+      // osType:ROAST_CONFIG.OS_TYPE
     };
+  },
+  computed: {
+    showContentTxt: function () {
+      this.contentDivTxt[this.type] = (this.contentTxt != '') ? (this.contentTxt) : (this.placeHolders[this.type]);
+      return this.contentDivTxt[this.type]
+    },
   },
   created() {
     this.yPos = 0;
@@ -54,6 +79,7 @@ export default {
   watch: {
     type: function () {
       this.contentTxt = "";
+      this.typeInpShow = 0;
       this.yPos = 0;
       this.hideIme("content_" + this.type);
     }, numberShow: function () {
@@ -64,6 +90,7 @@ export default {
   methods: {
     down() {
       if (this.yPos == 0) {
+        this.typeInpShow = 0;
         this.hideIme("content_" + this.type);
         // this.$refs.content.blur()
         this.yPos = 1;
@@ -88,8 +115,8 @@ export default {
         return false
       }
     }, enter() {
-console.log("this.type",this.type)
-      console.log("this.yPos",this.yPos)
+// console.log("this.type",this.type)
+//       console.log("this.yPos",this.yPos)
       if (this.type == 2) {
         if (this.yPos == 2) {
           this.$refs.SimpleKeyboard.enter();
@@ -105,6 +132,7 @@ console.log("this.type",this.type)
 
       if (this.yPos == 0) {
         // this.$refs.content.focus();
+        this.typeInpShow = 1;
         this.showIme("content_" + this.type);
         return true;
       } else {
@@ -157,6 +185,7 @@ console.log("this.type",this.type)
       this.contentTxt = '';
     },
     submitBtn() {
+      this.typeInpShow = 0;
       this.hideIme("content_" + this.type);
       if (this.type == 2)
         this.$refs.SimpleKeyboard.toggleHover(0);
@@ -164,7 +193,7 @@ console.log("this.type",this.type)
       this.nextStep();
     },
     nextStep() {
-
+      this.typeInpShow = 0;
       this.hideIme("content_" + this.type);
       this.$emit("set_error_msgL", "");
       this.yPos = 0;

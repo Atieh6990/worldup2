@@ -1,29 +1,40 @@
 import {ROAST_CONFIG} from '../js/config'
 
-var keyBoardIME;
 var isImeFocused;
+var keyBoardIME;
 var isFile = 0;
 var FileSelected = "";
 var documentsDir = "";
 
 var androidTvDevelop = {
-    android_id: 'f24e46cfec5a98e2',
+    // android_id: 'f24e46cfec5a98e2',
+    // mac: "44:D8:78:EB:A2:AD",
+    // android_version: 9,
+    // model: "SAMTV",
+    // ver: "1.0",
+
     mac: "44:D8:78:EB:A2:AD",
-    android_version: 9,
-    model: "SAMTV",
-    ver: "1.0"
+    macLan: "44:D8:78:EB:A2:AD",
+    Duid: "",//for andriod is empty
+    version: 9,
+    tvType: 1//android
 }
 var tizenTvDevelop = {
-    mac: "KLpr4eeerdddd33Q22",
-    uid: "KLpr4eeerdddd33Q22",
-    year: "17",
-    isOld: "0",
-    ps: "dummy value",
-    real: "dummy value, eg. UN65JS9500",
-    model: "dummy value",
-    firmware: "dummy value",
-    // IsCompletePrf: "1",
-    version: "17"
+    // mac: "KLpr4eeerdddd33Q22",
+    // uid: "KLpr4eeerdddd33Q22",
+    // year: "17",
+    // isOld: "0",
+    // ps: "dummy value",
+    // real: "dummy value, eg. UN65JS9500",
+    // model: "dummy value",
+    // firmware: "dummy value",
+    // // IsCompletePrf: "1",
+    // version: "17"
+    mac: "",//for tizen is empty
+    macLan: "",//for tizen is empty
+    Duid: "KLpr4eeerdddd33Q22",//for andriod is empty
+    version: "17",
+    tvType: 0//tizen
 }
 
 
@@ -47,26 +58,15 @@ export default {
                 if (ROAST_CONFIG.DEVELOP_MODE == 1) {
                     urlParams = tizenTvDevelop
                 } else {
-                    var real = webapis.productinfo.getRealModel();
                     var modelTV = webapis.productinfo.getModelCode();
-                    var firmware = webapis.productinfo.getFirmware();
-                    var psID = webapis.productinfo.getFirmware();
                     var Duid = webapis.productinfo.getDuid();
                     var year = modelTV.split("_", 1)[0];
                     urlParams = {
-                        mac: Duid,
-                        uid: Duid,
-                        year: year,
-                        isOld: 0,
-                        ps: psID,
-                        real: real,
-                        model: modelTV,
-                        firmware: firmware,
-                        // IsCompletePrf: "1",
+                        mac: "",//for tizen is empty
+                        macLan: "",//for tizen is empty
+                        Duid: Duid,//for andriod is empty
                         version: year,
-                        android_id: "",
-                        android_version: "",
-                        ver: ""
+                        tvType: 0
                     };
                 }
             }
@@ -138,7 +138,7 @@ export default {
             if (ROAST_CONFIG.DEVELOP_MODE == 1) {
 
                 savedToken = this.getParam(ROAST_CONFIG.FILE_NAME)
-                return this.tokenFind(savedToken,0)
+                return this.tokenFind(savedToken, 0)
             } else {
                 if (ROAST_CONFIG.OS_TYPE == 0) {//android
                     savedToken = window.ReactNativeWebView && window.ReactNativeWebView.postMessage(JSON.stringify({
@@ -238,7 +238,7 @@ export default {
                     function (fs) {
                         fs.write(jsonObj);
                         fs.close();
-                        console.log("what is write?????????",jsonObj)
+                        console.log("what is write?????????", jsonObj)
                     }, function (e) {
                         console.log("Error " + e.message);
                     }, "UTF-8"
@@ -259,7 +259,7 @@ export default {
                     fs.close();
                     var data = (text)
 
-                    return _this.tokenFind(data,2)
+                    return _this.tokenFind(data, 2)
 
                 }, function (e) {
                     console.log("Error " + e.message);
@@ -267,7 +267,7 @@ export default {
 
         },
 
-        tokenFind(tk,tkType) {
+        tokenFind(tk, tkType) {
 
             let type = tkType
             let sendData = {type: type, savedToken: JSON.parse(tk)}
@@ -329,12 +329,12 @@ export default {
 
         },
         handleExit() {
-
-            (ROAST_CONFIG.OS_TYPE == 0) ? (this.exitAndroidApp()) : (tizen.application.getCurrentApplication().exit())
+            // (ROAST_CONFIG.OS_TYPE == 0) ? (this.exitAndroidApp()) : (tizen.application.getCurrentApplication().exit())
+            (ROAST_CONFIG.OS_TYPE == 0) ? (this.exitAndroidApp()) : ('');
         },
 
 
-        fullScreenVideo(status){
+        fullScreenVideo(status) {
             setTimeout(function () {
                 window.ReactNativeWebView && window.ReactNativeWebView.postMessage(JSON.stringify({
                     type: "fullscreen",
@@ -344,7 +344,7 @@ export default {
         },
 
 
-        checkFullScreen(){
+        checkFullScreen() {
             // alert('checkFullScreen')
             setTimeout(function () {
                 window.ReactNativeWebView && window.ReactNativeWebView.postMessage(JSON.stringify({
@@ -353,7 +353,6 @@ export default {
                 }))
             }, 100)
         },
-
 
 
     },

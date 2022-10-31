@@ -8,6 +8,7 @@
     <div v-if="userLoggedIn">
 
       <div v-if="userLoggedIn && messageList.length>0" class="">
+        <img src="../assets/images/Pm/chat.png" style="position: relative">
         <chats ref="chats" :messageList="messageList" :userId="getUserInfo().userId"></chats>
       </div>
 
@@ -483,7 +484,7 @@ export default {
       this.setUserNameID({item: "userId", amount: data.data.user_id});
     },
     back() {
-      this.exitAndroidApp();
+      // this.exitAndroidApp();
     },
     onChange(input) {
       this.chatTxt = input;
@@ -543,7 +544,8 @@ export default {
   height: 110px;
   right: 5px;
   position: absolute;
-  bottom: 246px;
+  /*bottom: 246px;*/
+  top: 740px;
   /* border-top: 1px solid #3b3a3f; */
   display: flex;
   align-items: center;
@@ -553,17 +555,20 @@ export default {
 }
 
 .keyboardParent {
-  /*width: 95%; *!*/
   width: 350px;
   height: 225px;
   right: 0px;
   position: absolute;
-  bottom: 0px;
+  top: 843px;
+  /* bottom: 0px; */
   border-top: 1px solid #3b3a3f;
+  display: -ms-flexbox;
   display: flex;
+  -ms-flex-align: center;
   align-items: center;
+  -ms-flex-pack: center;
   justify-content: center;
-  display: -webkit-flex !important;;
+  display: -webkit-flex !important;
   /* padding: 10px; */
   direction: ltr;
 }
