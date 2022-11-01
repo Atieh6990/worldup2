@@ -41,6 +41,7 @@ export default {
   created() {
 
     this.$root.$on("doFullScreenVideo", () => {
+      // alert('doFullScreenVideo')
       this.enter()
     });
 
@@ -63,7 +64,7 @@ export default {
       }
     },
     enter() {
-      // alert("enter menu rout")
+      // console.log("enter menuRout")
       if (this.menuItem[this.select]['id'] == 3) {
 
         this.setMenu(this.menuItem[this.select]);
@@ -83,11 +84,11 @@ export default {
         this.setMenu(this.menuItem[this.select]);
         this.$router.push(this.menuItem[this.select].rout)
       } else {
-        console.log("-----0",this.getMenu());
+        // console.log("-----0",this.getMenu());
         this.setMenu(this.loginItem);
-        console.log("-----1",this.getMenu());
+        // console.log("-----1",this.getMenu() , this.loginItem.rout , this.select);
         this.$router.push({path: this.loginItem.rout, query: {path: this.select}})
-
+        // this.$router.replace({ path:this.loginItem.rout, query: {path: this.select}})
       }
 
     },
