@@ -37,7 +37,7 @@ export default {
   },
   created() {
     this.menuData = this.getMenu()
-    console.log('header created', this.getMenu(), 'len', this.getMenu().length)
+    // console.log('header created', this.getMenu(), 'len', this.getMenu().length)
   },
   methods: {
     ...mapGetters(['getMenu'])

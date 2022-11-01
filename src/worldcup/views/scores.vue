@@ -6,12 +6,11 @@
            :class="[(item.self == 1 ? 'self':'')]" :id="'scoreList_'+index">
 
         <div class="nameBox innerItem">
-
-          <div class="nameTxt">{{ item.name }}</div>
+          <span class="nameTxt">{{ item.name }}</span>
         </div>
 
         <div class="rankBox innerItem">
-          <div class="scoreTxt">{{ item.rank }}</div>
+          <div class="scoreTxt">{{ item.score }}</div>
 
           <img v-if="index == 0" src="../assets/images/scores/1.png" style="padding-right: 10px">
           <img v-else-if="index == 1" src="../assets/images/scores/2.png" style="padding-right: 10px">
@@ -28,33 +27,49 @@
 
 <script>
 import IScroll from '../js/iscroll';
+import api from '../api/api'
 
 export default {
   name: "scores",
   data() {
     return {
       select: 0, myScroll: '',
-      list: [
-        {id: 0, name: 'مهرداد احمدی', rank: 1580, rankTxt: 'نفر اول', self: 0},
-        {id: 1, name: 'مهرداد پگاه وند', rank: 1580, rankTxt: 'نفر اول', self: 0},
-        {id: 2, name: 'مهرداد پگاه وند', rank: 1580, rankTxt: 'نفر اول', self: 0},
-        {id: 3, name: 'مهرداد پگاه وند', rank: 1580, rankTxt: 'نفر اول', self: 0},
-        {id: 4, name: 'مهرداد پگاه وند', rank: 1580, rankTxt: 'نفر اول', self: 0},
-        {id: 5, name: 'مهرداد پگاه وند', rank: 1580, rankTxt: 'نفر اول', self: 0},
-        {id: 6, name: 'مهرداد پگاه وند', rank: 1580, rankTxt: 'نفر اول', self: 1},
-        {id: 7, name: 'مهرداد پگاه وند', rank: 1580, rankTxt: 'نفر اول', self: 0},
-        {id: 8, name: 'مهرداد پگاه وند', rank: 1580, rankTxt: 'نفر اول', self: 0},
-        {id: 9, name: 'مهرداد پگاه وند', rank: 1580, rankTxt: 'نفر اول', self: 0},
-      ]
+      list: [],
+      // list: [
+      //   {id: 0, name: 'مهرداد احمدی', rank: 1580, rankTxt: 'نفر اول', self: 0},
+      //   {id: 1, name: 'مهرداد پگاه وند', rank: 1580, rankTxt: 'نفر اول', self: 0},
+      //   {id: 2, name: 'مهرداد پگاه وند', rank: 1580, rankTxt: 'نفر اول', self: 0},
+      //   {id: 3, name: 'مهرداد پگاه وند', rank: 1580, rankTxt: 'نفر اول', self: 0},
+      //   {id: 4, name: 'مهرداد پگاه وند', rank: 1580, rankTxt: 'نفر اول', self: 0},
+      //   {id: 5, name: 'مهرداد پگاه وند', rank: 1580, rankTxt: 'نفر اول', self: 0},
+      //   {id: 6, name: 'مهرداد پگاه وند', rank: 1580, rankTxt: 'نفر اول', self: 1},
+      //   {id: 7, name: 'مهرداد پگاه وند', rank: 1580, rankTxt: 'نفر اول', self: 0},
+      //   {id: 8, name: 'مهرداد پگاه وند', rank: 1580, rankTxt: 'نفر اول', self: 0},
+      //   {id: 9, name: 'مهرداد پگاه وند', rank: 1580, rankTxt: 'نفر اول', self: 0},
+      // ]
     }
   },
   created() {
-    let self = this;
-    setTimeout(() => {
-      self.scrollInit();
-    }, 600)
+    this.getScores()
+    // let self = this;
+    // setTimeout(() => {
+    //   self.scrollInit();
+    // }, 600)
   },
   methods: {
+
+    getScores() {
+      api.scores().then(data => {
+        // console.log(data.success, data.data)
+        if (data.success == 'true') {
+          this.list = data.data;
+          this.scrollInit();
+        }
+
+      })
+    },
+
+
     scrollInit() {
       let self = this;
       this.myScroll = '';
@@ -179,6 +194,7 @@ export default {
   color: #FFFFFF;
   font-size: 18px;
   line-height: 50%;
+  direction: ltr !important;
 }
 
 .scoreTxt {

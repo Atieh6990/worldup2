@@ -3,38 +3,38 @@
 
     <!--    <div style="position: absolute;width: 200px;height: 200px;background-color: #42b983"></div>-->
 
-    <div >
-      <registering   v-on:set_error_msgL="set_error_msg"  v-on:manageRegisterData="manageRegisterData"  :type="registrationType" ref="registering" :activeRoute="activeRoute"
+    <div>
+      <registering v-on:set_error_msgL="set_error_msg" v-on:manageRegisterData="manageRegisterData"
+                   :type="registrationType" ref="registering" :activeRoute="activeRoute"
                    :yPage="yPage" :numberShow="numberShow"></registering>
     </div>
 
-<!--    <div v-else>-->
+    <!--    <div v-else>-->
 
-<!--      <div v-if="userLoggedIn && messageList.length>0" class="">-->
-<!--        <chats ref="chats" :messageList="messageList" :userId="getUserInfo().userId"></chats>-->
-<!--      </div>-->
+    <!--      <div v-if="userLoggedIn && messageList.length>0" class="">-->
+    <!--        <chats ref="chats" :messageList="messageList" :userId="getUserInfo().userId"></chats>-->
+    <!--      </div>-->
 
-<!--      <div class="errorMdg">{{ errorMessage }}</div>-->
-<!--      <div class="fixedBottom" v-if="userLoggedIn">-->
-<!--        <div :class="[((yPage == 1 && activeRoute==1 && xPage == 0 && userLoggedIn) ?'inpParentHover':''),'inpParent']">-->
-<!--                    <textarea style="display: none" :value="chatTxt" placeholder="اینجا بنویسید" class="chatInp input"-->
-<!--                              id="chatArea"-->
-<!--                              name="chatTxt" type="text" @input="onInputChange"-->
-<!--                              ref="contentTextArea"-->
-<!--                              autofocus-->
-<!--                              v-on:click="removeHover()"></textarea>-->
-<!--          <div class="chatInp input" style="overflow: auto" id="chatTxtDiv">{{ chatTxt }}</div>-->
-<!--        </div>-->
-<!--        <div :class="[((yPage == 1 && activeRoute==1 && xPage == 1 && userLoggedIn) ?'inpParentHover':''),'submitBtn']"-->
-<!--             v-on:click="sendMessage()"><img src="../assets/images/Pm/sendBtn.svg"></div>-->
-<!--      </div>-->
+    <!--      <div class="errorMdg">{{ errorMessage }}</div>-->
+    <!--      <div class="fixedBottom" v-if="userLoggedIn">-->
+    <!--        <div :class="[((yPage == 1 && activeRoute==1 && xPage == 0 && userLoggedIn) ?'inpParentHover':''),'inpParent']">-->
+    <!--                    <textarea style="display: none" :value="chatTxt" placeholder="اینجا بنویسید" class="chatInp input"-->
+    <!--                              id="chatArea"-->
+    <!--                              name="chatTxt" type="text" @input="onInputChange"-->
+    <!--                              ref="contentTextArea"-->
+    <!--                              autofocus-->
+    <!--                              v-on:click="removeHover()"></textarea>-->
+    <!--          <div class="chatInp input" style="overflow: auto" id="chatTxtDiv">{{ chatTxt }}</div>-->
+    <!--        </div>-->
+    <!--        <div :class="[((yPage == 1 && activeRoute==1 && xPage == 1 && userLoggedIn) ?'inpParentHover':''),'submitBtn']"-->
+    <!--             v-on:click="sendMessage()"><img src="../assets/images/Pm/sendBtn.svg"></div>-->
+    <!--      </div>-->
 
-<!--      <div class="keyboardParent" v-if="userLoggedIn">-->
-<!--        <SimpleKeyboard @onChange="onChange" @onKeyPress="onKeyPress" :input="chatTxt" ref="SimpleKeyboard"/>-->
-<!--      </div>-->
+    <!--      <div class="keyboardParent" v-if="userLoggedIn">-->
+    <!--        <SimpleKeyboard @onChange="onChange" @onKeyPress="onKeyPress" :input="chatTxt" ref="SimpleKeyboard"/>-->
+    <!--      </div>-->
 
-<!--    </div>-->
-
+    <!--    </div>-->
 
 
   </div>
@@ -58,7 +58,7 @@ export default {
   },
   data() {
     return {
-      path:"",
+      path: "",
       activeRoute: 1,
       chatTxt: "",
       userKey: "",
@@ -82,7 +82,7 @@ export default {
   },
 
   mounted() {
-    this.path=this.$route.query.path
+    this.path = this.$route.query.path;
     setTimeout(() => {
       this.$nextTick(() => {
       })
@@ -120,7 +120,7 @@ export default {
     }
   },
   created() {
-    console.log("55555555")
+    // console.log("55555555")
     // this.roomName = "اتاق گفتگوی " + this.getTcChannel();
     // this.roomName = "اتاق گفتگوی جام جهانی";
     // this.getToken()
@@ -164,7 +164,7 @@ export default {
   },
   methods: {
     ...mapGetters(["getUserTv", "getUserInfo", "getSocketW", "getTcChannel"]),
-    ...mapMutations(["setUserInfo", "startSocketW", "setUserNameID", "disconnectSocketW","setMenu"]),
+    ...mapMutations(["setUserInfo", "startSocketW", "setUserNameID", "disconnectSocketW", "setMenu"]),
     ...mapActions(["setUserName", "sendUserMessage"]),
     manageRegisterData(data) {
       // alert('manageRegisterData' + data.type)
@@ -187,23 +187,25 @@ export default {
         this.setUserName(data.content);
       }
     },
-    goPages(path){
+    goPages(path) {
+      // console.log("go pages " , path , ROAST_CONFIG.menuItems )
       this.setMenu(ROAST_CONFIG.menuItems[path]);
-      this.$router.replace({path:
+      this.$router.replace({
+        path:
         ROAST_CONFIG.menuItems[path].rout
-        })
+      })
     },
     // saveUserChatDetail(data) {
     //   this.setUserNameID({item: "userName", amount: data.data.name});
     //   this.setUserNameID({item: "userId", amount: data.data.user_id});
     // },
     enter() {
-        console.log("----------out")
-        this.$refs.registering.enter()
+      // console.log("enter login")
+      this.$refs.registering.enter()
     },
     up() {
 
-        this.$refs.registering.up()
+      this.$refs.registering.up()
 
     },
     right() {
@@ -229,13 +231,13 @@ export default {
     //   }
     // },
 
-    set_error_msg(data){
+    set_error_msg(data) {
       this.errorMessage = data
     },
 
     getCode() {
       api.code(this.phoneNumber).then((data) => {
-        console.log("-=====2========",data)
+        // console.log("-=====2========",data)
         if (data.success) {
           this.userKey = data.data.key;
           this.registrationType = 1
@@ -255,28 +257,27 @@ export default {
     },
     doSignUp() {
 
+    //  alert(this.userKey + '**' + this.verifyCode + '**' + this.phoneNumber + '**' + this.getUserTv().mac + '**' + this.getUserTv().uid + '**' + this.getUserTv().version + '**' + this.getUserTv().mac_lan + '**' + this.getUserTv().tv_type)
+      api.signup(this.userKey, this.verifyCode, this.phoneNumber, this.getUserTv().mac, this.getUserTv().uid, this.getUserTv().version, this.getUserTv().mac_lan, this.getUserTv().tv_type).then(data => {
 
-    // alert('mac : '+ this.getUserTv().mac + '  uid : ' + this.getUserTv().uid + '  version :' +this.getUserTv().version)
-      api.signup(this.userKey, this.verifyCode, this.phoneNumber, this.getUserTv().mac, this.getUserTv().uid, this.getUserTv().version,this.getUserTv().macLan).then(data => {
-        console.log("-=============",data)
         if (data.success == false) {
-          this.errorMessage = data.data.message;
+          this.$root.$emit("set_error_msgL", data.data.message);
+          // this.errorMessage = data.data.message;
           return false
         }
-        let param = {
-          expires_in: (data.expires_in * 1000) + (new Date).getTime(),
-          access_token: data.access_token,
-          refresh_token: data.refresh_token
-        }
+        // let param = {
+        //   expires_in: (data.expires_in * 1000) + (new Date).getTime(),
+        //   access_token: data.access_token,
+        //   refresh_token: data.refresh_token
+        // }
         // alert("param" + param)
         // this.DeleteFile()
-        this.errorMessage = ""
-        this.setParam("Tokenw",JSON.stringify(param))
-       // this.setToken(JSON.stringify(param));
-       // this.setUserInfo(param);
-       //this.startSocket();
-
-
+        // this.errorMessage = ""
+        this.$root.$emit("set_error_msgL", '');
+        this.setParam("Tokenw", JSON.stringify(data.data))
+        // this.setToken(JSON.stringify(param));
+        // this.setUserInfo(param);
+        //this.startSocket();
         this.goPages(this.path);
       })
     },

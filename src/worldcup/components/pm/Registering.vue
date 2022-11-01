@@ -8,8 +8,8 @@
            @input="onInputChange"
            :id="'content_'+type" v-on:click="removeHover()" ref="content" v-if="osType== 1">
 
-    <div  v-else>
-      {{contentTxt}}
+    <div v-else>
+
       <input :class="[((yPos == 0 && activeRoute == 1) ? 'inpHover':''),'content']" v-model="contentTxt"
              :placeholder="placeHolders[type]"
              type="text"
@@ -35,7 +35,7 @@
     </div>
 
     <div class="des">{{ des[type] }}</div>
-
+    <div class="errorMdg">{{ errorMessage }}</div>
 
     <div class="keyboardParent" v-if="type == 2">
       <SimpleKeyboard @onChange="onChange" @onKeyPress="onKeyPress" :input="contentTxt" ref="SimpleKeyboard"/>
@@ -54,15 +54,16 @@ export default {
   mixins: [func],
   data() {
     return {
-      icons:['sendBtn.png','dashicons_cloud-saved.png','sendBtn.png'],
-      placeHolders: ['شماره تلفن همراه خود را وارد کنید', 'کد چهار رقمی را وارد کنید','نام مستعار خود را انتخاب کنید.'],
+      icons: ['sendBtn.png', 'dashicons_cloud-saved.png', 'sendBtn.png'],
+      placeHolders: ['شماره تلفن همراه خود را وارد کنید', 'کد چهار رقمی را وارد کنید', 'نام مستعار خود را انتخاب کنید.'],
       btnTxt: ["ارسال", "ثبت", "ثبت"],
       des: ["", "بعد از ارسال شماره تلفن همراه کد فعال سازی 4 رقمی برای شما پیامک خواهد شد", ""],
       contentTxt: "",
       yPos: 0,//0->input 1->btn , 2->keyboard , 3->clear btn
-      osType:0,
+      osType: 0,
       typeInpShow: 0,
-      contentDivTxt: ['شماره تلفن همراه خود را وارد کنید', 'کد چهار رقمی را وارد کنید','نام مستعار خود را انتخاب کنید.']
+      contentDivTxt: ['شماره تلفن همراه خود را وارد کنید', 'کد چهار رقمی را وارد کنید', 'نام مستعار خود را انتخاب کنید.'],
+      errorMessage:''
       // osType:ROAST_CONFIG.OS_TYPE
     };
   },
@@ -75,6 +76,11 @@ export default {
   created() {
     this.yPos = 0;
     this.showIme("content_" + this.type);
+
+    this.$root.$on("set_error_msgL", data => {
+      console.log("nnnnnnnnnnnn")
+      this.errorMessage = data
+    })
   },
   watch: {
     type: function () {
@@ -82,8 +88,15 @@ export default {
       this.typeInpShow = 0;
       this.yPos = 0;
       this.hideIme("content_" + this.type);
-    }, numberShow: function () {
+    },
+    numberShow: function () {
       this.contentTxt = this.numberShow;
+    },
+    errorMessage:function (){
+      let _self = this
+      setTimeout(function (){
+        _self.errorMessage = ''
+      },3500)
     }
   },
   components: {SimpleKeyboard},
@@ -114,9 +127,11 @@ export default {
         this.$refs.SimpleKeyboard.down();
         return false
       }
-    }, enter() {
-// console.log("this.type",this.type)
-//       console.log("this.yPos",this.yPos)
+    },
+
+    enter() {
+      // console.log("this.type", this.type)
+      // console.log("this.yPos", this.yPos)
       if (this.type == 2) {
         if (this.yPos == 2) {
           this.$refs.SimpleKeyboard.enter();
@@ -136,12 +151,13 @@ export default {
         this.showIme("content_" + this.type);
         return true;
       } else {
-
+// console.log("kjfkdjfkjf")
         this.nextStep();
         return true;
       }
       return false;
-    }, up() {
+    },
+    up() {
 
       if (this.yPos == 2) {
         if (!this.$refs.SimpleKeyboard.up()) {
@@ -198,6 +214,19 @@ export default {
       this.$emit("set_error_msgL", "");
       this.yPos = 0;
 
+
+      if(this.type == 0 && this.contentTxt < 11){
+        this.errorMessage = 'تلفن همراه نباید کمتر از 11 کاراکتر باشد';
+        return false
+      }
+
+      if(this.type == 1&& this.contentTxt < 4){
+        this.errorMessage = 'کد نباید کمتر از 4 کاراکتر باشد.';
+        return false
+      }
+
+
+
       if (this.contentTxt != "") {
         let send = {type: this.type, content: this.contentTxt};
         setTimeout(() => {
@@ -205,7 +234,8 @@ export default {
         }, 600)
 
       } else {
-        this.$emit("set_error_msgL", "فیلد هارا پر کنید.");
+        // this.$emit("set_error_msgL", "فیلد هارا پر کنید.");
+        this.errorMessage = "فیلد هارا پر کنید."
       }
     },
     removeHover() {
@@ -291,7 +321,8 @@ export default {
   text-indent: 25px;
 
 }
-.clearBtn{
+
+.clearBtn {
   height: 56px;
   width: 119px;
   right: 194px;
@@ -308,7 +339,8 @@ export default {
   direction: rtl;
   font-size: 18px;
 }
-.clearBtnHover{
+
+.clearBtnHover {
   border: 1px solid #116DFF !important;
   background-color: #116DFF !important;
 }
@@ -354,7 +386,21 @@ export default {
   top: 820px;
   direction: ltr;
 }
+.errorMdg {
+  width: 350px;
+  height: 60px;
+  right: 0px;
+  position: absolute;
+  top: 630px;
+  /*border-top: 1px solid #3b3a3f;*/
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  color: #FF3939;
+  display: -webkit-flex !important;;
 
+}
 ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
   color: #2B2B2B;
   opacity: 1; /* Firefox */

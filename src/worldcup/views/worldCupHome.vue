@@ -88,7 +88,7 @@ export default {
   methods: {
 
     ...mapMutations(['setUserTvW', "setTvChannel", "disconnectSocketW", "setMenu", "setOnlinePlay"]),
-    ...mapGetters(["getSocketW", "getUserInfo", "getOnlinePlay"]),
+    ...mapGetters(["getSocketW", "getUserInfo", "getOnlinePlay",'getMenu']),
     manageTokenGet(data) {
       this.$refs.routeview.manageTokenGet(data)
     },
@@ -108,27 +108,35 @@ export default {
     },
     enter() {
 
-      if (this.osType == 0) {//just android ke event sader kone
-        this.checkFullScreen();
-        return false
+      // alert("enter worldcuphome" + this.$route.name)
+      if (this.osType == 0 ) {
+          if(this.$route.name == 'menuRout'){
+            this.checkFullScreen();//just android ke event sader kone
+          }else{
+            this.$refs.routeview.enter();
+          }
+
+
+      }else{
+        if (this.showOnlinePlay) {
+
+          this.setMenu({id: '', name: '', des: '', rout: ''});
+          this.$router.push('/worldCupHome/menuRout');
+          this.setOnlinePlay(false);
+          // if (this.osType == 0)
+          //   setTimeout(function () {
+          //     window.ReactNativeWebView && window.ReactNativeWebView.postMessage(JSON.stringify({
+          //       type: "fullscreen",
+          //       data: false
+          //     }))
+          //   }, 200);
+        } else {
+          this.$refs.routeview.enter();
+        }
       }
 
 
-      if (this.showOnlinePlay) {
 
-        this.setMenu({id: '', name: '', des: '', rout: ''});
-        this.$router.push('/worldCupHome/menuRout');
-        this.setOnlinePlay(false);
-        // if (this.osType == 0)
-        //   setTimeout(function () {
-        //     window.ReactNativeWebView && window.ReactNativeWebView.postMessage(JSON.stringify({
-        //       type: "fullscreen",
-        //       data: false
-        //     }))
-        //   }, 200);
-      } else {
-        this.$refs.routeview.enter();
-      }
 
     },
     back() {
