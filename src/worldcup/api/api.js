@@ -99,7 +99,20 @@ export default {
             let data = response['data'];
             return data
         }).catch(response => {
-            console.log("signup catch", response)
+            console.log("matches catch", response)
+        });
+    },
+    predict(data) {
+        let Url = ROAST_CONFIG.main_api_url + 'forecast'
+        return axios({
+            method: "POST",
+            url: Url,
+            data:data,
+        }).then(response => {
+            let data = response['data'];
+            return data
+        }).catch(response => {
+            console.log("predict catch", response)
         });
     },
     //

@@ -2,7 +2,7 @@
   <div class="matchesParent" v-if="">
     <div class="matchesScroll">
 
-      <div :id="'match_' + m" v-for="(match,m) in 10"
+      <div :id="'match_' + m" v-for="(match,m) in mypredict"
            class="matches"
            :class="[(status == 1 ? 'winBorder':'looseBorder')]"
            :style="[m == 0 ? {marginTop :'7px'}:'']">
@@ -53,6 +53,7 @@
 import IScroll from "../../js/iscroll";
 export default {
   name: "myforcasts",
+  props: ['mypredict', 'selectedIndex'],
   data() {
     return {
       balls: [1, 1, 0, 0],

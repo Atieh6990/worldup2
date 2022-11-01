@@ -1,9 +1,9 @@
 <template>
-  <div class="matchesParent" v-if="matches.length>0">
+  <div class="matchesParent" v-if="matches[selectedIndex].length>0">
 
 
     <div class="matchesScroll">
-      <div :id="'match_' + m" v-for="(match,m) in matches"
+      <div :id="'match_' + m" v-for="(match,m) in matches[selectedIndex]"
            class="matches"
            :style="[m == 0 ? {marginTop :'7px'}:'']">
         <div class="backImg">
@@ -17,7 +17,7 @@
           <div class="teamsNameParent">
             <div class="teamsName">{{ match.teama.name }}</div>
             <div class="matchTime">
-              <div>{{ match.startdate }}</div>
+              <div>{{ groups[selectedIndex] }}</div>
               <div>{{ match.starttime }}</div>
             </div>
             <div class="teamsName">{{ match.teamb.name }}</div>
@@ -67,10 +67,11 @@
 <script>
 import IScroll from "../../js/iscroll";
 import {ROAST_CONFIG} from '../../js/config';
+import api from "../../api/api";
 
 export default {
   name: "games",
-  props: ['matches', 'yPos'],
+  props: ['matches', 'yPos','selectedIndex','groups'],
   data() {
     return {
       yMatch: 0,
@@ -88,6 +89,8 @@ export default {
   },
   watch: {
     matches: function () {
+      this.scrollInit();
+    },selectedIndex: function () {
       this.scrollInit();
     }
   },
@@ -116,6 +119,25 @@ export default {
         }, 10);
 
       }
+this.initpredicted()
+    },
+    initpredicted(){
+      //console.log("this.matches[this.selectedIndex].length",this.matches[this.selectedIndex].length)
+      if(this.matches[this.selectedIndex].length ){
+        //let i = 0, len = Object.keys(arr).length;
+        let i = 0, len = this.matches[this.selectedIndex].length;
+        //console.log("=========",this.matches[this.selectedIndex])
+        while (i < len) {
+
+         // console.log("======2===",this.matches[this.selectedIndex][i])
+          if(this.matches[this.selectedIndex][i].is_forecast && this.matches[this.selectedIndex][i].forecasts.length ){
+
+            this.teamB[i]=this.matches[this.selectedIndex][i].forecasts[0].goalb
+            this.teamA[i]=this.matches[this.selectedIndex][i].forecasts[0].goala
+          }
+          i++
+        }
+      }
 
     },
 
@@ -129,10 +151,15 @@ export default {
         this.xScore--;
     },
     down() {
-      if (this.yScore == 0)
+
+      if (this.yScore == 0){
+
         this.yScore++;
+      }
+
       else {
-        if (this.yMatch < (this.matches.length) - 1) {
+        if (this.yMatch < (this.matches[this.selectedIndex].length) - 1) {
+        //  console.log("this.yScore == 0 else")
           this.yMatch++;
           this.yScore--;
           this.xScore = 0;
@@ -141,13 +168,15 @@ export default {
         }
       }
       if (this.yPos == 0) {
+    //    console.log("this.yPos == 0")
         this.yPos++;
         this.xScore = 0;
-      } else if (this.yPos == 1) {
+      } else if (this.yPos == 1) { console.log("this.yPos == 0 else")
+
         if (this.yScore == 0)
           this.yScore++;
         else {
-          if (this.yMatch < (this.matches.length) - 1) {
+          if (this.yMatch < (this.matches[this.selectedIndex].length) - 1) {
             this.yMatch++;
             this.yScore--;
             this.xScore = 0;
@@ -157,6 +186,7 @@ export default {
         }
 
       }
+
     },
     up() {
       if (this.yScore == 1) {
@@ -177,6 +207,9 @@ export default {
     },
 
     enter() {
+      if(this.yScore==1 && this.yPos==2 && this.teamA[this.yMatch] && this.teamB[this.yMatch] ){
+        this.predict(this.teamA[this.yMatch],this.teamB[this.yMatch],this.matches[this.selectedIndex][this.yMatch].id)
+      }
       let data = {
         teamA: this.teamA, teamB: this.teamB
       }
@@ -184,7 +217,7 @@ export default {
     },
 
     typeNumber(number) {
-      // console.log('number', number)
+    //console.log('number', number)
       if (this.yScore == 0) {
         if (number > 9) {
 
@@ -220,7 +253,36 @@ export default {
         }
       }
     },
+     predict(goala,goalb,match){
+      console.log("------",match)
+      //predict  let Orgdata = {
+      let data= {
+        'goala': goala,
+        'goalb': goalb,
+        'match': match,
+      }
 
+console.log("data",data)
+       api.predict(data).then((data) => {
+
+         if (data.success) {
+           // console.log("data",data.data)
+           // this.data =data.data
+           // this.groups = Object.keys(this.matches);
+           // this.matches=this.data[this.groups[this.selectedIndex]]
+           // // console.log("this.groups",this.groups)
+           // console.log("this.selectedIndex",this.selectedIndex)
+           // console.log("this.groups[this.selectedIndex]",this.groups[this.selectedIndex])
+           // console.log("this.matches",this.matches);
+
+         } else {
+           //this.matches = {};
+         }
+
+         // if (data.success)
+         //   this.scrollInit();
+       });
+      },
 
     hidePopUp() {
       setTimeout(function (){

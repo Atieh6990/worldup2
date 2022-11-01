@@ -4,7 +4,7 @@
 
       <div v-for="(item,index) in groups" :id="'groupItem_'+index"
            :class="['items', (yPos==1&&xItem==index) ? 'colorNav' : '']">
-        {{ item.name }}
+        {{ item }}
       </div>
 
     </flickity>
@@ -54,6 +54,7 @@ export default {
       if (this.xItem < this.groups.length - 1) {
         this.$refs.flickity.next();
         this.xItem++
+        this.$emit("selectItem", this.xItem);
         return true
       }
 
