@@ -14,10 +14,10 @@ var androidTvDevelop = {
     // ver: "1.0",
 
     mac: "44:D8:78:EB:A2:AD",
-    macLan: "44:D8:78:EB:A2:AD",
-    Duid: "",//for andriod is empty
+    mac_lan: "44:D8:78:EB:A2:AD",
+    uid: "",//for andriod is empty
     version: 9,
-    tvType: 1//android
+    tv_type: 1//android
 }
 var tizenTvDevelop = {
     // mac: "KLpr4eeerdddd33Q22",
@@ -31,15 +31,14 @@ var tizenTvDevelop = {
     // // IsCompletePrf: "1",
     // version: "17"
     mac: "",//for tizen is empty
-    macLan: "",//for tizen is empty
-    Duid: "KLpr4eeerdddd33Q22",//for andriod is empty
+    mac_lan: "",//for tizen is empty
+    uid: "KLpr4eeerdddd33Q22",//for andriod is empty
     version: "17",
-    tvType: 0//tizen
+    tv_type: 0//tizen
 }
 
 
 export default {
-
     methods: {
 
         UserTVInfo() {
@@ -63,10 +62,10 @@ export default {
                     var year = modelTV.split("_", 1)[0];
                     urlParams = {
                         mac: "",//for tizen is empty
-                        macLan: "",//for tizen is empty
-                        Duid: Duid,//for andriod is empty
+                        mac_lan: "",//for tizen is empty
+                        uid: Duid,//for andriod is empty
                         version: year,
-                        tvType: 0
+                        tv_type: 0
                     };
                 }
             }
@@ -345,7 +344,8 @@ export default {
 
 
         checkFullScreen() {
-            // alert('checkFullScreen')
+            // this.$root.$emit('doFullScreenVideo' , JSON.stringify( { type: 'doFullScreenVideo', data: false }))
+
             setTimeout(function () {
                 window.ReactNativeWebView && window.ReactNativeWebView.postMessage(JSON.stringify({
                     type: "checkFullScreen",

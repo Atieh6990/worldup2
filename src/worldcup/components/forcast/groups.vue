@@ -41,7 +41,7 @@ export default {
     // this.refreshScroll();
     setTimeout(() => {
       // self.scrollInit();
-      console.log("groups comprrr",this.groups)
+      // console.log("groups comprrr",this.groups)
     }, 60)
   },
 
