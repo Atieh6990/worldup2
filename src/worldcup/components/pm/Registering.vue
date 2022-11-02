@@ -46,7 +46,7 @@
 <script>
 import func from "../../mixins/mixin";
 import SimpleKeyboard from "./SimpleKeyboard";
-import {ROAST_CONFIG} from "@/worldcup/js/config";
+import {ROAST_CONFIG} from "../../js/config";
 
 export default {
   name: "Registering",
