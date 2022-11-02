@@ -48,11 +48,11 @@
 
           <div class="status" :class="[(status == 1 ? 'winStatus':'looseStatus')]">
 <!--            <img style="padding-left: 15px" :src="[(status == 1 ? win:loose)]">-->
-            <div>پیش بینی شما : <span v-if="match.goala"> {{ (match.goala == match.forecasts[0].goala && match.goalb == match.forecasts[0].goalb) ? 'برد' : 'باخت' }}  </span> <span v-if="!match.goala"> بدون نتیجه </span></div>
+<!--            <div>پیش بینی شما : <span v-if="match.goala"> {{ (match.goala == match.forecasts[0].goala && match.goalb == match.forecasts[0].goalb) ? 'برد' : 'باخت' }}  </span> <span v-if="!match.goala"> بدون نتیجه </span></div>-->
           </div>
 
           <div class="result" :class="[(status == 1 ? 'winResult':'looseResult')]">
-            <span>{{match.forecasts[0].goala}} </span>   <span>-</span>  <span>{{match.forecasts[0].goalb}} </span>
+            <span> {{match.forecasts[0].goala}} </span>  &nbsp;  <span>  -  </span>  &nbsp; <span> {{match.forecasts[0].goalb}} </span>
           </div>
         </div>
 
@@ -286,7 +286,8 @@ export default {
 }
 
 .winStatus {
-  color: #40BF21;
+  /*color: #40BF21;*/
+  color: white;
 }
 
 .looseStatus {
@@ -294,7 +295,8 @@ export default {
 }
 
 .winResult {
-  background-color: #40BF21;
+  /*background-color: #40BF21;*/
+  background: rgb(74, 74, 75);
 }
 
 .looseResult {
@@ -302,7 +304,8 @@ export default {
 }
 
 .winBorder {
-  border-color: #40BF21 !important;
+  /*border-color: #40BF21 !important;*/
+  border-color:  #ffffff4d !important;
 }
 
 .looseBorder {

@@ -128,7 +128,8 @@ this.initpredicted()
         let i = 0, len = this.matches[this.selectedIndex].length;
         //console.log("=========",this.matches[this.selectedIndex])
         while (i < len) {
-
+          this.teamB[i]=""
+          this.teamA[i]=""
          // console.log("======2===",this.matches[this.selectedIndex][i])
           if(this.matches[this.selectedIndex][i].is_forecast && this.matches[this.selectedIndex][i].forecasts.length ){
 
