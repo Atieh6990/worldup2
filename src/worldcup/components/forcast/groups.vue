@@ -4,7 +4,7 @@
 
       <div v-for="(item,index) in groups" :id="'groupItem_'+index"
            :class="['items', (yPos==1&&xItem==index) ? 'colorNav' : '']">
-        {{ item.name }}
+        {{ item }}
       </div>
 
     </flickity>
@@ -54,6 +54,7 @@ export default {
       if (this.xItem < this.groups.length - 1) {
         this.$refs.flickity.next();
         this.xItem++
+        this.$emit("selectItem", this.xItem);
         return true
       }
 
@@ -120,7 +121,11 @@ export default {
 }
 
 .colorNav {
-  background-color: #FFFFFF;
-  color: #116DFF;;
+  /*background: rgba(17, 109, 255, 1);*/
+  border: 3px solid rgba(77, 205, 44, 1);
+  /*color: #116DFF;;*/
+}
+.selectedNav{
+  background: rgba(17, 109, 255, 1);
 }
 </style>
