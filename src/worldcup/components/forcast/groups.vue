@@ -55,7 +55,7 @@ export default {
       if (this.xItem < this.groups.length - 1) {
         this.$refs.flickity.next();
         this.xItem++
-        this.$emit("selectItem", this.xItem);
+
         return true
       }
 
@@ -76,6 +76,7 @@ export default {
       return false
     },
     enter() {
+      this.$emit("selectItem", this.xItem);
       this.selectedTab=this.xItem
       return this.xItem
     }
