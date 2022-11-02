@@ -10,25 +10,36 @@
         <div class="backImg">
 
           <div class="backIcon" style="right: 28px;">
-            <img src="../../assets/images/forecast/malavan70.png" class="icon"/>
+            <img v-if="match.teama && match.teama.pic" :src="match.teama.pic" class="icon"/>
+            <img v-else src="../../assets/images/forecast/malavan70.png" class="icon"/>
           </div>
           <div class="line"></div>
           <div class="backIcon" style="right: 135px;">
-            <img src="../../assets/images/forecast/malavan70.png" class="icon"/>
+            <img  v-if="match.teamb && match.teamb.pic"  :src="match.teamb.pic" class="icon"/>
+            <img v-else src="../../assets/images/forecast/malavan70.png" class="icon"/>
           </div>
 
           <div class="teamsNameParent">
             <div class="teamsName">{{ match.teama.name }}</div>
             <div class="matchTime">
               <div>{{ '4X' }}</div>
+              <div v-if="match.forecasts && match.forecasts[0] && match.forecasts[0].score" style="margin-top: 3px"><span>امتیاز:</span> <span>{{ match.forecasts[0].score}}</span></div>
             </div>
+
             <div class="teamsName">{{ match.teamb.name }}</div>
           </div>
 
-          <div class="balls">
-            <div class="ball" v-for="(item,index) in balls">
-              <img v-if="item == 0" src="../../assets/images/forecast/ballDeactive.png">
-              <img v-if="item == 1" src="../../assets/images/forecast/ballActive.png">
+          <div v-if="match.forecasts && match.forecasts[0] && match.forecasts[0].ball_score" class="balls">
+            <div class="ball" v-for="(item,index) in match.forecasts[0].ball_score">
+              <img  src="../../assets/images/forecast/ballActive.png">
+            </div>
+            <div class="ball" v-for="(item,index) in 4 - match.forecasts[0].ball_score">
+              <img  src="../../assets/images/forecast/ballDeactive.png">
+            </div>
+          </div>
+          <div v-else class="balls">
+            <div class="ball" v-for="(item,index) in 4">
+              <img  src="../../assets/images/forecast/ballDeactive.png">
             </div>
           </div>
 
@@ -37,7 +48,7 @@
 
           <div class="status" :class="[(status == 1 ? 'winStatus':'looseStatus')]">
 <!--            <img style="padding-left: 15px" :src="[(status == 1 ? win:loose)]">-->
-            <div>پیش بینی شما : <span v-if="match.goala"> {{ (match.goala == 1) ? 'برنده' : 'باخت' }}  </span> <span v-if="match.goala == 1"> بدون نتیجه </span></div>
+            <div>پیش بینی شما : <span v-if="match.goala"> {{ (match.goala == match.forecasts[0].goala && match.goalb == match.forecasts[0].goalb) ? 'برد' : 'باخت' }}  </span> <span v-if="!match.goala"> بدون نتیجه </span></div>
           </div>
 
           <div class="result" :class="[(status == 1 ? 'winResult':'looseResult')]">
@@ -206,7 +217,7 @@ export default {
 
 .matchTime {
   font-size: 20px;
-  width: 25%;
+  width: 40%;
   line-height: 20px;
 }
 

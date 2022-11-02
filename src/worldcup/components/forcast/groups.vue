@@ -3,7 +3,7 @@
     <flickity class="flickity suggestedProgram" ref="flickity" :options="flickityOptions" v-if="groups.length>0">
 
       <div v-for="(item,index) in groups" :id="'groupItem_'+index"
-           :class="['items', (yPos==1&&xItem==index) ? 'colorNav' : '']">
+           :class="['items', (yPos==1&&xItem==index) ? 'colorNav' : '',(selectedTab==index) ? 'selectedNav' : '']">
         {{ item }}
       </div>
 
@@ -23,6 +23,7 @@ export default {
     return {
       // items: ['گروهی ، دوشنبه،30آبان', 'گروهی، سه شنبه ، 1آذر', 'گروهی ، چهارشنبه ، 2آذر', 'گروهی ، پنجشنبه ، 3آذر', 'گروهی ، چهارشنبه ، 2آذر'],
       xItem: 0,
+      selectedTab:0,
       flickityOptions: {
         accessibility: false,
         contain: true,
@@ -75,6 +76,7 @@ export default {
       return false
     },
     enter() {
+      this.selectedTab=this.xItem
       return this.xItem
     }
   }
