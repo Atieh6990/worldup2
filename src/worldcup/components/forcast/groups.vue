@@ -117,10 +117,11 @@ export default {
   margin-left: 15px;
   padding: 5px 15px 5px 15px;
   text-align: center;
-  white-space: nowrap;
+  /*white-space: nowrap;*/
   background-color: #FFFFFF26;
   color: #FFFFFF;
   direction: rtl !important;
+  width: 150px;
 }
 
 .colorNav {
