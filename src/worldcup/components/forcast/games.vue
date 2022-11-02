@@ -1,4 +1,5 @@
 <template>
+  <div>
   <div class="matchesParent" v-if="matches[selectedIndex].length>0">
 
 
@@ -58,7 +59,8 @@
 
 
   </div>
-
+    <div class="error" v-if="matches[selectedIndex].length==0">در حال حاضر در تاریخ مورد نظر بازی قابل پیشبینی موجود نمی باشد.</div>
+  </div>
 </template>
 
 <script>
@@ -93,6 +95,7 @@ export default {
   },
 
   created() {
+    console.log("-00099",this.matches[this.selectedIndex])
     this.scrollInit();
   },
 
@@ -448,6 +451,16 @@ console.log("data",data)
 
 .scoreHvr {
   border: 3px solid rgba(77, 205, 44, 1);
+}
+.error{
+  color: red;
+  z-index: 999;
+  margin-top: 100px;
+  padding-right: 10%;
+  padding-left: 10%;
+  opacity: 1;
+  position: absolute;
+;
 }
 
 

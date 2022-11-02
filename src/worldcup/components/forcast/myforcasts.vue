@@ -1,5 +1,6 @@
 <template>
-  <div class="matchesParent" v-if="">
+  <div class="matchesParent" >
+    <div class="error" v-if="mypredict[selectedIndex].length==0">بازی پیش بینی شده ی قابل نمایشی یافت نمی شود</div>
     <div class="matchesScroll">
 
       <div :id="'match_' + m" v-for="(match,m) in mypredict[selectedIndex]"
@@ -78,6 +79,7 @@ export default {
   },
 
   created() {
+
     this.scrollInit()
   },
   methods:{
@@ -328,5 +330,15 @@ export default {
   left: 30px;
   color: #FFFFFF;
   border-radius: 8px;
+}
+.error{
+  color: red;
+  z-index: 999;
+  margin-top: 100px;
+  padding-right: 10%;
+  padding-left: 10%;
+  opacity: 1;
+  position: absolute;
+;
 }
 </style>

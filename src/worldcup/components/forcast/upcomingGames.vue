@@ -7,7 +7,7 @@
     <tabs :y-pos="yPos" ref="tabs"></tabs>
     <groups v-on:selectItem="selectItem" :y-pos="yPos"  :groups="groups" ref="groups"></groups>
     <games v-on:dopredict="dopredict" :y-pos="yPos" :selectedIndex="selectedIndex" :groups="groups" :matches="predictable" ref="games" v-if="type == 0 && predictable[0]"></games>
-    <myforcasts ref="myforcasts" :mypredict="mypredict" :selectedIndex="selectedIndex" v-if="type == 1 & mypredict[0]" ></myforcasts>
+    <myforcasts ref="myforcasts" :mypredict="mypredict" :selectedIndex="selectedIndex" v-if="type == 1 && mypredict[0]" ></myforcasts>
 
   </div>
 </template>
@@ -159,7 +159,8 @@ export default {
     })
     predictable.push(predictableitem)
     let mypredictitem=arr[i].match.filter( ( item ) => {
-      return item.predictable==1 && item.is_forecast==1;
+     // return item.predictable==1 && item.is_forecast==1;
+      return item.is_forecast==1;
     })
         mypredict.push(mypredictitem)
         i++
