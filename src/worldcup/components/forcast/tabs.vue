@@ -1,6 +1,6 @@
 <template>
   <div class="itemsParent">
-    <div v-for="(item,i) in items" :class="['items', (yPos==0&&xItem==i) ? 'colorNav' : '']">{{ item }}</div>
+    <div v-for="(item,i) in items" :class="['items', (yPos==0&&xItem==i) ? 'colorNav' : '',(selectedTab==i) ? 'selectedNav' : '']">{{ item }}</div>
   </div>
 </template>
 
@@ -12,6 +12,7 @@ export default {
     return {
       xItem: 0,
       items: ['بازیهای پیش رو', 'پیش بینی های من'],
+      selectedTab:0
     }
   },
   methods: {
@@ -31,6 +32,7 @@ export default {
       return false
     },
     enter(){
+      this.selectedTab=this.xItem
       return this.xItem;
     }
   }
@@ -65,12 +67,13 @@ export default {
   /*float: right;*/
   /*margin-right: 12px;*/
 }
-.selectedNav{
-  background: rgba(17, 109, 255, 1);
-}
+
 .colorNav {
   /*background: rgba(17, 109, 255, 1);*/
   border: 3px solid rgba(77, 205, 44, 1);
+}
+.selectedNav{
+  background: rgba(17, 109, 255, 1);
 }
 
 </style>
