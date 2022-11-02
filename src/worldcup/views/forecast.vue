@@ -5,6 +5,7 @@
 <script>
 import upcomingGames from "../../worldcup/components/forcast/upcomingGames";
 
+
 export default {
   name: "forecast",
   components: {
