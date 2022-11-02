@@ -18,7 +18,7 @@
             <div class="teamsName">{{ match.teama.name }}</div>
             <div class="matchTime">
               <div>{{ groups[selectedIndex] }}</div>
-              <div>{{ match.starttime }}</div>
+              <div v-if="match.starttime.split(' ').length">{{ match.starttime.split(" ")[1] }}</div>
             </div>
             <div class="teamsName">{{ match.teamb.name }}</div>
           </div>
@@ -56,10 +56,7 @@
     </div>
 
 
-    <div class="popupParent" v-if="showSuccessPopup == true">
-      <div class="popupBack"></div>
-      <div class="popBox">پیش بینی با موفقیت ثبت شد</div>
-    </div>
+
   </div>
 
 </template>
@@ -84,7 +81,7 @@ export default {
       teamA: [],
       teamB: [],
       osType: ROAST_CONFIG.OS_TYPE,
-      showSuccessPopup: false , //bad az sabte pish bini bareye 3sanie true mishe
+      showSuccessPopup: true , //bad az sabte pish bini bareye 3sanie true mishe
     }
   },
   watch: {
@@ -267,6 +264,7 @@ console.log("data",data)
        api.predict(data).then((data) => {
 
          if (data.success) {
+           this.$emit("dopredict");
            // console.log("data",data.data)
            // this.data =data.data
            // this.groups = Object.keys(this.matches);
@@ -285,12 +283,7 @@ console.log("data",data)
        });
       },
 
-    hidePopUp() {
-      setTimeout(function (){
-        this.showSuccessPopup = false
-      },3000)
 
-    }
 
   }
 }
@@ -313,21 +306,6 @@ console.log("data",data)
   position: absolute;
   top: 0px;
   left: 0px;
-}
-
-.popupParent {
-  width: 350px;
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  height: 840px;
-  display: -webkit-flex !important;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  justify-content: center;
-  align-items: center;
-  align-content: stretch;
 }
 
 .matches {
@@ -472,33 +450,5 @@ console.log("data",data)
   border: 3px solid rgba(77, 205, 44, 1);
 }
 
-.popupBack {
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  width: 100%;
-  height: 100%;
-  background-color: #000000;
-  opacity: 0.8;
 
-}
-
-.popBox {
-  box-sizing: border-box;
-  width: 290px;
-  height: 170px;
-  background: #FFFFFF;
-  border-radius: 11px;
-  z-index: 10;
-  display: flex;
-  display: -webkit-flex !important;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  justify-content: center;
-  align-items: center;
-  align-content: stretch;
-  color: rgba(77, 205, 44, 1);
-  font-size: 20px;
-  white-space: nowrap;
-}
 </style>
