@@ -2,7 +2,7 @@
   <div class="matchesParent" v-if="">
     <div class="matchesScroll">
 
-      <div :id="'match_' + m" v-for="(match,m) in mypredict"
+      <div :id="'match_' + m" v-for="(match,m) in mypredict[selectedIndex]"
            class="matches"
            :class="[(status == 1 ? 'winBorder':'looseBorder')]"
            :style="[m == 0 ? {marginTop :'7px'}:'']">
@@ -18,11 +18,11 @@
           </div>
 
           <div class="teamsNameParent">
-            <div class="teamsName">{{ 'آمریکا' }}</div>
+            <div class="teamsName">{{ match.teama.name }}</div>
             <div class="matchTime">
               <div>{{ '4X' }}</div>
             </div>
-            <div class="teamsName">{{ 'اسپانیا' }}</div>
+            <div class="teamsName">{{ match.teamb.name }}</div>
           </div>
 
           <div class="balls">
@@ -32,15 +32,17 @@
             </div>
           </div>
 
-          <div class="goal" style="right: 35px">{{ '2' }}</div>
-          <div class="goal" style="left: 35px">{{ '8' }}</div>
+          <div class="goal" style="right: 35px" v-if="match.goala || match.goala==0">{{ match.goala }}</div>
+          <div class="goal" style="left: 35px" v-if="match.goalb || match.goalb==0">{{ match.goalb }}</div>
 
           <div class="status" :class="[(status == 1 ? 'winStatus':'looseStatus')]">
-            <img style="padding-left: 15px" :src="[(status == 1 ? win:loose)]">
-            <div>پیش بینی شما : <span> {{ (status == 1) ? 'برنده' : 'باخت' }} </span></div>
+<!--            <img style="padding-left: 15px" :src="[(status == 1 ? win:loose)]">-->
+            <div>پیش بینی شما : <span v-if="match.goala"> {{ (match.goala == 1) ? 'برنده' : 'باخت' }}  </span> <span v-if="match.goala == 1"> بدون نتیجه </span></div>
           </div>
 
-          <div class="result" :class="[(status == 1 ? 'winResult':'looseResult')]">3-3</div>
+          <div class="result" :class="[(status == 1 ? 'winResult':'looseResult')]">
+            <span>{{match.forecasts[0].goala}} </span>   <span>-</span>  <span>{{match.forecasts[0].goalb}} </span>
+          </div>
         </div>
 
       </div>

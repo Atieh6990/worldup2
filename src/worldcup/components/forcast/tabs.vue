@@ -65,9 +65,12 @@ export default {
   /*float: right;*/
   /*margin-right: 12px;*/
 }
-
-.colorNav {
+.selectedNav{
   background: rgba(17, 109, 255, 1);
+}
+.colorNav {
+  /*background: rgba(17, 109, 255, 1);*/
+  border: 3px solid rgba(77, 205, 44, 1);
 }
 
 </style>

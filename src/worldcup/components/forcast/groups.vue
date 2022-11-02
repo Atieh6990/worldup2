@@ -121,7 +121,11 @@ export default {
 }
 
 .colorNav {
-  background-color: #FFFFFF;
-  color: #116DFF;;
+  /*background: rgba(17, 109, 255, 1);*/
+  border: 3px solid rgba(77, 205, 44, 1);
+  /*color: #116DFF;;*/
+}
+.selectedNav{
+  background: rgba(17, 109, 255, 1);
 }
 </style>
