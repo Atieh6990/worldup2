@@ -22,8 +22,8 @@
           <div class="teamsNameParent">
             <div class="teamsName">{{ match.teama.name }}</div>
             <div class="matchTime">
-              <div>{{ '4X' }}</div>
-              <div v-if="match.forecasts && match.forecasts[0] && match.forecasts[0].score" style="margin-top: 3px"><span>امتیاز:</span> <span>{{ match.forecasts[0].score}}</span></div>
+              <div>{{ match.factor }}k</div>
+              <div v-if="match.forecasts && match.forecasts[0] && match.forecasts[0].score && match.forecasts[0].score!==0" style="margin-top: 3px"><span>امتیاز:</span> <span>{{ match.forecasts[0].score}}</span></div>
             </div>
 
             <div class="teamsName">{{ match.teamb.name }}</div>
@@ -43,8 +43,8 @@
             </div>
           </div>
 
-          <div class="goal" style="right: 35px" v-if="match.goala || match.goala==0">{{ match.goala }}</div>
-          <div class="goal" style="left: 35px" v-if="match.goalb || match.goalb==0">{{ match.goalb }}</div>
+          <div class="goal" style="right: 35px" v-if="match.goala || match.goala===0">{{ match.goala }}</div>
+          <div class="goal" style="left: 35px" v-if="match.goalb || match.goalb===0">{{ match.goalb }}</div>
 
           <div class="status" :class="[(status == 1 ? 'winStatus':'looseStatus')]">
 <!--            <img style="padding-left: 15px" :src="[(status == 1 ? win:loose)]">-->

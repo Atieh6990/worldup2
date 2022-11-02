@@ -1,6 +1,9 @@
 <template>
   <div style="  direction: rtl !important;">
-
+    <div class="popupParent" v-if="showSuccessPopup == true">
+      <div class="popupBack"></div>
+      <div class="popBox">پیش بینی با موفقیت ثبت شد</div>
+    </div>
     <tabs :y-pos="yPos" ref="tabs"></tabs>
     <groups v-on:selectItem="selectItem" :y-pos="yPos"  :groups="groups" ref="groups"></groups>
     <games v-on:dopredict="dopredict" :y-pos="yPos" :selectedIndex="selectedIndex" :groups="groups" :matches="predictable" ref="games" v-if="type == 0 && predictable[0]"></games>
@@ -29,6 +32,7 @@ export default {
       yPos: 0,
       type: 0,//0 -> bazi haye pishe roo , 1 -> pishbini haye man
       selectedIndex:0,
+      showSuccessPopup:false,
     }
   },
   components: {tabs, groups, games, myforcasts},
@@ -36,7 +40,14 @@ export default {
     this.matchesApi();
   },
   methods: {
+    hidePopUp() {
+      setTimeout(()=>{
+        this.showSuccessPopup = false
+      },1000)
+
+    },
     dopredict(){
+      this.showSuccessPopup = true
       this.matchesApi();
     },
     selectItem(index){
@@ -153,6 +164,8 @@ export default {
         mypredict.push(mypredictitem)
         i++
    }
+
+
    this.groups= groups
   this.predictable= predictable
   this.mypredict=mypredict
@@ -503,7 +516,7 @@ export default {
         } else {
           //this.matches = {};
         }
-
+        this.hidePopUp()
         // if (data.success)
         //   this.scrollInit();
       });
@@ -516,4 +529,49 @@ export default {
 <style scoped>
 
 
+.popupParent {
+  width: 350px;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  height: 100%;
+  display: -webkit-flex !important;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+  align-content: stretch;
+}
+.popupBack {
+  z-index:9;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  background-color: #000000;
+  opacity: 0.8;
+
+}
+
+.popBox {
+
+  box-sizing: border-box;
+  width: 290px;
+  height: 170px;
+  background: #FFFFFF;
+  border-radius: 11px;
+  z-index: 10;
+  display: flex;
+  display: -webkit-flex !important;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+  align-content: stretch;
+  color: rgba(77, 205, 44, 1);
+  font-size: 20px;
+  white-space: nowrap;
+}
 </style>
