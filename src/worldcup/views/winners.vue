@@ -18,6 +18,7 @@
         <img src="../assets/images/scores/score.png" style="padding-right: 10px">
       </div>
     </div>
+    <div class="verLine" style="top: 125px;"></div>
     <div class="winnerParent" style="top: 140px;">
       <div style="width: 55%;float: right;">برنده قرعه کشی</div>
       <div style="width: 33%;float:left;">امتیاز</div>
@@ -31,6 +32,10 @@
         <div class="scoreTxt">{{ lotteryUserScore }}</div>
         <img src="../assets/images/scores/score.png" style="padding-right: 10px">
       </div>
+    </div>
+    <div class="verLine" style="top: 175px;"></div>
+    <div class="descScore">
+      {{ descScore }}
     </div>
   </div>
 
@@ -52,7 +57,8 @@ export default {
       scoreUserMob: '',
       lotteryUserMob: '',
       scoreUserScore: '',
-      lotteryUserScore: ''
+      lotteryUserScore: '',
+      descScore: ''
     }
   },
   created() {
@@ -87,6 +93,7 @@ export default {
       this.lotteryUserMob = this.winnersList[this.groups[this.selectedIndex]]['lottery_user']['mobile'];
       this.scoreUserScore = this.winnersList[this.groups[this.selectedIndex]]['score_user']['score'];
       this.lotteryUserScore = this.winnersList[this.groups[this.selectedIndex]]['lottery_user']['score'];
+      this.descScore = this.winnersList[this.groups[this.selectedIndex]]['description'];
     },
     enter() {
       if (this.yPos == 1) {
@@ -116,6 +123,13 @@ export default {
 </script>
 
 <style scoped>
+.verLine {
+  background-color: #FFFFFF4D;
+  width: 100%;
+  height: 1px;
+  float: right;
+  position: relative;
+}
 .winnerParent {
   width: 100%;
   height: 33px;
@@ -177,5 +191,20 @@ export default {
   color: #FFCE31;
   font-size: 18px;
   line-height: 50%;
+}
+
+.descScore {
+  width: 90%;
+  height: 33px;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 17px;
+  line-height: 38px;
+  color: #FFFFFF;
+  position: relative;
+  top: 200px;
+  text-align: right;
+  margin: auto;
+
 }
 </style>
