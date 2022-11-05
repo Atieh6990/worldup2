@@ -15,7 +15,9 @@ import {mapGetters, mapMutations} from "vuex";
 export default {
   mixins: [func],
   created() {
-
+    this.$root.$on('tesssting', () => {
+      alert("tesssting")
+    })
     //pouria
    //  let token={
    //    "token_type": "Bearer",

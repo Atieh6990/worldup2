@@ -60,7 +60,7 @@ export default {
       userKey: "",
       userLoggedIn: false,
       registrationType: 0,//0->phone , 1->verifycode , 2->username
-      yPage: 0,//0->chatList , 1->input&submit , 2->keyboard
+      yPage: 1,//0->chatList , 1->input&submit , 2->keyboard
       xPage: 1,
       phoneNumber: "",
       verifyCode: "",
@@ -161,6 +161,8 @@ export default {
     ...mapGetters(["getUserTv", "getUserInfo", "getSocketW", "getTcChannel"]),
     ...mapMutations(["setUserInfo", "startSocketW", "setUserNameID", "disconnectSocketW"]),
     ...mapActions(["setUserName", "sendUserMessage"]),
+
+
     setCaretPosition(start, end) {
 
       if (!end) end = start;

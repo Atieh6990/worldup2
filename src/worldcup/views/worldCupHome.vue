@@ -6,6 +6,7 @@
     <div v-show="!showOnlinePlay" class="nestedRoutParent">
 
       <div class="nestedRoutBackground"></div>
+      <loading v-if="loading == true && osType == 0"></loading>
       <routHeader></routHeader>
       <router-view :key="$route.fullPath" ref="routeview"></router-view>
 
@@ -23,10 +24,11 @@ import {ROAST_CONFIG} from "../js/config";
 import router from '../router/index'
 import axios from 'axios'
 import routHeader from "../components/header/header";
+import loading from '../components/loading/loading'
 
 export default {
   name: "worldCupHome",
-  components: {videoPlayer, routHeader},
+  components: {videoPlayer, routHeader,loading},
   mixins: [func],
   data() {
     return {
@@ -69,7 +71,7 @@ export default {
       this.setUserTvW(this.UserTVInfo())
       this.setTvChannel(ROAST_CONFIG.TV_CHANNEL);
     }, 50);
-    // this.manageInterceptor()
+    this.manageInterceptor()
     this.$root.$on("tokenFindInStore", data => {
       this.$refs.routeview.manageTokenGet(data);//baraye local & tizen miad inja vali baraye andriod event sader mishe(PostMessages)
     })
@@ -82,6 +84,8 @@ export default {
     this.$root.$on("press_submit", () => {
       this.$refs.routeview.sendMessage()
     })
+
+
 
   },
 

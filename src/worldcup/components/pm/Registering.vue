@@ -37,9 +37,9 @@
     <div class="des">{{ des[type] }}</div>
     <div class="errorMdg">{{ errorMessage }}</div>
 
-    <div class="keyboardParent" v-if="type == 2">
-      <SimpleKeyboard @onChange="onChange" @onKeyPress="onKeyPress" :input="contentTxt" ref="SimpleKeyboard"/>
-    </div>
+<!--    <div class="keyboardParent" v-if="type == 2">-->
+<!--      <SimpleKeyboard @onChange="onChange" @onKeyPress="onKeyPress" :input="contentTxt" ref="SimpleKeyboard"/>-->
+<!--    </div>-->
   </div>
 </template>
 
@@ -60,11 +60,11 @@ export default {
       des: ["", "بعد از ارسال شماره تلفن همراه کد فعال سازی 4 رقمی برای شما پیامک خواهد شد", ""],
       contentTxt: "",
       yPos: 0,//0->input 1->btn , 2->keyboard , 3->clear btn
-      osType: 0,
+      // osType: 0,
       typeInpShow: 0,
       contentDivTxt: ['شماره تلفن همراه خود را وارد کنید', 'کد چهار رقمی را وارد کنید', 'نام مستعار خود را انتخاب کنید.'],
-      errorMessage:''
-      // osType:ROAST_CONFIG.OS_TYPE
+      errorMessage:'',
+      osType:ROAST_CONFIG.OS_TYPE
     };
   },
   computed: {

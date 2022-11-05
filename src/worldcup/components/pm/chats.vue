@@ -32,11 +32,6 @@
 import IScroll from '../../js/iscroll';
 import Vue from 'vue'
 import func from '../../mixins/mixin'
-// import IScrollView from 'vue-iscroll-view'
-// import IScroll from 'iscroll'
-//
-// Vue.use(IScrollView, IScroll)
-
 
 export default {
   name: "chats",

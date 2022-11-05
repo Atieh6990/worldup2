@@ -1,13 +1,11 @@
 <template>
   <div :class="keyboardClass"></div>
-  <!--  <div style="position: absolute;width: 200px; height: 200px;background-color: #891b56"></div>-->
 </template>
 
 <script>
 import Keyboard from "simple-keyboard";
-import keyNavigation from "../../js/keyNavigation";
-
 import "simple-keyboard/build/css/index.css";
+import keyNavigation from "../../js/keyNavigation";
 
 
 export default {
@@ -54,10 +52,11 @@ export default {
   },
   mounted() {
     this.keyboard = new Keyboard(this.keyboardClass, {
-      onChange: this.onChange,
+      rtl: true,
+      onChange: input => this.onChange(input),
       onKeyPress: this.onKeyPress,
       theme: "hg-theme-default hg-layout-default myTheme",
-      useMouseEvents: true,
+      useMouseEvents: false,
       enableKeyNavigation: false,
       // newLineOnEnter: true,
       tabCharOnTab: true,
@@ -154,6 +153,7 @@ export default {
       this.keyboard.modules.keyNavigation.left();
     },
     right() {
+      // alert('right')
       if (this.onRightEdge()) {
         return false
       }
@@ -161,10 +161,11 @@ export default {
       return true
     },
     enter() {
+
       this.keyboard.modules.keyNavigation.press();
     },
     onChange(input) {
-      // console.log('onChange', input)
+      this.$root.$emit('tesssting')
       this.$emit("onChange", input);
     },
     onKeyPress(button) {
@@ -202,7 +203,6 @@ export default {
   },
   watch: {
     chatTxt(input) {
-
       this.keyboard.setInput(input);
     }
   }
@@ -216,11 +216,5 @@ export default {
   padding: 10px !important;
   overflow: visible;
 }
-.hg-theme-default .hg-row {
-  display: -webkit-flex !important;;
-}
 
-.hg-row {
-  display: -webkit-flex !important;;
-}
 </style>

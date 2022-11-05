@@ -13,7 +13,6 @@
     "core-js": "^3.6.5",
     "iscroll": "^5.2.0",
     "simple-keyboard": "^3.4.167",
-    "simple-keyboard-key-navigation": "^2.4.233",
     "socket.io-client": "^2.2.0",
     "vue": "^2.6.11",
     "vue-iscroll-view": "^1.0.3",
