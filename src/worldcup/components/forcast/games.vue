@@ -9,11 +9,11 @@
            :style="[m == 0 ? {marginTop :'7px'}:'']">
         <div class="backImg">
           <div class="backIcon" style="right: 28px;">
-            <img src="../../assets/images/forecast/malavan70.png" class="icon"/>
+            <img v-if="match.teama && match.teama.pic" :src="match.teama.pic"  class="icon"/>
           </div>
           <div class="line"></div>
           <div class="backIcon" style="right: 135px;">
-            <img src="../../assets/images/forecast/malavan70.png" class="icon"/>
+            <img v-if="match.teamb && match.teamb.pic" :src="match.teamb.pic"  class="icon"/>
           </div>
           <div class="teamsNameParent">
             <div class="teamsName">{{ match.teama.name }}</div>
