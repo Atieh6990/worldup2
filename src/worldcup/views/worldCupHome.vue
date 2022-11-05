@@ -125,7 +125,8 @@ export default {
         if (this.showOnlinePlay) {
 
           this.setMenu({id: '', name: '', des: '', rout: ''});
-          this.$router.push('/worldCupHome/menuRout');
+         // this.$router.replace({path:'/worldCupHome/menuRout'});
+          this.$router.go(-1);
           this.setOnlinePlay(false);
           // if (this.osType == 0)
           //   setTimeout(function () {
@@ -149,7 +150,8 @@ export default {
       if(this.$route.name == 'onlinePlay'){
         if (this.showOnlinePlay) {
           this.setMenu({id: '', name: '', des: '', rout: ''});
-          this.$router.push('/worldCupHome/menuRout');
+       //
+          this.$router.go(-1);
           this.setOnlinePlay(false);
         }
         return false
@@ -159,7 +161,10 @@ export default {
         this.$root.$emit('sideMenu_show');
         this.$root.$emit('leftside_show');
         this.$root.$emit('header_show');
-        this.$refs.player.stop()
+        if(!ROAST_CONFIG.DEVELOP_MODE){
+          this.$refs.player.stop()
+        }
+
       }
 
 
@@ -258,6 +263,7 @@ export default {
       this.$router.push('/worldCupHome/menuRout');
       this.setOnlinePlay(false);
       this.fullScreenVideo(false)
+
     },
 
   }
