@@ -217,7 +217,7 @@ this.initpredicted()
       return data
     },
 
-    typeNumber(number) {
+    showNumber(number) {
     //console.log('number', number)
       if (this.yScore == 0) {
         if (number > 9) {

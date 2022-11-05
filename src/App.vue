@@ -213,7 +213,7 @@ export default {
         case 55: //key 7
         case 56: //key 8
         case 57: //key 9
-          this.$refs.routeview.typeNumber(parseInt(keyCode) - 48)
+          this.$refs.routeview.showNumber(parseInt(keyCode) - 48)
 
           break;
         case 10190: //key PRE-CH

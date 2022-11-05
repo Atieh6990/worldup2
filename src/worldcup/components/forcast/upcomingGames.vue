@@ -140,9 +140,9 @@ export default {
 
     },
 
-    typeNumber(number) {
+    showNumber(number) {
       if (this.yPos == 2 && this.type == 0) {
-        this.$refs.games.typeNumber(number)
+        this.$refs.games.showNumber(number)
       }
     },
       createGroups(arr){

@@ -31,8 +31,8 @@ export default {
     enter() {
       this.$refs.upcomingGames.enter();
     },
-    typeNumber(number) {
-      this.$refs.upcomingGames.typeNumber(number);
+    showNumber(number) {
+      this.$refs.upcomingGames.showNumber(number);
     },
   }
 }
