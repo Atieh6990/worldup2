@@ -3,8 +3,7 @@ module.exports = {
     //'https://samyar.rasgames.ir/worldcup/android/'
     publicPath: process.env.NODE_ENV === 'production'
 
-        ? 'https://tvapps.ir/worldcup/mahsa/'
-
+        ? 'https://tvapps.ir/worldcup/mahsa/js/'
         : './',
     pwa: {
         name: 'Geary Factory Lofts', // <---- this is PWA name
