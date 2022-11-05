@@ -43,18 +43,18 @@ export default {
 
 .profileParent {
   width: 90%;
-  height: 40px;
-  /*position: relative;*/
-  /*top: 60px;*/
+  height: 72px;
   display: -ms-flexbox;
   display: flex;
   display: -webkit-flex !important;
   margin: auto;
+  margin-bottom: 0px;
   flex-direction: column;
   align-items: center;
 }
 .imgPro{
-  width: 36px;
+  width: 36px !important;
+  height: 40px !important;
 }
 .mobPro{
   font-style: normal;
@@ -72,9 +72,8 @@ export default {
   border: 1px solid #FFFFFF;
   box-shadow: 0px 4px 4px rgb(0 0 0 / 25%);
   border-radius: 11px;
-  /*top: 40px;*/
-  /*position: relative;*/
   margin: auto;
+  margin-top: 0px;
 }
 
 .scoreParent {
