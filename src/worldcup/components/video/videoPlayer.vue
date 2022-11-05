@@ -63,7 +63,7 @@ export default {
   top: 0px;
   left: 0px;
   z-index: 10;
-  border: 1px solid red;
+  border: 1px solid transparent;
 }
 
 .playBox {

@@ -517,7 +517,7 @@ export default {
         } else {
           //this.matches = {};
         }
-        this.hidePopUp()
+      this.hidePopUp()
         // if (data.success)
         //   this.scrollInit();
       });
@@ -536,13 +536,16 @@ export default {
   top: 0px;
   left: 0px;
   height: 100%;
-  display: -webkit-flex !important;
   display: flex;
+  display: -webkit-flex !important;
   flex-direction: row;
   flex-wrap: nowrap;
   justify-content: center;
+  -webkit-justify-content: center;
   align-items: center;
   align-content: stretch;
+  z-index:999999;
+  -webkit-align-items:center;
 }
 .popupBack {
   z-index:9;
@@ -557,7 +560,6 @@ export default {
 }
 
 .popBox {
-
   box-sizing: border-box;
   width: 290px;
   height: 170px;
@@ -569,7 +571,10 @@ export default {
   flex-direction: row;
   flex-wrap: nowrap;
   justify-content: center;
+  -webkit-justify-content: center;
+
   align-items: center;
+  -webkit-align-items:center;
   align-content: stretch;
   color: rgba(77, 205, 44, 1);
   font-size: 20px;
