@@ -3,7 +3,7 @@ module.exports = {
     //'https://samyar.rasgames.ir/worldcup/android/'
     publicPath: process.env.NODE_ENV === 'production'
 
-        ? 'https://tvapps.ir/worldcup/test_1/'
+        ? 'https://tvapps.ir/worldcup/mahsa/'
 
         : './',
     pwa: {
