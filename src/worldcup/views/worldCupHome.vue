@@ -184,8 +184,8 @@ export default {
     },
     cancel() {
     },
-    typeNumber(num) {
-      this.$refs.routeview.typeNumber(num);
+    showNumber(num) {
+      this.$refs.routeview.showNumber(num);
     },
     exit() {
       this.handleExit();
