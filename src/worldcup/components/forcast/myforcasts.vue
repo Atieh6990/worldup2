@@ -298,7 +298,7 @@ export default {
 
 .winResult {
   /*background-color: #40BF21;*/
-  background: rgb(74, 74, 75);
+  /*background: rgb(74, 74, 75);*/
 }
 
 .looseResult {

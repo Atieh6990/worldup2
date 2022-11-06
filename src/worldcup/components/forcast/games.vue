@@ -266,9 +266,10 @@ this.initpredicted()
 
 console.log("data",data)
        api.predict(data).then((data) => {
+         console.log("data4444444",data)
+         if (data.success===true || data.success==="true" ) {
 
-         if (data.success) {
-           this.$emit("dopredict");
+           this.$emit("dopredict",true,data.data.msg);
            // console.log("data",data.data)
            // this.data =data.data
            // this.groups = Object.keys(this.matches);
@@ -279,6 +280,7 @@ console.log("data",data)
            // console.log("this.matches",this.matches);
 
          } else {
+           this.$emit("dopredict",false,data.data.msg);
            //this.matches = {};
          }
 
