@@ -23,7 +23,7 @@
           <div class="teamsNameParent">
             <div class="teamsName">{{ match.teama.name }}</div>
             <div class="matchTime">
-              <div>{{ match.factor }}k</div>
+              <div>{{ match.factor }}X</div>
               <div v-if="match.forecasts && match.forecasts[0] && match.forecasts[0].score && match.forecasts[0].score!==0" style="margin-top: 3px"><span>امتیاز:</span> <span>{{ match.forecasts[0].score}}</span></div>
             </div>
 

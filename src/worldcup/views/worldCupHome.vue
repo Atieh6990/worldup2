@@ -6,8 +6,8 @@
     <div v-show="!showOnlinePlay" class="nestedRoutParent">
 
       <div class="nestedRoutBackground"></div>
-<!--      <loading v-if="loading == true && osType == 0"></loading>-->
-      <loading v-if="loading == true"></loading>
+      <loading v-if="loading == true && osType == 0"></loading>
+<!--      <loading v-if="loading == true"></loading>-->
       <routHeader></routHeader>
       <router-view :key="$route.fullPath" ref="routeview"></router-view>
 
@@ -166,6 +166,7 @@ export default {
           this.$refs.player.stop()
         }
 
+
       }
 
 
@@ -177,6 +178,7 @@ export default {
       if (!ROAST_CONFIG.OS_TYPE && this.$route.name == "menuRout") {
         this.handleExit()
       } else {
+
         this.$router.go(-1);
       }
 

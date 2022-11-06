@@ -100,6 +100,7 @@ export default {
   },
 
   methods: {
+
     scrollInit() {
       this.myScroll = '';
       if (this.myScroll == '') {
@@ -208,7 +209,7 @@ this.initpredicted()
     },
 
     enter() {
-      if(this.yScore==1 && this.yPos==2 && this.teamA[this.yMatch] && this.teamB[this.yMatch] ){
+      if(this.yScore==1 && this.yPos==2 && (this.teamA[this.yMatch]||this.teamA[this.yMatch]==0) && (this.teamB[this.yMatch]||this.teamB[this.yMatch]==0) ){
         this.predict(this.teamA[this.yMatch],this.teamB[this.yMatch],this.matches[this.selectedIndex][this.yMatch].id)
       }
       let data = {
