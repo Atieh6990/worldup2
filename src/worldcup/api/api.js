@@ -42,7 +42,7 @@ export default {
             url: Url,
             data: Orgdata,
         }).then(response => {
-            let data = response['data'];
+            let data = response;
             return data
         }).catch(response => {
             console.log("signup catch", response)

@@ -49,7 +49,9 @@ export default {
 
   methods: {
 
-
+    resetParams(){
+       this.xItem=0
+    },
     left() {
 
       if (this.xItem < this.groups.length - 1) {

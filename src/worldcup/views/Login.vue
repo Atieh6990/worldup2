@@ -259,9 +259,15 @@ export default {
 
     //  alert(this.userKey + '**' + this.verifyCode + '**' + this.phoneNumber + '**' + this.getUserTv().mac + '**' + this.getUserTv().uid + '**' + this.getUserTv().version + '**' + this.getUserTv().mac_lan + '**' + this.getUserTv().tv_type)
       api.signup(this.userKey, this.verifyCode, this.phoneNumber, this.getUserTv().mac, this.getUserTv().uid, this.getUserTv().version, this.getUserTv().mac_lan, this.getUserTv().tv_type).then(data => {
+// console.log("dataaaaaaaaaa1",data)
 
-        if (data.success == false) {
-          this.$root.$emit("set_error_msgL", data.data.message);
+      if(!data){
+        // console.log("dataaaaaaaaaa2",data)
+          this.$root.$emit("set_error_msgL","مشکلی در برقراری ارتباط با سرور بوجود آمده است.");
+        return
+      }
+        if (data.data.success == false) {
+          this.$root.$emit("set_error_msgL", data.data.data.message);
           // this.errorMessage = data.data.message;
           return false
         }
@@ -274,7 +280,7 @@ export default {
         // this.DeleteFile()
         // this.errorMessage = ""
         this.$root.$emit("set_error_msgL", '');
-        this.setParam("Tokenw", JSON.stringify(data.data))
+        this.setParam("Tokenw", JSON.stringify(data.data.data))
         // this.setToken(JSON.stringify(param));
         // this.setUserInfo(param);
         //this.startSocket();

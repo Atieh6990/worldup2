@@ -37,6 +37,7 @@ export default {
   },
   components: {tabs, groups, games, myforcasts},
   created() {
+
     this.matchesApi();
   },
   methods: {
@@ -79,6 +80,10 @@ export default {
     down() {
 
       if (this.yPos == 0 || this.yPos == 1) {
+        console.log("--------0000009999999",this.predictable[this.selectedIndex].length)
+        if(this.yPos == 1 && ((this.type == 0 && !this.predictable[this.selectedIndex].length) ||  (this.type == 1 && !this.mypredict[this.selectedIndex].length))){
+return
+        }
         this.yPos++;
         return false
       }
@@ -172,8 +177,8 @@ export default {
   this.mypredict=mypredict
   console.log("this.groups",this.groups)
   console.log("this.predictable",this.predictable)
-  console.log("this.mypredict",this.mypredict)
-
+  //console.log("this.mypredict", this.$refs.groups.resetParams())
+       // this.$refs.groups.up()
   },
 
 
@@ -513,7 +518,7 @@ export default {
           // console.log("this.selectedIndex",this.selectedIndex)
           // console.log("this.groups[this.selectedIndex]",this.groups[this.selectedIndex])
           // console.log("this.matches",this.matches);
-
+          this.$refs.groups.resetParams()
         } else {
           //this.matches = {};
         }
