@@ -2,7 +2,7 @@
   <div style="  direction: rtl !important;">
     <div class="popupParent" v-if="showSuccessPopup == true">
       <div class="popupBack"></div>
-      <div class="popBox">پیش بینی با موفقیت ثبت شد</div>
+      <div    :class="[(Erstatus) ?'popBox':'popBoxErr']"   >{{Errmsg}}</div>
     </div>
     <tabs :y-pos="yPos" ref="tabs"></tabs>
     <groups v-on:selectItem="selectItem" :y-pos="yPos"  :groups="groups" ref="groups"></groups>
@@ -33,6 +33,8 @@ export default {
       type: 0,//0 -> bazi haye pishe roo , 1 -> pishbini haye man
       selectedIndex:0,
       showSuccessPopup:false,
+      Erstatus:false,
+      Errmsg:"",
     }
   },
   components: {tabs, groups, games, myforcasts},
@@ -47,8 +49,10 @@ export default {
       },1000)
 
     },
-    dopredict(){
+    dopredict(status,msg){
       this.showSuccessPopup = true
+      this.Erstatus=status
+      this.Errmsg=msg
       this.matchesApi();
     },
     selectItem(index){
@@ -577,12 +581,34 @@ return
   flex-wrap: nowrap;
   justify-content: center;
   -webkit-justify-content: center;
-
+position: relative;
+  padding: 10px;
   align-items: center;
   -webkit-align-items:center;
   align-content: stretch;
   color: rgba(77, 205, 44, 1);
   font-size: 20px;
-  white-space: nowrap;
+
+}
+.popBoxErr{
+  box-sizing: border-box;
+  width: 290px;
+  height: 170px;
+  background: #FFFFFF;
+  border-radius: 11px;
+  z-index: 10;
+  display: flex;
+  display: -webkit-flex !important;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: center;
+  -webkit-justify-content: center;
+
+  align-items: center;
+  -webkit-align-items:center;
+  align-content: stretch;
+  color: red;
+  font-size: 20px;
+
 }
 </style>
