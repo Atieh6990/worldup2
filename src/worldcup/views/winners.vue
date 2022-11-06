@@ -1,7 +1,7 @@
 <template>
   <div style="direction: rtl !important;">
     <groups v-on:selectItem="selectItem" :y-pos="yPos" :groups="groups" ref="groups"></groups>
-    <my-score></my-score>
+    <my-score :userMob="userMob" :userScoreNum="userScoreNum"></my-score>
     <div class="winnerParent" style="top: 90px;">
       <div style="width: 50%;float: right;">برنده مستقیم</div>
       <div style="width: 33%;float:left;">امتیاز</div>
@@ -52,13 +52,16 @@ export default {
     return {
       yPos: 1,
       winnersList: [],
+      userScoreList: [],
       groups: [],
       selectedIndex: 0,
       scoreUserMob: '',
       lotteryUserMob: '',
       scoreUserScore: '',
       lotteryUserScore: '',
-      descScore: ''
+      descScore: '',
+      userScoreNum: '',
+      userMob: ''
     }
   },
   created() {
@@ -74,6 +77,18 @@ export default {
       api.winners().then((data) => {
         if (data.success) {
           this.winnersInfo(data.data);
+          this.userScoreApi();
+        } else {
+        }
+
+      });
+
+    },
+    userScoreApi: function () {
+      api.userScore().then((data) => {
+        if (data.success) {
+          this.userScoreInfo(data.data);
+          this.userMob = data.data['user']['mobile'];
         } else {
         }
 
@@ -88,6 +103,14 @@ export default {
       }
       this.selectedInfo();
     },
+    userScoreInfo: function (data) {
+      this.userScoreList = data;
+      //
+      // for (let key in this.userScoreList) {
+      //   this.groups.push(key);
+      // }
+      this.selectedScore();
+    },
     selectedInfo: function () {
       this.scoreUserMob = this.winnersList[this.groups[this.selectedIndex]]['score_user']['mobile'];
       this.lotteryUserMob = this.winnersList[this.groups[this.selectedIndex]]['lottery_user']['mobile'];
@@ -95,10 +118,14 @@ export default {
       this.lotteryUserScore = this.winnersList[this.groups[this.selectedIndex]]['lottery_user']['score'];
       this.descScore = this.winnersList[this.groups[this.selectedIndex]]['description'];
     },
+    selectedScore: function () {
+      this.userScoreNum = this.userScoreList[this.groups[this.selectedIndex]]['score'];
+    },
     enter() {
       if (this.yPos == 1) {
         this.$refs.groups.enter();
         this.selectedInfo();
+        this.selectedScore();
       }
 
     }
@@ -130,6 +157,7 @@ export default {
   float: right;
   position: relative;
 }
+
 .winnerParent {
   width: 100%;
   height: 33px;

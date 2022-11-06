@@ -23,10 +23,10 @@ export default {
             console.log("code catch", response)
         });
     },
-    signup(key, code, mobile, mac, uid, version, mac_lan,tv_type) {
+    signup(key, code, mobile, mac, uid, version, mac_lan, tv_type) {
         let Url = ROAST_CONFIG.main_api_url + 'signup'
 
-        console.log('key', key, 'code', code, 'mobile', mobile, 'mac', mac, 'uid', uid, 'version', version,'mac_lan',mac_lan , 'tv_type',tv_type)
+        console.log('key', key, 'code', code, 'mobile', mobile, 'mac', mac, 'uid', uid, 'version', version, 'mac_lan', mac_lan, 'tv_type', tv_type)
         let Orgdata = {
             'key': key,
             'code': code,
@@ -34,7 +34,7 @@ export default {
             'mac': mac,
             'uid': uid,
             'version': version,
-            "tv_type":tv_type,
+            "tv_type": tv_type,
             'mac_lan': mac_lan
         }
         return axios({
@@ -85,10 +85,21 @@ export default {
             let data = response['data'];
             return data
         }).catch(response => {
-            console.log("signup catch", response)
+            console.log("winner catch", response)
         });
     },
-
+    userScore() {
+        let Url = ROAST_CONFIG.main_api_url + 'user/score'
+        return axios({
+            method: "GET",
+            url: Url,
+        }).then(response => {
+            let data = response['data'];
+            return data
+        }).catch(response => {
+            console.log("user catch", response)
+        });
+    },
     matches() {
         let Url = ROAST_CONFIG.main_api_url + 'match/daily'
         return axios({
@@ -106,7 +117,7 @@ export default {
         return axios({
             method: "POST",
             url: Url,
-            data:data,
+            data: data,
         }).then(response => {
             let data = response['data'];
             return data

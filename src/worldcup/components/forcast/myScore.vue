@@ -2,11 +2,11 @@
   <div class="backImg">
     <div class="profileParent">
       <img src="../../assets/images/winner/profile.png" class="imgPro"/>
-      <div class="mobPro">09352793516</div>
+      <div class="mobPro">{{userMob}}</div>
     </div>
     <div class="scoresBox">
       <div class="scoreParent">
-        <div class="numScore" style="font-size: 30px;">0</div>
+        <div class="numScore" style="font-size: 30px;">{{ userScoreNum }}</div>
         <div  style="font-size: 12px;">
           <img src="../../assets/images/forecast/ballActive.png">
           <span class="titleScore">امتیاز من</span>
@@ -23,7 +23,10 @@
 
 <script>
 export default {
-  name: "myScore"
+  name: "myScore",
+  props:['userMob','userScoreNum'],
+  methods:{
+  }
 }
 </script>
 
@@ -62,6 +65,7 @@ export default {
   font-size: 20px;
   line-height: 38px;
   color: #FFFFFF;
+  direction: ltr;
 }
 
 .scoresBox {
