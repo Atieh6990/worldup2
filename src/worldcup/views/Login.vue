@@ -163,6 +163,9 @@ export default {
 
   },
   methods: {
+    cancel(){
+      this.$refs.registering.cancel();
+    },
     ...mapGetters(["getUserTv", "getUserInfo", "getSocketW", "getTcChannel"]),
     ...mapMutations(["setUserInfo", "startSocketW", "setUserNameID", "disconnectSocketW", "setMenu"]),
     ...mapActions(["setUserName", "sendUserMessage"]),

@@ -99,27 +99,46 @@ export default {
             localStorage.removeItem(key);
         },
         showIme: function (inputName) {
-            keyBoardIME = setTimeout(function () {
-                // var elIme = document.querySelector('#' + inputName);
-                // console.log("inputName")
-                var elIme = document.getElementById("" + inputName)
-                //document.body.focus();
-                elIme.focus();
-                // console.log("getFocuse")
-                isImeFocused = true;
-            }, 500);
 
-        }
-        ,
+            if (ROAST_CONFIG.OS_TYPE == 1) {
+                keyBoardIME = setTimeout(function () {
+                    var elIme = document.querySelector('#' + inputName);
+                    //document.body.focus();
+                    elIme.focus();
+                    keyBoardIME = true;
+                    // console.log('isImeFocused11111111111 ->' + isImeFocused)
+                }, 500);
+            } else {
+                keyBoardIME = setTimeout(function () {
+                    // var elIme = document.querySelector('#' + inputName);
+                    // console.log("inputName")
+                    var elIme = document.getElementById("" + inputName)
+                    //document.body.focus();
+                    elIme.focus();
+                    // console.log("getFocuse")
+                    isImeFocused = true;
+                }, 500);
+            }
+
+        },
+
         hideIme: function (inputName) {
             clearTimeout(keyBoardIME);
-            setTimeout(() => {
-                // var elIme = document.querySelector('#' + inputName);
-                // elIme.blur();
-                document.getElementById("" + inputName).blur();
+
+            if (ROAST_CONFIG.OS_TYPE == 1) {
+                var elIme = document.querySelector('#' + inputName);
                 document.body.focus();
+                elIme.blur();
                 isImeFocused = false;
-            }, 500)
+            } else {
+                setTimeout(() => {
+                    // var elIme = document.querySelector('#' + inputName);
+                    // elIme.blur();
+                    document.getElementById("" + inputName).blur();
+                    document.body.focus();
+                    isImeFocused = false;
+                }, 500)
+            }
 
         },
         xmlParser(data) {

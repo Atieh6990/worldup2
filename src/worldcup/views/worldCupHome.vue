@@ -186,6 +186,10 @@ export default {
     done() {
     },
     cancel() {
+      if(ROAST_CONFIG.OS_TYPE){
+        this.$refs.routeview.cancel();
+      }
+
     },
     showNumber(num) {
       this.$refs.routeview.showNumber(num);

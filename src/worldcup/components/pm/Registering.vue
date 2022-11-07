@@ -102,6 +102,9 @@ export default {
   },
   components: {SimpleKeyboard},
   methods: {
+    cancel(){
+      this.hideIme("content_" + this.type);
+    },
     down() {
       if (this.yPos == 0) {
         this.typeInpShow = 0;
@@ -309,7 +312,7 @@ export default {
   height: 56px;
   width: 301px;
   right: 17px;
-  top: 413px;
+  top: 420px;
   border-radius: 7px;
   display: flex;
   align-items: center;
@@ -327,7 +330,7 @@ export default {
   height: 56px;
   width: 119px;
   right: 194px;
-  top: 487px;
+  top: 500px;
   border-radius: 7px;
   position: absolute;
   background-color: transparent;
