@@ -8,14 +8,14 @@
     </div>
     <div class="scoreItem" style="top: 105px;">
       <div class="nameBox innerItem">
-        <img src="../assets/images/scores/name.png" style="padding-left: 10px">
+        <img :src="WImgUrl+'name.png'"  style="padding-left: 10px">
         <div class="nameTxt">{{ scoreUserMob }}</div>
       </div>
       <div class="rankBox innerItem">
         <div class="scoreTxt">
           {{ scoreUserScore }}
         </div>
-        <img src="../assets/images/scores/score.png" style="padding-right: 10px">
+        <img :src="WImgUrl+'score.png'" style="padding-right: 10px">
       </div>
     </div>
     <div class="verLine" style="top: 125px;"></div>
@@ -25,12 +25,12 @@
     </div>
     <div class="scoreItem" style="top: 155px;">
       <div class="nameBox innerItem">
-        <img src="../assets/images/scores/name.png" style="padding-left: 10px">
+        <img :src="WImgUrl+'name.png'" style="padding-left: 10px">
         <div class="nameTxt">{{ lotteryUserMob }}</div>
       </div>
       <div class="rankBox innerItem">
         <div class="scoreTxt">{{ lotteryUserScore }}</div>
-        <img src="../assets/images/scores/score.png" style="padding-right: 10px">
+        <img :src="WImgUrl+'score.png'" style="padding-right: 10px">
       </div>
     </div>
     <div class="verLine" style="top: 175px;"></div>
@@ -45,6 +45,7 @@
 import groups from "../components/forcast/groups";
 import api from "../api/api";
 import MyScore from "../components/forcast/myScore";
+import {ROAST_CONFIG} from "../js/config";
 
 export default {
   name: "winners",
@@ -61,7 +62,8 @@ export default {
       lotteryUserScore: '',
       descScore: '',
       userScoreNum: '',
-      userMob: ''
+      userMob: '',
+      WImgUrl:ROAST_CONFIG.WImgUrl,
     }
   },
   created() {
