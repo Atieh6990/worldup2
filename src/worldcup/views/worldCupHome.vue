@@ -83,6 +83,7 @@ export default {
     });
 
     this.$root.$on("press_submit", () => {
+      alert("gjfdjfgbdfgvb dfjgvbb")
       this.$refs.routeview.sendMessage()
     })
 
@@ -98,7 +99,10 @@ export default {
       this.$refs.routeview.manageTokenGet(data)
     },
 
-
+    onchangeChatInp(inp){
+      // alert("onchangeChatInp 2 " + inp)
+      this.$refs.routeview.onChange(inp);
+    },
     up() {
       this.$refs.routeview.up();
     },

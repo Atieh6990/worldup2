@@ -165,7 +165,7 @@ export default {
       this.keyboard.modules.keyNavigation.press();
     },
     onChange(input) {
-      this.$root.$emit('tesssting')
+      // this.$root.$emit('onchangeChatInp',input)
       this.$emit("onChange", input);
     },
     onKeyPress(button) {
@@ -203,6 +203,7 @@ export default {
   },
   watch: {
     chatTxt(input) {
+      // alert('in watch keyboard')
       this.keyboard.setInput(input);
     }
   }
