@@ -16,7 +16,7 @@ export default {
   mixins: [func],
   created() {
     this.$root.$on('tesssting', () => {
-      alert("tesssting")
+      // alert("tesssting")
     })
     //pouria
    //  let token={
