@@ -2,7 +2,7 @@
 
 
   <div class="chatBoxParent">
-    <div class="chatBoxChild" v-on:click="clickList()">
+    <div class="chatBoxChild">
       <div v-for="(item,index) in (messageList)"
            :id="'chatList_'+index"
            :class="[((userId == item.user_id) ? 'selfDirection':''),'chatItem']">

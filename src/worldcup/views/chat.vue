@@ -1,8 +1,7 @@
 <template>
   <div class="parent">
 
-    <!--    <div style="position: absolute;width: 200px;height: 200px;background-color: #42b983"></div>-->
-
+    <!--    <div style="position: absolute;width: 200px;height: 200px;background-color: #42b983;color: red;font-size: 20px"> {{ chatTxt }} {{userLoggedIn}}</div>-->
 
 
     <div v-if="userLoggedIn">
@@ -20,11 +19,11 @@
                               name="chatTxt" type="text" @input="onInputChange"
                               ref="contentTextArea"
                               autofocus
-                              v-on:click="removeHover()"></textarea>
+                              v-on:click="removeHover()">{{chatTxt}}</textarea>
           <div class="chatInp input" style="overflow: auto" id="chatTxtDiv">{{ chatTxt }}</div>
         </div>
-        <div :class="[((yPage == 1 && activeRoute==1 && xPage == 1 && userLoggedIn) ?'inpParentHover':''),'submitBtn']"
-             v-on:click="sendMessage()"><img src="../assets/images/Pm/sendBtn.png"></div>
+        <div :class="[((yPage == 1 && activeRoute==1 && xPage == 1 && userLoggedIn) ?'inpParentHover':''),'submitBtn']">
+          <img src="../assets/images/Pm/sendBtn.png"></div>
       </div>
 
       <div class="keyboardParent" v-if="userLoggedIn">
@@ -32,7 +31,6 @@
       </div>
 
     </div>
-
 
 
   </div>
@@ -58,7 +56,7 @@ export default {
       activeRoute: 1,
       chatTxt: "",
       userKey: "",
-      userLoggedIn: false,
+      userLoggedIn: true,
       registrationType: 0,//0->phone , 1->verifycode , 2->username
       yPage: 1,//0->chatList , 1->input&submit , 2->keyboard
       xPage: 1,
@@ -80,13 +78,13 @@ export default {
   mounted() {
 
     setTimeout(() => {
-    this.userLoggedIn=true
+      this.userLoggedIn = true
     }, 2000)
   },
   watch: {
 
     chatTxt: function () {
-      // console.log("chatTxt changed")
+      // alert("chatTxt changed")
       let element = document.getElementById("chatTxtDiv");
       element.scrollTop = element.scrollHeight;
       // this.$refs.contentTextArea.focus()
@@ -120,32 +118,11 @@ export default {
     this.roomName = "اتاق گفتگوی جام جهانی";
     // this.getToken()
 
-        this.errorMessage = ""
-      //  this.setToken(JSON.stringify(param));
-       // this.setUserInfo(param);
-        this.startSocketW();
+    this.errorMessage = ""
+    //  this.setToken(JSON.stringify(param));
+    // this.setUserInfo(param);
+    this.startSocketW();
 
-    // // this.setToken("");
-    // if (ROAST_CONFIG.LOCAL_TEST == true) {
-    //     this.setUserNameID({item: "access_token", amount: ROAST_CONFIG.TEST_TOKEN})
-    //     this.startSocket();//for test
-    // } else {
-    //     // this.$root.$emit("show_loading")
-    //     this.getTokenData();
-    // }
-
-    //
-    // this.$root.$on('loginUserData', (data) => {
-    //   // alert('loginUserData'+data.data)
-    //   if (data.data == null || data.data == 'null' || data.data == '') {
-    //     // alert("00")
-    //     this.registrationType = 0;
-    //     this.userLoggedIn = false;
-    //   } else {
-    //     // alert("111")
-    //     this.checkToken(data.data);
-    //   }
-    // });
 
     this.$root.$on("remove_Hover", (index) => {
       this.yPage = index;
@@ -197,6 +174,7 @@ export default {
       this.userLoggedIn = false;
     },
     enter() {
+      // alert('enter : ' + this.userLoggedIn + '**' + this.yPage + '**' + this.xPage)
       if (this.userLoggedIn) {
 
         if (this.yPage == 2) {
@@ -215,7 +193,7 @@ export default {
         }
 
       } else {
-        this.$refs.registering.enter()
+        // this.$refs.registering.enter()
       }
     },
     up() {
@@ -357,73 +335,7 @@ export default {
         this.setUserName(data.content);
       }
     },
-    // getCode() {
-    //   api.code(this.phoneNumber).then((data) => {
-    //     if (data.success) {
-    //       this.userKey = data.data.key;
-    //       this.registrationType = 1
-    //     } else {
-    //       if (typeof data.data.message == "string") {
-    //         this.errorMessage = data.data.message
-    //       } else {
-    //         for (let key in data.data.message) {
-    //           if (data.data.message.hasOwnProperty(key)) {
-    //             this.errorMessage = data.data.message[key][0];
-    //             break;
-    //           }
-    //         }
-    //       }
-    //     }
-    //   })
-    // },
-    // doSignUp() {
-    //
-    //
-    // // alert('mac : '+ this.getUserTv().mac + '  uid : ' + this.getUserTv().uid + '  version :' +this.getUserTv().version)
-    //   api.signup(this.userKey, this.verifyCode, this.phoneNumber, this.getUserTv().mac, this.getUserTv().uid, this.getUserTv().version).then(data => {
-    //     if (data.success == false) {
-    //       this.errorMessage = data.data.message;
-    //       return false
-    //     }
-    //     let param = {
-    //       expires_in: (data.expires_in * 1000) + (new Date).getTime(),
-    //       access_token: data.access_token,
-    //       refresh_token: data.refresh_token
-    //     }
-    //     // alert("param" + param)
-    //     // this.DeleteFile()
-    //     this.errorMessage = ""
-    //     this.setToken(JSON.stringify(param));
-    //     this.setUserInfo(param);
-    //     this.startSocket();
-    //   })
-    // },
-    // checkToken(key) {
-    //   // let keyJson = JSON.parse(key);
-    //   // console.log("keyJson" ,key.expires_in)
-    //   let keyJson = (key);
-    //   let param = {
-    //     expires_in: (keyJson.expires_in * 1000) + (new Date).getTime(),
-    //     access_token: keyJson.access_token,
-    //     refresh_token: keyJson.refresh_token
-    //   }
-    //
-    //   // console.log('param', param)
-    //
-    //   this.setUserInfo(param);
-    //   // this.$root.$emit("hide_loading")
-    //   // if (1==1) {
-    //   if ((new Date).getTime() >= keyJson.expires_in) {
-    //
-    //     this.DeleteFile()
-    //     this.registrationType = 0;
-    //     this.userLoggedIn = false;
-    //
-    //   } else {
-    //     this.startSocket();
-    //   }
-    //
-    // },
+
     removeHover() {
       if (this.userLoggedIn) {
         this.yPage = 1;
@@ -434,6 +346,7 @@ export default {
     sendMessage() {
       if (this.chatTxt == "")
         return false
+
 
       this.yPage = 1;
       this.xPage = 1;
@@ -489,7 +402,9 @@ export default {
       // this.exitAndroidApp();
     },
     onChange(input) {
+
       this.chatTxt = input;
+
     },
     onKeyPress(button) {
       // console.log("button", button);
@@ -501,6 +416,10 @@ export default {
     },
     cancel() {
     },
+
+    changingInpVal(inputTxt) {
+      this.chatTxt = inputTxt;
+    }
     // getTokenData() {
     //   // setTimeout(() => {
     //   //   console.log("chat getTokenData" ,)
