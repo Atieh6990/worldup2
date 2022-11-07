@@ -190,7 +190,7 @@ export default {
     done() {
     },
     cancel() {
-          if(ROAST_CONFIG.OS_TYPE){
+      if(ROAST_CONFIG.OS_TYPE){
         this.$refs.routeview.cancel();
       }
     },
