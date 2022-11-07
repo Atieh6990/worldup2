@@ -4,7 +4,7 @@
          v-on:click="clickItem(item)"
          :class="[((ypage==item && active == 1) ? 'sideItemsHover':''),((item==selectedItem)?('active'):('deactive')),'sidesItems']">
       <img
-          :src="selectedItem==item ? (require('../../assets/images/menu/'+sideItemHoverImg[item])):(require('../../assets/images/menu/'+sideItemImg[item]))">
+           :src="selectedItem==item ? (WImgUrl+sideItemHoverImg[item]):(WImgUrl+sideItemImg[item])">
       <!--            <img src="../../assets/images/menu/bourse.png">-->
     </div>
   </div>
@@ -12,10 +12,13 @@
 
 <script>
 
+import {ROAST_CONFIG} from "../../js/config";
+
 export default {
   name: 'sideMenue',
   data() {
     return {
+      WImgUrl:ROAST_CONFIG.WImgUrl,
       active: 0, ypage: 0,
       selectedItem: 0,
       sideItemImg: ['clock.png', 'CHAT.png', 'dollar.png', 'bourse.png', 'news.png', 'news.png'],

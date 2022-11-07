@@ -5,6 +5,7 @@ var main_api_url = "https://fifa.tvapps.ir/api/";
 var FileName = "online_chat_tk";
 var socketUrl = "wss://metadata.tvapps.ir";
 var TVChannel = "Apps";
+var WImgUrl = "https://fifapanel.tvapps.ir/img/";
 var menuItems= [
     // {id: 0, name: 'گردونه شانس', des: 'گردونه رو بچرخون و شانست رو امتحان کن', rout: '/worldCupHome/Pm/'},
     {id: 1, name: 'پیش بینی', des: 'پیش بینی لحظه ای مسابقات فوتبال', rout: '/worldCupHome/forecast/'},
@@ -22,6 +23,6 @@ export const ROAST_CONFIG = {
     SOCKET_URL: socketUrl,
     TV_CHANNEL: TVChannel,
     menuItems:menuItems,
-    main_api_url:main_api_url
-
+    main_api_url:main_api_url,
+    WImgUrl:WImgUrl
 }

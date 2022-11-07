@@ -8,7 +8,7 @@
     <div v-if="userLoggedIn">
 
       <div v-if="userLoggedIn && messageList.length>0" class="">
-        <img src="../assets/images/Pm/chat.png" style="position: relative">
+        <img :src="WImgUrl+'chat.png'" style="position: relative">
         <chats ref="chats" :messageList="messageList" :userId="getUserInfo().userId"></chats>
       </div>
 
@@ -24,7 +24,7 @@
           <div class="chatInp input" style="overflow: auto" id="chatTxtDiv">{{ chatTxt }}</div>
         </div>
         <div :class="[((yPage == 1 && activeRoute==1 && xPage == 1 && userLoggedIn) ?'inpParentHover':''),'submitBtn']"
-             v-on:click="sendMessage()"><img src="../assets/images/Pm/sendBtn.png"></div>
+             v-on:click="sendMessage()"><img :src="WImgUrl+'sendBtn.png'" ></div>
       </div>
 
       <div class="keyboardParent" v-if="userLoggedIn">
@@ -45,6 +45,7 @@ import func from '../mixins/mixin'
 import {mapGetters, mapMutations, mapActions} from 'vuex'
 import api from '../api/api'
 import SimpleKeyboard from "../components/pm/SimpleKeyboard";
+import {ROAST_CONFIG} from "../js/config";
 
 export default {
   name: "chat",
@@ -55,6 +56,7 @@ export default {
   },
   data() {
     return {
+      WImgUrl:ROAST_CONFIG.WImgUrl,
       activeRoute: 1,
       chatTxt: "",
       userKey: "",

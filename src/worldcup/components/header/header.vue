@@ -5,7 +5,7 @@
 
 
     <div class="logo child">
-      <img :src="require('../../assets/images/menu/menu_'+getMenu().id+'.png')">
+      <img  :src="WImgUrl+'menu_'+getMenu().id+'.png'" >
       <!--      <img src="../../assets/images/menu/menu.png">-->
     </div>
 
@@ -27,12 +27,14 @@
 </template>
 <script>
 import {mapMutations, mapGetters} from 'vuex'
+import {ROAST_CONFIG} from "../../js/config";
 
 export default {
   name: "header",
   data() {
     return {
-      menuData: ''
+      menuData: '',
+      WImgUrl:ROAST_CONFIG.WImgUrl,
     }
   },
   created() {
