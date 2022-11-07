@@ -12,10 +12,10 @@
         <div class="rankBox innerItem">
           <div class="scoreTxt">{{ item.score }}</div>
 
-          <img v-if="index == 0" src="../assets/images/scores/1.png" style="padding-right: 10px">
-          <img v-else-if="index == 1" src="../assets/images/scores/2.png" style="padding-right: 10px">
-          <img v-else-if="index == 2" src="../assets/images/scores/3.png" style="padding-right: 10px">
-          <img v-else src="../assets/images/scores/all.png" style="padding-right: 10px">
+          <img v-if="index == 0" :src="WImgUrl+'1.png'"  style="padding-right: 10px">
+          <img v-else-if="index == 1" :src="WImgUrl+'2.png'" style="padding-right: 10px">
+          <img v-else-if="index == 2" :src="WImgUrl+'3.png'"  style="padding-right: 10px">
+          <img v-else  :src="WImgUrl+'all.png'" style="padding-right: 10px">
 
         </div>
 
@@ -28,6 +28,7 @@
 <script>
 import IScroll from '../js/iscroll';
 import api from '../api/api'
+import {ROAST_CONFIG} from "../js/config";
 
 export default {
   name: "scores",
@@ -35,6 +36,7 @@ export default {
     return {
       select: 0, myScroll: '',
       list: [],
+      WImgUrl:ROAST_CONFIG.WImgUrl,
       // list: [
       //   {id: 0, name: 'مهرداد احمدی', rank: 1580, rankTxt: 'نفر اول', self: 0},
       //   {id: 1, name: 'مهرداد پگاه وند', rank: 1580, rankTxt: 'نفر اول', self: 0},

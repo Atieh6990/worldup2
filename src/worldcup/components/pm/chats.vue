@@ -8,7 +8,7 @@
            :class="[((userId == item.user_id) ? 'selfDirection':''),'chatItem']">
         <div class="userImg">
           <div class="userImgBg">
-            <img src="../../assets/images/Pm/carbon_user-avatar-filled.png">
+            <img :src="WImgUrl+'carbon_user-avatar-filled.png'">
           </div>
         </div>
         <div class="userTxt">
@@ -32,6 +32,7 @@
 import IScroll from '../../js/iscroll';
 import Vue from 'vue'
 import func from '../../mixins/mixin'
+import {ROAST_CONFIG} from "../../js/config";
 
 export default {
   name: "chats",
@@ -41,7 +42,7 @@ export default {
   data() {
     return {
       myScroll: '',
-
+      WImgUrl:ROAST_CONFIG.WImgUrl,
     }
   },
   created() {

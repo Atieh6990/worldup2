@@ -12,12 +12,12 @@
 
           <div class="backIcon" style="right: 28px;">
             <img v-if="match.teama && match.teama.pic" :src="match.teama.pic" class="icon"/>
-            <img v-else src="../../assets/images/forecast/malavan70.png" class="icon"/>
+            <img v-else :src="WImgUrl+'malavan70.png'"  class="icon"/>
           </div>
           <div class="line"></div>
           <div class="backIcon" style="right: 135px;">
             <img  v-if="match.teamb && match.teamb.pic"  :src="match.teamb.pic" class="icon"/>
-            <img v-else src="../../assets/images/forecast/malavan70.png" class="icon"/>
+            <img v-else :src="WImgUrl+'malavan70.png'"  class="icon"/>
           </div>
 
           <div class="teamsNameParent">
@@ -32,15 +32,15 @@
 
           <div v-if="match.forecasts && match.forecasts[0] && match.forecasts[0].ball_score" class="balls">
             <div class="ball" v-for="(item,index) in match.forecasts[0].ball_score">
-              <img  src="../../assets/images/forecast/ballActive.png">
+              <img :src="WImgUrl+'ballActive.png'" >
             </div>
             <div class="ball" v-for="(item,index) in 4 - match.forecasts[0].ball_score">
-              <img  src="../../assets/images/forecast/ballDeactive.png">
+              <img :src="WImgUrl+'ballDeactive.png'" >
             </div>
           </div>
           <div v-else class="balls">
             <div class="ball" v-for="(item,index) in 4">
-              <img  src="../../assets/images/forecast/ballDeactive.png">
+              <img :src="WImgUrl+'ballDeactive.png'" >
             </div>
           </div>
 
@@ -65,6 +65,7 @@
 
 <script>
 import IScroll from "../../js/iscroll";
+import {ROAST_CONFIG} from "../../js/config";
 export default {
   name: "myforcasts",
   props: ['mypredict', 'selectedIndex'],
@@ -75,6 +76,7 @@ export default {
       win: require('../../assets/images/forecast/check.png'),
       loose: require('../../assets/images/forecast/cancle.png'),
       myScroll: '',
+      WImgUrl:ROAST_CONFIG.WImgUrl,
     }
   },
 

@@ -1,14 +1,14 @@
 <template>
   <div class="backImg">
     <div class="profileParent">
-      <img src="../../assets/images/winner/profile.png" class="imgPro"/>
+      <img :src="WImgUrl+'profile.png'" class="imgPro"/>
       <div class="mobPro">{{userMob}}</div>
     </div>
     <div class="scoresBox">
       <div class="scoreParent">
         <div class="numScore" style="font-size: 30px;">{{ userScoreNum }}</div>
         <div  style="font-size: 12px;">
-          <img src="../../assets/images/forecast/ballActive.png">
+          <img :src="WImgUrl+'ballActive.png'" >
           <span class="titleScore">امتیاز من</span>
         </div>
       </div>
@@ -22,9 +22,17 @@
 </template>
 
 <script>
+import {ROAST_CONFIG} from "../../js/config";
+
 export default {
   name: "myScore",
   props:['userMob','userScoreNum'],
+  data() {
+    return {
+      WImgUrl:ROAST_CONFIG.WImgUrl,
+
+    }
+  },
   methods:{
   }
 }

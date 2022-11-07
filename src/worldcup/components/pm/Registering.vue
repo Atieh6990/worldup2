@@ -1,7 +1,7 @@
 <template>
   <div class="registerParent">
 
-    <img class="icon" src="../../assets/images/Pm/vorteile-live-chat 2.png">
+    <img class="icon" :src="WImgUrl+'vorteile-live-chat 2.png'">
     <input :class="[((yPos == 0 && activeRoute == 1) ? 'inpHover':''),'content']" :value="contentTxt"
            :placeholder="placeHolders[type]"
            type="text"
@@ -24,7 +24,7 @@
     <div :class="[((yPos == 1 && activeRoute == 1) ? 'submitBtnHover':''),'submitBtn']"
          v-on:click="submitBtn()">
       <span style="padding-left: 15px">{{ btnTxt[type] }}</span>
-      <img :src="require('../../assets/images/Pm/'+icons[type]+'')">
+      <img :src="WImgUrl+icons[type]" >
     </div>
 
 
@@ -54,6 +54,7 @@ export default {
   mixins: [func],
   data() {
     return {
+      WImgUrl:ROAST_CONFIG.WImgUrl,
       icons: ['sendBtn.png', 'dashicons_cloud-saved.png', 'sendBtn.png'],
       placeHolders: ['شماره تلفن همراه خود را وارد کنید', 'کد چهار رقمی را وارد کنید', 'نام مستعار خود را انتخاب کنید.'],
       btnTxt: ["ارسال", "ثبت", "ثبت"],
