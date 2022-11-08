@@ -1,7 +1,7 @@
 <template>
     <div class="loadingParent">
       <div class="blurBack"></div>
-      <img :src="WImgUrl+'LOADING_FINAL_2.gif'"  style="z-index: 1001;width: 50%;border-radius: 20px">
+      <img :src="WImgUrl+'loading_final_2.gif'"  style="z-index: 1001;width: 50%;border-radius: 20px">
     </div>
 </template>
 

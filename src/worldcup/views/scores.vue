@@ -1,5 +1,21 @@
 <template>
   <div class="parent">
+    <div class="backImg">
+      <div class="profileParent">
+        <img :src="WImgUrl+'profile.png'" class="imgPro"/>
+        <div class="mobPro">{{ userMob }}</div>
+      </div>
+      <div class="scoresBox">
+        <div class="scoreParent">
+          <div class="numScore">{{ userScore }}</div>
+          <div class="titleScore">مجموع امتیازات من:</div>
+          <div class="verLine"></div>
+          <div style="width: 20%; margin: auto;">
+            <img style="width: 35px;height: 31.11px" :src="WImgUrl+'myScore.png'">
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="ListChild">
       <!--      (select == index ? 'over':'')-->
       <div class="scoreItem" v-for="(item , index) in list"
@@ -12,10 +28,10 @@
         <div class="rankBox innerItem">
           <div class="scoreTxt">{{ item.score }}</div>
 
-          <img v-if="index == 0" :src="WImgUrl+'1.png'"  style="padding-right: 10px">
+          <img v-if="index == 0" :src="WImgUrl+'1.png'" style="padding-right: 10px">
           <img v-else-if="index == 1" :src="WImgUrl+'2.png'" style="padding-right: 10px">
-          <img v-else-if="index == 2" :src="WImgUrl+'3.png'"  style="padding-right: 10px">
-          <img v-else  :src="WImgUrl+'all.png'" style="padding-right: 10px">
+          <img v-else-if="index == 2" :src="WImgUrl+'3.png'" style="padding-right: 10px">
+          <img v-else :src="WImgUrl+'all.png'" style="padding-right: 10px">
 
         </div>
 
@@ -36,7 +52,9 @@ export default {
     return {
       select: 0, myScroll: '',
       list: [],
-      WImgUrl:ROAST_CONFIG.WImgUrl,
+      WImgUrl: ROAST_CONFIG.WImgUrl,
+      userMob: '',
+      userScore: ''
       // list: [
       //   {id: 0, name: 'مهرداد احمدی', rank: 1580, rankTxt: 'نفر اول', self: 0},
       //   {id: 1, name: 'مهرداد پگاه وند', rank: 1580, rankTxt: 'نفر اول', self: 0},
@@ -66,6 +84,12 @@ export default {
         if (data.success == 'true') {
           this.list = data.data;
           this.scrollInit();
+          for (let key in this.list) {
+            if (this.list[key]['self'] == 1) {
+              this.userMob = this.list[key]['name'];
+              this.userScore = this.list[key]['score'];
+            }
+          }
         }
 
       })
@@ -140,15 +164,106 @@ export default {
   top: 100px;
   right: 0px;
   /*border: 1px solid red;*/
-  padding: 15px;
+  /*padding: 15px;*/
   /*padding-top: 30px !important;*/
 }
 
-.ListChild {
-  position: absolute;
+.backImg {
+  background: url('../assets/images/scores/backScore.png');
+  width: 100%;
+  height: 202px;
+  position: relative;
+  /*top: 60px;*/
+  display: -ms-flexbox;
+  display: flex;
+  display: -webkit-flex !important;
+  margin: auto;
+  flex-direction: column;
+}
+
+.profileParent {
   width: 90%;
+  height: 72px;
+  display: -ms-flexbox;
+  display: flex;
+  display: -webkit-flex !important;
+  margin: auto;
+  flex-direction: column;
+  align-items: center;
+}
+
+.imgPro {
+  width: 36px !important;
+  height: 40px !important;
+}
+
+.mobPro {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 38px;
+  color: #FFFFFF;
+  direction: ltr;
+}
+
+.scoresBox {
+  box-sizing: border-box;
+  width: 90%;
+  height: 56px;
+  line-height: 56px;
+  background: #F9F9F9;
+  border: 1px solid #FFFFFF;
+  box-shadow: 0px 4px 4px rgb(0 0 0 / 25%);
+  border-radius: 11px;
+  margin: auto;
+  margin-bottom: 15px;
+}
+
+.scoreParent {
+  width: 100%;
+  height: 100%;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-pack: center;
+  justify-content: center;
+  overflow: hidden;
+  display: -webkit-flex !important;
+  -ms-flex-direction: column;
+  flex-direction: row-reverse;
+  text-align: center;
+  margin: auto;
+}
+
+.numScore {
+  width: 25%;
+  font-style: normal;
+  font-weight: 400;
+  text-align: center;
+  color: #4A4A4B;
+  font-size: 30px;
+  line-height: 60px;
+}
+
+.titleScore {
+  padding-right: 5px;
+  width: 55%;
+  text-align: center;
+  font-size: 18px;
+}
+
+.verLine {
+  width: 0px;
+  height: 36px;
+  border: 1px solid #8E8C8C;
+  margin: auto;
+}
+
+.ListChild {
+  /*position: absolute;*/
+  width: 90%;
+  margin: auto;
   /*padding: 17px;*/
-  padding-bottom: 30px !important;
+  /*padding-bottom: 30px !important;*/
 }
 
 .scoreItem {

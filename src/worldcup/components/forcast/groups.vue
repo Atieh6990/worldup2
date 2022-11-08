@@ -111,7 +111,7 @@ export default {
 .items {
   float: right;
   height: 35px;
-  line-height: 24px;
+  line-height: 22px;
   color: #ffffff;
   font-size: 16px;
   z-index: 1;
@@ -124,6 +124,7 @@ export default {
   color: #FFFFFF;
   direction: rtl !important;
   width: 150px;
+  border: 3px solid transparent;
 }
 
 .colorNav {

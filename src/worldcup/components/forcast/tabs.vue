@@ -56,7 +56,7 @@ export default {
 .items {
   width: 156px;
   height: 48px;
-  line-height: 48px;
+  line-height: 45px;
   color: #ffffff;
   font-size: 16px;
   text-align: center;
@@ -64,6 +64,7 @@ export default {
   background: rgba(74, 74, 75, 1);
   border-radius: 36px;
   margin: auto;
+  border: 3px solid transparent;
   /*float: right;*/
   /*margin-right: 12px;*/
 }
