@@ -22,7 +22,7 @@ export default {
       active: 0, ypage: 0,
       selectedItem: 0,
       sideItemImg: ['clock.png', 'CHAT.png', 'dollar.png', 'bourse.png', 'news.png', 'news.png'],
-      sideItemHoverImg: ['clock_hover.png', 'CHAT_HOVER.png', 'dollar_hover.png', 'bourse_hover.png', 'news_hover.png', 'news_hover.png']
+      sideItemHoverImg: ['clock_hover.png', 'chat_hover.png', 'dollar_hover.png', 'bourse_hover.png', 'news_hover.png', 'news_hover.png']
 
       // sideItemImg: ['clock.png', 'CHAT.png', 'dollar.png', 'bourse.png', 'snapfood.png', 'news.png'],
       // sideItemHoverImg: ['clock_hover.png', 'CHAT_HOVER.png', 'dollar_hover.png', 'bourse_hover.png', 'snapfood_hover.png', 'news_hover.png']

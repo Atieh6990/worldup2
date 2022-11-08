@@ -5,7 +5,7 @@
 
 
     <div class="logo child">
-      <img  :src="WImgUrl+'menu_'+getMenu().id+'.png'" >
+      <img :src="WImgUrl+'menu_'+getMenu().id+'.png'">
       <!--      <img src="../../assets/images/menu/menu.png">-->
     </div>
 
@@ -16,11 +16,11 @@
     </div>
 
 
-<!--    <div class="back child">-->
-<!--      <div class="circle">-->
-<!--        <img src="../../assets/images/menu/backArrow.svg">-->
-<!--      </div>-->
-<!--    </div>-->
+    <!--    <div class="back child">-->
+    <!--      <div class="circle">-->
+    <!--        <img src="../../assets/images/menu/backArrow.svg">-->
+    <!--      </div>-->
+    <!--    </div>-->
 
 
   </div>
@@ -34,7 +34,7 @@ export default {
   data() {
     return {
       menuData: '',
-      WImgUrl:ROAST_CONFIG.WImgUrl,
+      WImgUrl: ROAST_CONFIG.WImgUrl,
     }
   },
   created() {
@@ -72,8 +72,7 @@ export default {
   align-items: center;
   align-content: center;
   display: -webkit-flex !important;
-
-  /*border: 1px solid red;*/
+  text-indent: 10px;
 }
 
 .logo {
@@ -111,7 +110,7 @@ export default {
   text-align: right;
   direction: rtl;
   width: 100%;
-  height: 40%;
+  height: 30%;
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
