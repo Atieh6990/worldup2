@@ -17,6 +17,10 @@
 
     </div>
 
+    <div class="showScore" v-if="hasLoggedIn">
+      <myScore :user-score="myScoreNum"></myScore>
+    </div>
+
   </div>
 
 </template>
@@ -25,18 +29,21 @@
 import {mapGetters, mapMutations, mapActions} from 'vuex'
 import func from "../mixins/mixin";
 import {ROAST_CONFIG} from "../js/config";
+import myScore from '../components/score/myScore'
+import api from '../api/api'
 
 export default {
   name: "menuRout",
+  components: {myScore},
   mixins: [func],
   data() {
     return {
-      WImgUrl:ROAST_CONFIG.WImgUrl,
+      WImgUrl: ROAST_CONFIG.WImgUrl,
       osType: ROAST_CONFIG.OS_TYPE,
       select: 0,
       menuItem: [],
       loginItem: {id: 0, name: 'ثبت نام', des: 'ثبت نام', rout: '/worldCupHome/login/'},
-
+      hasLoggedIn: false, myScoreNum: ''
     }
   },
   created() {
@@ -46,7 +53,23 @@ export default {
       this.enter()
     });
 
-    this.menuItem=ROAST_CONFIG.menuItems
+    this.menuItem = ROAST_CONFIG.menuItems
+
+
+    if (this.getParam("Tokenw")) {
+      let json = JSON.parse(this.getParam("Tokenw"));
+      if (json && json.access_token) {
+        this.hasLoggedIn = true
+        api.scores().then(data => {
+          if (data.success == 'true') {
+            let find = data.data.find(element => element.self == 1).ranking;
+            this.myScoreNum = find
+          }
+
+        })
+      }
+    }
+
 
   },
   methods: {
@@ -123,7 +146,7 @@ export default {
   margin-right: 0px;
   margin-top: 0px;
   width: 350px;
-
+  height: 1080px;
   /*border:3px solid green;*/
 
   /*display: flex;*/
@@ -185,5 +208,12 @@ export default {
 
 .over {
   background-color: #4DCD2C;
+}
+
+.showScore {
+  position: absolute;
+  width: 100%;
+  right: 0px;
+  bottom: 0px;
 }
 </style>
