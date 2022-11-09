@@ -83,7 +83,7 @@ export default {
     });
 
     this.$root.$on("press_submit", () => {
-      alert("gjfdjfgbdfgvb dfjgvbb")
+      // alert("gjfdjfgbdfgvb dfjgvbb")
       this.$refs.routeview.sendMessage()
     })
 
