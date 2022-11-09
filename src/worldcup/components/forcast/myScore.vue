@@ -1,5 +1,5 @@
 <template>
-  <div class="backImg">
+  <div class="backImg" :style="{ background: 'url(' + WImgUrl +backImage+ ')' }">
     <div class="scoresBox">
       <div class="scoreParent">
         <div class="numScore">{{ userScoreNum }}</div>
@@ -23,6 +23,7 @@ export default {
   data() {
     return {
       WImgUrl: ROAST_CONFIG.WImgUrl,
+      backImage: 'backWinner.png'
 
     }
   },
@@ -32,7 +33,7 @@ export default {
 
 <style scoped>
 .backImg {
-  background: url('../../assets/images/winner/backWinner.png');
+  /*background: url('../../assets/images/winner/backWinner.png');*/
   width: 100%;
   height: 202px;
   position: relative;
@@ -88,6 +89,7 @@ export default {
   text-align: center;
   font-size: 18px;
 }
+
 .verLine {
   width: 0px;
   height: 36px;
