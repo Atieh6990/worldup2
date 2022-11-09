@@ -1,40 +1,43 @@
 <template>
   <div class="parent">
-    <div class="backImg">
+    <div class="backImg" :style="{ background: 'url(' + WImgUrl +backImage+ ')' }">
       <div class="profileParent">
-        <img :src="WImgUrl+'profile.png'" class="imgPro"/>
+        <img :src="WImgUrl+'mobImg.png'" class="imgPro"/>
         <div class="mobPro">{{ userMob }}</div>
       </div>
-      <my-score :user-score="userScore"></my-score>
+      <div class="scoresBox">
+        <div class="scoreParent">
+          <div class="numScore">{{ userScore }}</div>
+          <div class="titleScore">مجموع امتیازات من:</div>
+          <div class="verLine"></div>
+          <div style="width: 20%; margin: auto;">
+            <img style="width: 35px;height: 31.11px" :src="WImgUrl+'myScore.png'">
+          </div>
+        </div>
+      </div>
     </div>
+    <div class="ListChild">
+      <!--      (select == index ? 'over':'')-->
+      <div class="scoreItem" v-for="(item , index) in list"
+           :class="[(item.self == 1 ? 'self':'')]" :id="'scoreList_'+index">
 
+        <div class="nameBox innerItem">
+          <span class="nameTxt">{{ item.name }}</span>
+        </div>
 
-    <div class="listParent">
+        <div class="rankBox innerItem">
+          <div class="scoreTxt">{{ item.score }}</div>
 
-      <div class="ListChild">
-        <!--      (select == index ? 'over':'')-->
-        <div class="scoreItem" v-for="(item , index) in list"
-             :class="[(item.self == 1 ? 'self':'')]" :id="'scoreList_'+index">
-
-          <div class="nameBox innerItem">
-            <span class="nameTxt">{{ item.name }}</span>
-          </div>
-
-          <div class="rankBox innerItem">
-            <div class="scoreTxt">{{ item.score }}</div>
-
-            <img v-if="index == 0" :src="WImgUrl+'1.png'" style="padding-right: 10px">
-            <img v-else-if="index == 1" :src="WImgUrl+'2.png'" style="padding-right: 10px">
-            <img v-else-if="index == 2" :src="WImgUrl+'3.png'" style="padding-right: 10px">
-            <img v-else :src="WImgUrl+'all.png'" style="padding-right: 10px">
-
-          </div>
+          <img v-if="index == 0" :src="WImgUrl+'1.png'" style="padding-right: 10px">
+          <img v-else-if="index == 1" :src="WImgUrl+'2.png'" style="padding-right: 10px">
+          <img v-else-if="index == 2" :src="WImgUrl+'3.png'" style="padding-right: 10px">
+          <img v-else :src="WImgUrl+'all.png'" style="padding-right: 10px">
 
         </div>
 
       </div>
-    </div>
 
+    </div>
   </div>
 </template>
 
@@ -42,17 +45,17 @@
 import IScroll from '../js/iscroll';
 import api from '../api/api'
 import {ROAST_CONFIG} from "../js/config";
-import myScore from '../components/score/myScore'
+
 export default {
   name: "scores",
-  components:{myScore},
   data() {
     return {
       select: 0, myScroll: '',
-       list: [],
+      list: [],
       WImgUrl: ROAST_CONFIG.WImgUrl,
       userMob: '',
       userScore: '',
+      backImage: 'backScore.png'
       // list: [
       //   {id: 0, name: 'مهرداد احمدی', rank: 1580, rankTxt: 'نفر اول', self: 0},
       //   {id: 1, name: 'مهرداد پگاه وند', rank: 1580, rankTxt: 'نفر اول', self: 0},
@@ -64,18 +67,15 @@ export default {
       //   {id: 7, name: 'مهرداد پگاه وند', rank: 1580, rankTxt: 'نفر اول', self: 0},
       //   {id: 8, name: 'مهرداد پگاه وند', rank: 1580, rankTxt: 'نفر اول', self: 0},
       //   {id: 9, name: 'مهرداد پگاه وند', rank: 1580, rankTxt: 'نفر اول', self: 0},
-      //   {id: 9, name: 'مهرداد پگاه وند', rank: 1580, rankTxt: 'نفر اول', self: 0},
-      //   {id: 9, name: 'مهرداد پگاه وند', rank: 1580, rankTxt: 'نفر اول', self: 0},
-      //   {id: 9, name: 'مهرداد پگاه وند', rank: 1580, rankTxt: 'نفر اول', self: 0},
       // ]
     }
   },
   created() {
     this.getScores()
-    let self = this;
-    setTimeout(() => {
-      self.scrollInit();
-    }, 600)
+    // let self = this;
+    // setTimeout(() => {
+    //   self.scrollInit();
+    // }, 600)
   },
   methods: {
 
@@ -100,13 +100,13 @@ export default {
     scrollInit() {
       let self = this;
       this.myScroll = '';
-      if (this.myScroll == '' && this.list.length > 8) {
+      if (this.myScroll == '' && this.list.length > 10) {
         setTimeout(() => {
-          this.myScroll = new IScroll(".listParent", {
+          this.myScroll = new IScroll(".parent", {
             scrollY: true,
             momentum: true,
             preventDefault: false,
-            scrollbars: false,
+            scrollbars: true,
             mouseWheel: true,
             interactiveScrollbars: true,
             shrinkScrollbars: "none",
@@ -126,7 +126,7 @@ export default {
     //   }, 30);
     // },
     down() {
-      if (this.list.length > 8)
+      if (this.list.length > 10)
         this.myScroll.moveDown(80);
 
       // if (this.select < this.list.length - 1) {
@@ -137,7 +137,7 @@ export default {
       // return false;
     },
     up() {
-      if (this.list.length > 8)
+      if (this.list.length > 10)
         this.myScroll.moveUp(80);
 
       // if (this.myScroll.y === 0) {
@@ -159,8 +159,8 @@ export default {
 <style scoped>
 .parent {
   width: 350px;
-  height: 966px;
-  /*overflow: hidden;*/
+  height: 950px;
+  overflow: hidden;
   position: absolute;
   top: 100px;
   right: 0px;
@@ -168,23 +168,9 @@ export default {
   /*padding: 15px;*/
   /*padding-top: 30px !important;*/
 }
-.listParent{
-  width: 350px;
-  height: 750px;
-  overflow: hidden;
-  position: absolute;
-  top: 204px;
-  right: 0px;
-  /*border: 1px solid red;*/
-  display: flex;
-  justify-content: center;
-  overflow: hidden;
-  /*border: 1px solid red;*/
-  display: -webkit-flex !important;;
-}
 
 .backImg {
-  background: url('../assets/images/scores/backScore.png');
+  /*background: url('../assets/images/scores/backScore.png');*/
   width: 100%;
   height: 202px;
   position: relative;
@@ -203,6 +189,7 @@ export default {
   display: flex;
   display: -webkit-flex !important;
   margin: auto;
+  margin-top: 40px;
   flex-direction: column;
   align-items: center;
 }
@@ -221,19 +208,64 @@ export default {
   direction: ltr;
 }
 
-.ListChild {
-  position: absolute;
+.scoresBox {
+  box-sizing: border-box;
+  width: 90%;
+  height: 56px;
+  line-height: 56px;
+  background: #F9F9F9;
+  border: 1px solid #FFFFFF;
+  box-shadow: 0px 4px 4px rgb(0 0 0 / 25%);
+  border-radius: 11px;
+  margin: auto;
+  margin-bottom: 15px;
+}
+
+.scoreParent {
   width: 100%;
-  /*overflow: hidden;*/
-  right: 0px;
+  height: 100%;
+  display: -ms-flexbox;
   display: flex;
+  -ms-flex-pack: center;
   justify-content: center;
-  flex-direction: column;
-  align-content: center;
-  align-items: center;
-  /*border: 1px solid red;*/
-  display: -webkit-flex !important;;
-  /*padding: 0px 17px 30px 17px !important;*/
+  overflow: hidden;
+  display: -webkit-flex !important;
+  -ms-flex-direction: column;
+  flex-direction: row-reverse;
+  text-align: center;
+  margin: auto;
+}
+
+.numScore {
+  width: 25%;
+  font-style: normal;
+  font-weight: 400;
+  text-align: center;
+  color: #4A4A4B;
+  font-size: 30px;
+  line-height: 60px;
+}
+
+.titleScore {
+  padding-right: 5px;
+  width: 55%;
+  text-align: center;
+  font-size: 18px;
+}
+
+.verLine {
+  width: 0px;
+  height: 36px;
+  border: 1px solid #8E8C8C;
+  margin: auto;
+}
+
+.ListChild {
+  /*position: absolute;*/
+  width: 90%;
+  margin: auto;
+  /*padding: 17px;*/
+  /*padding-bottom: 30px !important;*/
 }
 
 .scoreItem {
