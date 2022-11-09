@@ -27,7 +27,7 @@ export default {
   width: 350px;
   right: 0px;
   top: 0px;
-  border: 1px solid red;
+  /*border: 1px solid red;*/
   z-index: 1000;
   display: flex;
   flex-direction: row;
