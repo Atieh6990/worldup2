@@ -104,27 +104,62 @@ export default {
       this.$refs.routeview.onChange(inp);
     },
     up() {
-      this.$refs.routeview.up();
+      if(this.osType == 0){
+        if (this.loading==false){
+          this.$refs.routeview.up();
+        }
+      }else{
+        this.$refs.routeview.up();
+      }
+
     },
     down() {
-      this.$refs.routeview.down();
+
+      if(this.osType == 0){
+        if (this.loading==false){
+          this.$refs.routeview.down();
+        }
+      }else{
+        this.$refs.routeview.down();
+      }
+
+
     },
     left() {
-      this.$refs.routeview.left();
+      if(this.osType == 0){
+        if (this.loading==false){
+          this.$refs.routeview.left();
+        }
+      }else{
+        this.$refs.routeview.left();
+      }
+
     },
     right() {
-      this.$refs.routeview.right();
+      if(this.osType == 0){
+        if (this.loading==false){
+          this.$refs.routeview.right();
+        }
+      }else{
+        this.$refs.routeview.right();
+      }
+
     },
     enter() {
 
       // alert("enter worldcuphome" + this.$route.name)
       if (this.osType == 0 ) {
+
+        if (this.loading==false){
+
           if(this.$route.name == 'menuRout'){
             this.checkFullScreen();//just android ke event sader kone
           }else{
             this.$refs.routeview.enter();
           }
 
+
+        }
 
       }else{
         if (this.showOnlinePlay) {
@@ -155,8 +190,8 @@ export default {
       if(this.$route.name == 'onlinePlay'){
         if (this.showOnlinePlay) {
           this.setMenu({id: '', name: '', des: '', rout: ''});
-       //
-          this.$router.go(-1);
+          this.$router.replace({path:'/worldCupHome/menuRout'});
+          // this.$router.go(-1);
           this.setOnlinePlay(false);
         }
         return false
@@ -182,8 +217,8 @@ export default {
       if (!ROAST_CONFIG.OS_TYPE && this.$route.name == "menuRout") {
         this.handleExit()
       } else {
-
-        this.$router.go(-1);
+        this.$router.replace({path:'/worldCupHome/menuRout'});
+        // this.$router.go(-1);
       }
 
     },
