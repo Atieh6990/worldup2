@@ -17,7 +17,7 @@ export const MainSocket = {
     mutations: {
         startSocketW(state) {
          let userToken = JSON.parse(localStorage.getItem("Tokenw"));
-          //   console.log(userToken.access_token )
+            console.log(userToken.access_token )
             if(!userToken || !userToken.access_token){
                 return
             }
