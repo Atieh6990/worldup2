@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import {ROAST_CONFIG} from "@/worldcup/js/config";
+import {ROAST_CONFIG} from "../../js/config";
 
 export default {
   name: "myScore",
