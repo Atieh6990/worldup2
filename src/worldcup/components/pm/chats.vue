@@ -2,7 +2,7 @@
 
 
   <div class="chatBoxParent">
-    <div class="chatBoxChild">
+    <div class="chatBoxChild" ref="moving">
       <div v-for="(item,index) in (messageList)"
            :id="'chatList_'+index"
            :class="[((userId == item.user_id) ? 'selfDirection':''),'chatItem']">
@@ -42,7 +42,7 @@ export default {
   data() {
     return {
       myScroll: '',
-      WImgUrl:ROAST_CONFIG.WImgUrl,
+      WImgUrl: ROAST_CONFIG.WImgUrl,
     }
   },
   created() {
@@ -55,10 +55,12 @@ export default {
   },
 
   methods: {
+
     scrollInit() {
       let self = this;
       this.myScroll = '';
-      if (this.myScroll == '' && this.messageList.length > 0) {
+
+      if (this.myScroll == '') {
         setTimeout(() => {
           this.myScroll = new IScroll(".chatBoxParent", {
             scrollY: true,
@@ -74,13 +76,17 @@ export default {
           });
 
         }, 10);
-        this.refreshScroll();
+        setTimeout(()=>{
+          this.refreshScroll()
+        },1000)
       }
     },
     showNewMessage(message) {
+      // console.log("vnfknjv",this.messageList.length)
       this.messageList.push(message);
+      (this.messageList.length ==1) ?(this.scrollInit()):(this.refreshScroll())
       // this.$refs.myScroll.refresh();
-      this.refreshScroll()
+      // this.refreshScroll()
     },
     down() {
       console.log(this.myScroll.y, this.myScroll.maxScrollY)
@@ -99,9 +105,11 @@ export default {
     },
     refreshScroll() {
 
+      let _self = this
       setTimeout(() => {
-        this.myScroll.moveDown(-1 * this.myScroll.maxScrollY + 20)
+        _self.myScroll.moveDown(this.$refs.moving.offsetHeight-this.myScroll.wrapperHeight)
       }, 30);
+
 
 
       // setTimeout(() => {
@@ -122,7 +130,7 @@ export default {
   position: relative;
   width: 355px;
   /*height: 630px;*/
-  height: 470px;
+  height: 460px;
   /*top: 100px;*/
   left: 0px;
   padding: 15px;
@@ -208,14 +216,20 @@ export default {
 }
 
 .name {
-  display: flex;
   float: right;
   width: 100%;
   color: #116DFF;
   font-size: 15px;
-  direction: rtl;
-  text-align: right;
+  direction: ltr;
+  text-align: left;
+  display: flex;
   display: -webkit-flex !important;
+
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: flex-end;
+  align-items: stretch;
+  align-content: stretch;
 }
 
 .date {
@@ -228,6 +242,7 @@ export default {
   text-align: left;
   display: -webkit-flex !important;
 }
+
 .hg-theme-default .hg-row {
   display: -webkit-flex !important;;
 }
