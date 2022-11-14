@@ -4,7 +4,7 @@ var api_url = "https://sambazar.tvapps.ir/api/v2";
 var main_api_url = "https://fifa.tvapps.ir/api/";
 var FileName = "online_chat_tk";
 var socketUrl = "wss://metadata.tvapps.ir";
-var TVChannel = "Apps";
+var TVChannel = "FIFA";
 var WImgUrl = "https://fifapanel.tvapps.ir/img/";
 var menuItems= [
     // {id: 0, name: 'گردونه شانس', des: 'گردونه رو بچرخون و شانست رو امتحان کن', rout: '/worldCupHome/Pm/'},
@@ -14,7 +14,7 @@ var menuItems= [
     {id: 4, name: 'اسامی برندگان', des: 'معرفی برندگان دوره های پیش بینی', rout: '/worldCupHome/winners/'},
     {id: 5, name: 'امتیازات', des: 'محاسبه امتیاز', rout: '/worldCupHome/scores/'},
     {id: 7, name: 'راهنما', des: 'راهنمای اپلیکیشن', rout: '/worldCupHome/guide/'},
-    // {id: 6, name: 'دیجی کلاب بت', des: 'سفارش آنلاین غذا و تنقلات', rout: '/worldCupHome/Pm/'},
+    {id: 6, name: 'قهرمان', des: 'قهرمان جام رو پیش بینی کن', rout: '/worldCupHome/champ/'},
 ]
 export const ROAST_CONFIG = {
     OS_TYPE: osType,

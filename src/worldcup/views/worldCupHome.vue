@@ -239,12 +239,15 @@ export default {
       this.$refs.routeview.showNum(num)
     },
     onSocket(socket) {
+
+      // console.log("socket :" , socket)
+
       socket.on("disconnect", (data) => {
         console.log('disconnect ->', data); // not authorized
       });
       socket.on("connect_error", (err) => {
         console.log('message ->', err.message, 'data ->', err.data); // not authorized
-        this.DeleteFile()
+        // this.DeleteFile()
         this.disconnectSocketW();
         this.$refs.routeview.reconnectSocket()
       });

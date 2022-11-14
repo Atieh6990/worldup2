@@ -6,9 +6,9 @@
 
     <div v-if="userLoggedIn">
 
-      <div v-if="userLoggedIn && messageList.length>0" class="">
+      <div v-if="userLoggedIn" class="">
         <img :src="WImgUrl+'chat.png'" style="position: relative">
-        <chats ref="chats" :messageList="messageList" :userId="getUserInfo().userId"></chats>
+        <chats  ref="chatList" :messageList="messageList" :userId="getUserInfo().userId"></chats>
       </div>
 
       <div class="errorMdg">{{ errorMessage }}</div>
@@ -215,7 +215,7 @@ export default {
           return false
         }
         if (this.yPage == 0) {
-          if (!this.$refs.chats.up()) {
+          if (!this.$refs.chatList.up()) {
           }
         }
 
@@ -302,7 +302,7 @@ export default {
           return false
         }
         if (this.yPage == 0) {
-          if (!this.$refs.chats.down()) {
+          if (!this.$refs.chatList.down()) {
             this.yPage = 1
           }
         }
@@ -366,7 +366,8 @@ export default {
       }
       this.chatTxt = "";
       this.$refs.SimpleKeyboard.clearTxtInp();
-      this.$refs.chats.showNewMessage(newMessage)
+      // this.$refs.chatList.testing()
+      this.$refs.chatList.showNewMessage(newMessage)
     },
     hasNameBefore(type) {
       // console.log(type)
@@ -393,10 +394,12 @@ export default {
       }, 2000)) : (this.errorMessage = "در حال حاضر اتاق فعالی وجود ندارد")
     },
     chatList(data) {
+
       this.messageList = this.reversArray(data);
+      // console.log("chatList!!!!!!!!!!!!!!!!!!!" ,   this.messageList)
     },
     receivedMessage(data) {
-      this.$refs.chats.showNewMessage(data)
+      this.$refs.chatList.showNewMessage(data)
     },
     saveUserChatDetail(data) {
       this.setUserNameID({item: "userName", amount: data.data.name});

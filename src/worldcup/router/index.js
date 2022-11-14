@@ -10,6 +10,7 @@ import login from '../views/Login'
 import onlinePlay from "../views/onlinePlay";
 import winners from "../views/winners";
 import guide from "../views/guide";
+import champ from '../views/champ'
 
 
 Vue.use(VueRouter)
@@ -28,6 +29,7 @@ const routes = [
             {path: 'onlinePlay', name: 'onlinePlay', component: onlinePlay},
             {path: 'winners', name: 'winners', component: winners},
             {path: 'guide', name: 'guide', component: guide},
+            {path: 'champ', name: 'champ', component: champ},
 
         ],
     },
@@ -45,6 +47,7 @@ const routes = [
             {path: 'onlinePlay', name: 'onlinePlay', component: onlinePlay},
             {path: 'winners', name: 'winners', component: winners},
             {path: 'guide', name: 'guide', component: guide},
+            {path: 'champ', name: 'champ', component: champ},
 
         ],
     },

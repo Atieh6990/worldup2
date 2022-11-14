@@ -125,7 +125,39 @@ export default {
             console.log("predict catch", response)
         });
     },
-    //
+
+    allteams() {
+        let Url = ROAST_CONFIG.main_api_url + 'allteams'
+
+        return axios({
+            method: "GET",
+            url: Url,
+        }).then(response => {
+            let data = response['data'];
+            return data
+        }).catch(response => {
+            console.log("code catch", response)
+        });
+    },
+
+
+    champForecast(id) {
+        let Url = ROAST_CONFIG.main_api_url + 'forecast/champ'
+        let Orgdata = {'team_id': id,}
+        return axios({
+            method: "POST",
+            url: Url,
+            data: Orgdata
+        }).then(response => {
+            let data = response['data'];
+            return data
+        }).catch(response => {
+            console.log("code catch", response)
+        });
+    },
+
+
+
     // getCurrency(url) {
     //     let Url = url
     //     return axios({
