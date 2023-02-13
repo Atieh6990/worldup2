@@ -14,7 +14,9 @@
         <div class="title" style="font-size: 16px;margin-top: 8%"><b>{{ item.name }}</b></div>
         <div v-if="index!=1" class="title" style="font-size: 12px;margin-top: 0%">{{ item.des }}</div>
         <div v-if="!pmErr && index==1" class="title" style="font-size: 12px;margin-top: 0%">{{ item.des }}</div>
-        <div v-if="pmErr && index==1" class="title-err" style="font-size: 12px;margin-top: 0%">بر روی بازی زنده چت امکان پذیر است</div>
+        <div v-if="pmErr && index==1" class="title-err" style="font-size: 12px;margin-top: 0%">بر روی بازی زنده چت امکان
+          پذیر است
+        </div>
       </div>
 
     </div>
@@ -45,7 +47,7 @@ export default {
       select: 0,
       menuItem: [],
       loginItem: {id: 0, name: 'ثبت نام', des: 'ثبت نام', rout: '/worldCupHome/login/'},
-      hasLoggedIn: false, myScoreNum: '',pmErr:false
+      hasLoggedIn: false, myScoreNum: '', pmErr: false
     }
   },
   created() {
@@ -78,12 +80,12 @@ export default {
 
     ...mapMutations(['setMenu', 'setOnlinePlay']),
     ...mapGetters(['getMenu', 'getOnlinePlay']),
-hidePM(){
- setTimeout(()=>{
-   this.pmErr=false
- }, 3000);
+    hidePM() {
+      setTimeout(() => {
+        this.pmErr = false
+      }, 3000);
 
-},
+    },
     down() {
       if (this.select < this.menuItem.length - 1) {
         this.select++
@@ -95,10 +97,10 @@ hidePM(){
       }
     },
     enter() {
-      // console.log("enter menuRout")
-      if(this.osType == 1){
-        if(this.menuItem[this.select]['id']==2){
-          this.pmErr=true
+      console.log("this.osType", this.osType)
+      if (this.osType == 1) {
+        if (this.menuItem[this.select]['id'] == 2) {
+          this.pmErr = true
           this.hidePM()
           return
         }
@@ -207,13 +209,15 @@ hidePM(){
   height: 100%;
   /*border: 1px solid red;*/
 }
-.title-err{
+
+.title-err {
   color: red;
   text-align: right;
   direction: rtl;
   width: 100%;
   height: 40%;
 }
+
 .title {
   color: #FFFFFF;
   text-align: right;
