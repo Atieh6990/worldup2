@@ -1,7 +1,7 @@
 <template>
   <div class="registerParent">
 
-    <img class="icon" :src="WImgUrl+'vorteile-live-chat 2.png'">
+    <img class="icon" :src="WImgUrl+'loginBack.png'">
     <input :class="[((yPos == 0 && activeRoute == 1) ? 'inpHover':''),'content']" :value="contentTxt"
            :placeholder="placeHolders[type]"
            type="text"
@@ -79,7 +79,7 @@ export default {
     this.showIme("content_" + this.type);
 
     this.$root.$on("set_error_msgL", data => {
-      console.log("nnnnnnnnnnnn")
+      // console.log("nnnnnnnnnnnn")
       this.errorMessage = data
     })
   },

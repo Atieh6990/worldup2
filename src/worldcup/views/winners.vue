@@ -4,7 +4,7 @@
       <groups v-on:selectItem="selectItem" :y-pos="yPos" :groups="groups" ref="groups"></groups>
       <my-score :userMob="userMob" :userScoreNum="userScoreNum"></my-score>
       <div class="winnerParent" style="top: 90px;">
-        <div style="width: 50%;float: right;">برنده مستقیم</div>
+        <div style="width: 50%;float: right;">نفر اول روز</div>
         <div style="width: 29%;float:left;">امتیاز</div>
       </div>
       <div class="scoreItem" style="top: 105px;">
@@ -19,25 +19,25 @@
           <img :src="WImgUrl+'1.png'" style="padding-right: 10px">
         </div>
       </div>
-      <div class="verLine" style="top: 125px;"></div>
-      <div class="winnerParent" style="top: 140px;">
-        <div style="width: 55%;float: right;">برنده قرعه کشی</div>
-        <div style="width: 29%;float:left;">امتیاز</div>
-      </div>
-      <div class="scoreItem" style="top: 155px;">
-        <div class="nameBox innerItem">
-          <img :src="WImgUrl+'name.png'" style="padding-left: 10px">
-          <div class="nameTxt">{{ lotteryUserMob }}</div>
-        </div>
-        <div class="rankBox innerItem">
-          <div class="scoreTxt">{{ lotteryUserScore }}</div>
-          <img :src="WImgUrl+'2.png'" style="padding-right: 10px">
-        </div>
-      </div>
-      <div class="verLine" style="top: 175px;"></div>
-      <div class="descScore">
-        {{ descScore }}
-      </div>
+<!--      <div class="verLine" style="top: 125px;"></div>-->
+<!--      <div class="winnerParent" style="top: 140px;">-->
+<!--        <div style="width: 55%;float: right;">برنده قرعه کشی</div>-->
+<!--        <div style="width: 29%;float:left;">امتیاز</div>-->
+<!--      </div>-->
+<!--      <div class="scoreItem" style="top: 155px;">-->
+<!--        <div class="nameBox innerItem">-->
+<!--          <img :src="WImgUrl+'name.png'" style="padding-left: 10px">-->
+<!--          <div class="nameTxt">{{ lotteryUserMob }}</div>-->
+<!--        </div>-->
+<!--        <div class="rankBox innerItem">-->
+<!--          <div class="scoreTxt">{{ lotteryUserScore }}</div>-->
+<!--          <img :src="WImgUrl+'2.png'" style="padding-right: 10px">-->
+<!--        </div>-->
+<!--      </div>-->
+<!--      <div class="verLine" style="top: 175px;"></div>-->
+<!--      <div class="descScore">-->
+<!--        {{ descScore }}-->
+<!--      </div>-->
     </div>
     <div class="error" v-else >در حال حاضر برنده ای موجود نمی باشد.</div>
   </div>

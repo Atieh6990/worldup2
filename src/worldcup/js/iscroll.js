@@ -258,7 +258,7 @@ var newY;
 
   function IScroll(el, options) {
     this.elm = el;
-    // console.log('ffffffffffffffffff', options);
+    // console.log('ffffffffffffffffff',el, options);
     this.pos = 0;
     this.wrapper = typeof el == 'string' ? document.querySelector(el) : el;
     // console.log('ffffscrollerscrollerffffffffffffff', (this.wrapper.children[0]));

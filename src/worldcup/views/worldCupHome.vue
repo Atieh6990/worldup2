@@ -13,7 +13,6 @@
 
     </div>
 
-
   </div>
 </template>
 
@@ -147,12 +146,16 @@ export default {
     },
     enter() {
 
-      // alert("enter worldcuphome" + this.$route.name)
+      // console.log("enter worldcuphome" + this.osType , this.loading , this.$route.name)
       if (this.osType == 0 ) {
 
         if (this.loading==false){
 
           if(this.$route.name == 'menuRout'){
+            if(ROAST_CONFIG.DEVELOP_MODE == 1){//age mode develop hastesh enter too local kar kone.
+              this.$refs.routeview.enter();
+              return false
+            }
             this.checkFullScreen();//just android ke event sader kone
           }else{
             this.$refs.routeview.enter();

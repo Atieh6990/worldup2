@@ -1,5 +1,5 @@
 <template>
-  <div class="groupParent">
+  <div class="groupParent">=
     <flickity class="flickity suggestedProgram" ref="flickity" :options="flickityOptions" v-if="groups.length>0">
 
       <div v-for="(item,index) in groups" :id="'groupItem_'+index"
