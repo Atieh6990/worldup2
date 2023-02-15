@@ -24,7 +24,7 @@ export default {
       playerObj: "",
       osType: ROAST_CONFIG.OS_TYPE
 
-      
+
     }
   },
   created() {
