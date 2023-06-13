@@ -123,7 +123,8 @@ export default {
   background-color: #FFFFFF26;
   color: #FFFFFF;
   direction: rtl !important;
-  width: 150px;
+  /*width: 150px;*/
+  width: 185px;
   border: 3px solid transparent;
 }
 
