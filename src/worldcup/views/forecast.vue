@@ -1,5 +1,7 @@
 <template>
-  <upcomingGames ref="upcomingGames"></upcomingGames>
+  <route-page-layout :poster-src="wImg('menuSlide.png')">
+    <upcomingGames ref="upcomingGames"></upcomingGames>
+  </route-page-layout>
 </template>
 
 <script>

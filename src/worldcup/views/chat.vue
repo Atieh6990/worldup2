@@ -7,7 +7,7 @@
     <div v-if="userLoggedIn">
 
       <div v-if="userLoggedIn" class="">
-        <img :src="WImgUrl+'chat.png'" style="position: relative">
+        <img :src="wImg('chat.png')" style="position: relative">
         <chats  ref="chatList" :messageList="messageList" :userId="getUserInfo().userId"></chats>
       </div>
 
@@ -56,7 +56,6 @@ export default {
   },
   data() {
     return {
-      WImgUrl:ROAST_CONFIG.WImgUrl,
       activeRoute: 1,
       chatTxt: "",
       userKey: "",

@@ -1,19 +1,18 @@
 <template>
     <div class="loadingParent">
       <div class="blurBack"></div>
-      <img :src="WImgUrl+'loading_final_2.gif'"  style="z-index: 1001;width: 50%;border-radius: 20px">
+      <img :src="wImg('loading_final_2.gif')"  style="z-index: 1001;width: 50%;border-radius: 20px">
     </div>
 </template>
 
 <script>
-import {ROAST_CONFIG} from "../../js/config";
+import {ROAST_CONFIG} from "../../js/config"; 
 
 export default {
   name: "loading",
   data() {
     return {
 
-      WImgUrl:ROAST_CONFIG.WImgUrl,
     }
   },
 }

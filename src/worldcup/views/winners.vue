@@ -1,48 +1,31 @@
 <template>
-  <div>
-    <div v-if="winnersList.message!='no winners yet'" style="direction: rtl !important;">
-      <groups v-on:selectItem="selectItem" :y-pos="yPos" :groups="groups" ref="groups"></groups>
+  <route-page-layout>
+    <template #poster>
       <my-score :userMob="userMob" :userScoreNum="userScoreNum"></my-score>
-      <div class="winnerParent" style="top: 90px;">
+    </template>
+    <div v-if="winnersList.message!='no winners yet'" class="winnersPage" style="direction: rtl !important;">
+      <groups v-on:selectItem="selectItem" :y-pos="yPos" :groups="groups" ref="groups"></groups>
+      <div class="winnersList">
+      <div class="winnerParent">
         <div style="width: 50%;float: right;">نفر اول روز</div>
         <div style="width: 29%;float:left;">امتیاز</div>
       </div>
-      <div class="scoreItem" style="top: 105px;">
+      <div class="scoreItem">
         <div class="nameBox innerItem">
-          <img :src="WImgUrl+'name.png'" style="padding-left: 10px">
+          <img :src="wImg('name.png')" style="padding-left: 10px">
           <div class="nameTxt">{{ scoreUserMob }}</div>
         </div>
         <div class="rankBox innerItem">
           <div class="scoreTxt">
             {{ scoreUserScore }}
           </div>
-          <img :src="WImgUrl+'1.png'" style="padding-right: 10px">
+          <img :src="wImg('1.png')" style="padding-right: 10px">
         </div>
       </div>
-<!--      <div class="verLine" style="top: 125px;"></div>-->
-<!--      <div class="winnerParent" style="top: 140px;">-->
-<!--        <div style="width: 55%;float: right;">برنده قرعه کشی</div>-->
-<!--        <div style="width: 29%;float:left;">امتیاز</div>-->
-<!--      </div>-->
-<!--      <div class="scoreItem" style="top: 155px;">-->
-<!--        <div class="nameBox innerItem">-->
-<!--          <img :src="WImgUrl+'name.png'" style="padding-left: 10px">-->
-<!--          <div class="nameTxt">{{ lotteryUserMob }}</div>-->
-<!--        </div>-->
-<!--        <div class="rankBox innerItem">-->
-<!--          <div class="scoreTxt">{{ lotteryUserScore }}</div>-->
-<!--          <img :src="WImgUrl+'2.png'" style="padding-right: 10px">-->
-<!--        </div>-->
-<!--      </div>-->
-<!--      <div class="verLine" style="top: 175px;"></div>-->
-<!--      <div class="descScore">-->
-<!--        {{ descScore }}-->
-<!--      </div>-->
+      </div>
     </div>
-    <div class="error" v-else >در حال حاضر برنده ای موجود نمی باشد.</div>
-  </div>
-
-
+    <div class="noDataMsg" v-else>{{ emptyDataMsg }}</div>
+  </route-page-layout>
 </template>
 
 <script>
@@ -67,7 +50,8 @@ export default {
       descScore: '',
       userScoreNum: '',
       userMob: '',
-      WImgUrl: ROAST_CONFIG.WImgUrl,error:false
+      error:false,
+      emptyDataMsg: ROAST_CONFIG.EMPTY_DATA_MSG,
     }
   },
   created() {
@@ -156,16 +140,14 @@ export default {
 </script>
 
 <style scoped>
-.error{
-  color: red;
-  z-index: 999;
-  margin-top: 100px;
-  padding-right: 10%;
-  padding-left: 10%;
-  opacity: 1;
-  position: absolute;
-;
+.winnersPage >>> .groupParent {
+  top: 0;
 }
+
+.winnersList {
+  margin-top: 10px;
+}
+
 .verLine {
   background-color: #FFFFFF4D;
   width: 100%;

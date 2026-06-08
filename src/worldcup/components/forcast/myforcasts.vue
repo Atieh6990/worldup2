@@ -1,7 +1,6 @@
 <template>
   <div class="matchesParent" >
-    <div class="error" v-if="mypredict[selectedIndex].length==0">بازی پیش بینی شده ی قابل نمایشی یافت نمی شود</div>
-    <div class="matchesScroll">
+    <div class="matchesScroll" v-if="mypredict[selectedIndex] && mypredict[selectedIndex].length > 0">
 
       <div :id="'match_' + m" v-for="(match,m) in mypredict[selectedIndex]"
            class="matches"
@@ -12,12 +11,12 @@
 
           <div class="backIcon" style="right: 28px;">
             <img v-if="match.teama && match.teama.pic" :src="match.teama.pic" class="icon"/>
-            <img v-else :src="WImgUrl+'malavan70.png'"  class="icon"/>
+            <img v-else :src="wImg('malavan70.png')"  class="icon"/>
           </div>
           <div class="line"></div>
           <div class="backIcon" style="right: 135px;">
             <img  v-if="match.teamb && match.teamb.pic"  :src="match.teamb.pic" class="icon"/>
-            <img v-else :src="WImgUrl+'malavan70.png'"  class="icon"/>
+            <img v-else :src="wImg('malavan70.png')"  class="icon"/>
           </div>
 
           <div class="teamsNameParent">
@@ -32,15 +31,15 @@
 
           <div v-if="match.forecasts && match.forecasts[0] && match.forecasts[0].ball_score" class="balls">
             <div class="ball" v-for="(item,index) in match.forecasts[0].ball_score">
-              <img :src="WImgUrl+'ballActive.png'" >
+              <img :src="wImg('ballActive.png')" >
             </div>
             <div class="ball" v-for="(item,index) in 4 - match.forecasts[0].ball_score">
-              <img :src="WImgUrl+'ballDeactive.png'" >
+              <img :src="wImg('ballDeactive.png')" >
             </div>
           </div>
           <div v-else class="balls">
             <div class="ball" v-for="(item,index) in 4">
-              <img :src="WImgUrl+'ballDeactive.png'" >
+              <img :src="wImg('ballDeactive.png')" >
             </div>
           </div>
 
@@ -60,6 +59,7 @@
       </div>
 
     </div>
+    <div class="noDataMsg" v-else>{{ emptyDataMsg }}</div>
   </div>
 </template>
 
@@ -71,12 +71,12 @@ export default {
   props: ['mypredict', 'selectedIndex'],
   data() {
     return {
+      emptyDataMsg: ROAST_CONFIG.EMPTY_DATA_MSG,
       balls: [1, 1, 0, 0],
       status:1,
       win: require('../../assets/images/forecast/check.png'),
       loose: require('../../assets/images/forecast/cancle.png'),
       myScroll: '',
-      WImgUrl:ROAST_CONFIG.WImgUrl,
     }
   },
 
@@ -129,7 +129,8 @@ export default {
   width: 350px;
   height: 840px;
   position: relative;
-  top: 38px;
+  top: 0;
+  margin-top: 10px;
   left: 0px;
   overflow: hidden;
 }

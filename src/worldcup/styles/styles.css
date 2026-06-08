@@ -1,3 +1,37 @@
+/* #0B1320 — glass background (css.glass adapted) */
+.appGlassBg {
+    background: rgba(11, 19, 32, 0.82);
+    border-radius: 16px;
+    box-shadow: 0 4px 30px #00000073;
+    backdrop-filter: blur(8.7px);
+    -webkit-backdrop-filter: blur(8.7px);
+}
+
+@keyframes menuHoverSlideIn {
+    from {
+        transform: translateY(-50%) translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(-50%) translateX(0);
+        opacity: 1;
+    }
+}
+
+.menuHoverSlide {
+    animation: menuHoverSlideIn 0.28s ease-out forwards;
+}
+
+.noDataMsg {
+    color: #ff4d4f;
+    direction: rtl;
+    text-align: center;
+    padding: 40px 10%;
+    font-size: 16px;
+    position: relative;
+    z-index: 2;
+}
+
 .hg-theme-default .hg-button {
     color: #ffffff !important;
     background-color: #3a3a42 !important;

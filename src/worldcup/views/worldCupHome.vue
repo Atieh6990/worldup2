@@ -1,15 +1,14 @@
 <template>
-  <div class="routParent">
+  <div class="routParent" :class="{ webviewLayout: isWebViewMode }">
 
-    <videoPlayer ref="player" v-if="!showPlayer"></videoPlayer>
+    <videoPlayer ref="player" v-if="showInternalPlayer"></videoPlayer>
 
     <div v-show="!showOnlinePlay" class="nestedRoutParent">
 
-      <div class="nestedRoutBackground"></div>
+      <div class="nestedRoutBackground appGlassBg"></div>
       <loading v-if="loading == true && osType == 0"></loading>
 <!--      <loading v-if="loading == true"></loading>-->
-      <routHeader></routHeader>
-      <router-view :key="$route.fullPath" ref="routeview"></router-view>
+      <router-view :key="$route.fullPath" ref="routeview" class="nestedRoutContent"></router-view>
 
     </div>
 
@@ -23,13 +22,20 @@ import {mapGetters, mapMutations, mapActions} from 'vuex'
 import {ROAST_CONFIG} from "../js/config";
 import router from '../router/index'
 import axios from 'axios'
-import routHeader from "../components/header/header";
 import loading from '../components/loading/loading'
 
 export default {
   name: "worldCupHome",
-  components: {videoPlayer, routHeader,loading},
+  components: {videoPlayer, loading},
   mixins: [func],
+  computed: {
+    isWebViewMode() {
+      return ROAST_CONFIG.WEBVIEW_MODE
+    },
+    showInternalPlayer() {
+      return !this.showPlayer && !this.isWebViewMode
+    },
+  },
   data() {
     return {
       showPlayer: ROAST_CONFIG.DEVELOP_MODE,
@@ -41,16 +47,16 @@ export default {
 
     }
   },
-  computed: {
-    computedSocket() {
-      return this.getSocketW();
-    }
-  },
-  watch: {
-    computedSocket: function (val, oldVal) {
-      this.onSocket(this.getSocketW())
-    }
-  },
+  // computed: { // چت آنلاین - غیرفعال
+  //   computedSocket() {
+  //     return this.getSocketW();
+  //   }
+  // },
+  // watch: {
+  //   computedSocket: function (val, oldVal) {
+  //     this.onSocket(this.getSocketW())
+  //   }
+  // },
   created() {
     if (ROAST_CONFIG.OS_TYPE) {
       this.$root.$emit('sideMenu_deactive');
@@ -81,27 +87,36 @@ export default {
       this.$refs.routeview.manageRegisterData(data)
     });
 
-    this.$root.$on("press_submit", () => {
-      // alert("gjfdjfgbdfgvb dfjgvbb")
-      this.$refs.routeview.sendMessage()
-    })
+    this.$root.$on("playLiveStream", (uuid) => {
+      this.loadInitialLiveStream(uuid);
+    });
+
+    // چت آنلاین - غیرفعال
+    // this.$root.$on("press_submit", () => {
+    //   this.$refs.routeview.sendMessage()
+    // })
 
 
 
   },
 
+  mounted() {
+    this.loadInitialLiveStream();
+  },
+
   methods: {
 
-    ...mapMutations(['setUserTvW', "setTvChannel", "disconnectSocketW", "setMenu", "setOnlinePlay"]),
-    ...mapGetters(["getSocketW", "getUserInfo", "getOnlinePlay",'getMenu']),
+    ...mapMutations(['setUserTvW', "setTvChannel", "setMenu", "setOnlinePlay"]),
+    // "disconnectSocketW" - چت آنلاین - غیرفعال
+    ...mapGetters(["getOnlinePlay",'getMenu']),
+    // "getSocketW", "getUserInfo" - چت آنلاین - غیرفعال
     manageTokenGet(data) {
       this.$refs.routeview.manageTokenGet(data)
     },
 
-    onchangeChatInp(inp){
-      // alert("onchangeChatInp 2 " + inp)
-      this.$refs.routeview.onChange(inp);
-    },
+    // onchangeChatInp(inp){ // چت آنلاین - غیرفعال
+    //   this.$refs.routeview.onChange(inp);
+    // },
     up() {
       if(this.osType == 0){
         if (this.loading==false){
@@ -194,17 +209,16 @@ export default {
         if (this.showOnlinePlay) {
           this.setMenu({id: '', name: '', des: '', rout: ''});
           this.$router.replace({path:'/worldCupHome/menuRout'});
-          // this.$router.go(-1);
           this.setOnlinePlay(false);
+          return false
         }
-        return false
       }
 
       if (ROAST_CONFIG.OS_TYPE && this.$route.name == 'menuRout') {
         this.$root.$emit('sideMenu_show');
         this.$root.$emit('leftside_show');
         this.$root.$emit('header_show');
-        if(!ROAST_CONFIG.DEVELOP_MODE){
+        if(!ROAST_CONFIG.DEVELOP_MODE && this.$refs.player){
           this.$refs.player.stop()
         }
 
@@ -212,10 +226,10 @@ export default {
       }
 
 
-      if (this.currentName == 'Pm') {
-        this.disconnectSocketW();
-
-      }
+      // چت آنلاین - غیرفعال
+      // if (this.currentName == 'Pm') {
+      //   this.disconnectSocketW();
+      // }
 
       if (!ROAST_CONFIG.OS_TYPE && this.$route.name == "menuRout") {
         this.handleExit()
@@ -241,47 +255,44 @@ export default {
     numberShow(num) {
       this.$refs.routeview.showNum(num)
     },
-    onSocket(socket) {
-
-      // console.log("socket :" , socket)
-
-      socket.on("disconnect", (data) => {
-        console.log('disconnect ->', data); // not authorized
-      });
-      socket.on("connect_error", (err) => {
-        console.log('message ->', err.message, 'data ->', err.data); // not authorized
-        // this.DeleteFile()
-        this.disconnectSocketW();
-        this.$refs.routeview.reconnectSocket()
-      });
-      socket.on("get_name", (data) => {
-        console.log('get_name', data);
-        this.$refs.routeview.hasNameBefore(data)
-      })
-      socket.on("set_name", (data) => {
-        console.log('set_name', data);
-        this.$refs.routeview.manageSetName(data)
-      })
-      socket.on("join_in_room", (data) => {
-        console.log('join_in_room', data);
-        this.$refs.routeview.canJoinRoom(data)
-      })
-      socket.on("room_chats", (data) => {
-        console.log('room_chats', data)
-        this.$refs.routeview.chatList(data)
-      })
-      socket.on("send_chat", (data) => {
-        console.log('send_chat', data)
-        this.$refs.routeview.receivedMessage(data)
-      });
-      socket.on("user_detail", (data) => {
-        console.log('user_detail', data)
-        this.$refs.routeview.saveUserChatDetail(data)
-      })
-      socket.on("typing", (data) => {
-        console.log('typing', data)
-      })
-    },
+    // onSocket(socket) { // چت آنلاین - غیرفعال
+    //
+    //   socket.on("disconnect", (data) => {
+    //     console.log('disconnect ->', data);
+    //   });
+    //   socket.on("connect_error", (err) => {
+    //     console.log('message ->', err.message, 'data ->', err.data);
+    //     this.disconnectSocketW();
+    //     this.$refs.routeview.reconnectSocket()
+    //   });
+    //   socket.on("get_name", (data) => {
+    //     console.log('get_name', data);
+    //     this.$refs.routeview.hasNameBefore(data)
+    //   })
+    //   socket.on("set_name", (data) => {
+    //     console.log('set_name', data);
+    //     this.$refs.routeview.manageSetName(data)
+    //   })
+    //   socket.on("join_in_room", (data) => {
+    //     console.log('join_in_room', data);
+    //     this.$refs.routeview.canJoinRoom(data)
+    //   })
+    //   socket.on("room_chats", (data) => {
+    //     console.log('room_chats', data)
+    //     this.$refs.routeview.chatList(data)
+    //   })
+    //   socket.on("send_chat", (data) => {
+    //     console.log('send_chat', data)
+    //     this.$refs.routeview.receivedMessage(data)
+    //   });
+    //   socket.on("user_detail", (data) => {
+    //     console.log('user_detail', data)
+    //     this.$refs.routeview.saveUserChatDetail(data)
+    //   })
+    //   socket.on("typing", (data) => {
+    //     console.log('typing', data)
+    //   })
+    // },
     manageInterceptor() {
       axios.interceptors.request.use((config) => {
         config.headers.Authorization = `Bearer ` + this.getParam("Tokenw");
@@ -322,7 +333,6 @@ export default {
 </script>
 
 <style scoped>
-@import "../styles/styles.css";
 @import "../styles/bootstrap.min.css";
 
 .routParent {
@@ -341,9 +351,8 @@ export default {
   overflow: hidden;
   height: 100%;
   width: 350px;
-  right: 0px;
   top: 0px;
-  border-radius: 0px;
+  border-radius: 16px;
   position: relative;
   box-shadow: 0px 4px 20px 0px #00000073;
   z-index: 10000000;
@@ -354,10 +363,20 @@ export default {
   width: 350px;
   right: 0px;
   top: 0px;
-  border-radius: 0px;
   position: absolute;
-  background-color: #11151A;
-  opacity: 0.8;
+  z-index: 0;
+}
+
+.nestedRoutContent {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  z-index: 1;
 }
 
 :focus {

@@ -1,6 +1,6 @@
 <template>
   <div>
-  <div class="matchesParent" v-if="matches[selectedIndex].length>0">
+  <div class="matchesParent" v-if="matches[selectedIndex] && matches[selectedIndex].length>0">
 
 
     <div class="matchesScroll">
@@ -59,7 +59,7 @@
 
 
   </div>
-    <div class="error" v-if="matches[selectedIndex].length==0">در حال حاضر در تاریخ مورد نظر بازی قابل پیشبینی موجود نمی باشد.</div>
+    <div class="noDataMsg" v-if="!matches[selectedIndex] || matches[selectedIndex].length==0">{{ emptyDataMsg }}</div>
   </div>
 </template>
 
@@ -83,6 +83,7 @@ export default {
       teamA: [],
       teamB: [],
       osType: ROAST_CONFIG.OS_TYPE,
+      emptyDataMsg: ROAST_CONFIG.EMPTY_DATA_MSG,
       showSuccessPopup: true , //bad az sabte pish bini bareye 3sanie true mishe
     }
   },
@@ -301,7 +302,8 @@ console.log("data",data)
   width: 350px;
   height: 840px;
   position: relative;
-  top: 38px;
+  top: 0;
+  margin-top: 10px;
   left: 0px;
   overflow: hidden;
   /*border: 1px solid red;*/

@@ -8,7 +8,7 @@
            :class="[((userId == item.user_id) ? 'selfDirection':''),'chatItem']">
         <div class="userImg">
           <div class="userImgBg">
-            <img :src="WImgUrl+'carbon_user-avatar-filled.png'">
+            <img :src="wImg('carbon_user-avatar-filled.png')">
           </div>
         </div>
         <div class="userTxt">
@@ -42,7 +42,6 @@ export default {
   data() {
     return {
       myScroll: '',
-      WImgUrl: ROAST_CONFIG.WImgUrl,
     }
   },
   created() {

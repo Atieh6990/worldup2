@@ -5,7 +5,7 @@
       <div class="titleScore">مجموع امتیازات من:</div>
       <div class="verLine"></div>
       <div style="width: 20%; margin: auto;">
-        <img style="width: 35px;height: 31.11px" :src="WImgUrl+'myScore.png'">
+        <img style="width: 35px;height: 31.11px" :src="wImg('myScore.png')">
       </div>
     </div>
   </div>
@@ -19,7 +19,6 @@ export default {
   props:["userScore"],
   data(){
     return{
-      WImgUrl: ROAST_CONFIG.WImgUrl,
     }
   }
 }

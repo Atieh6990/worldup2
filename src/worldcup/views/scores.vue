@@ -1,50 +1,54 @@
 <template>
-  <div class="parent">
-    <div class="backImg" :style="{ background: 'url(' + WImgUrl +backImage+ ')' }">
-      <div class="profileParent">
-        <img :src="WImgUrl+'mobImg.png'" class="imgPro"/>
-        <div class="mobPro">{{ userMob }}</div>
-      </div>
-      <div class="scoresBox">
-        <div class="scoreParent">
-          <div class="numScore">{{ userScore }}</div>
-          <div class="titleScore">مجموع امتیازات من:</div>
-          <div class="verLine"></div>
-          <div style="width: 20%; margin: auto;">
-            <img style="width: 35px;height: 31.11px" :src="WImgUrl+'myScore.png'">
+  <route-page-layout>
+    <template #poster>
+      <div class="backImg" :style="{ background: 'url(' + wImg(backImage) + ')' }">
+        <div class="profileParent">
+          <img :src="wImg('mobImg.png')" class="imgPro"/>
+          <div class="mobPro">{{ userMob }}</div>
+        </div>
+        <div class="scoresBox">
+          <div class="scoreParent">
+            <div class="numScore">{{ userScore }}</div>
+            <div class="titleScore">مجموع امتیازات من:</div>
+            <div class="verLine"></div>
+            <div style="width: 20%; margin: auto;">
+              <img style="width: 35px;height: 31.11px" :src="myScoreIcon" alt="">
+            </div>
           </div>
         </div>
       </div>
-    </div>
-    <div class="ListChild">
-      <!--      (select == index ? 'over':'')-->
-      <div class="scoreItem" v-for="(item , index) in list"
-           :class="[(item.self == 1 ? 'self':'')]" :id="'scoreList_'+index">
+    </template>
+    <div class="scoresBody">
+      <div class="ListChild" v-if="list.length > 0">
+        <div class="scoreItem" v-for="(item , index) in list"
+             :class="[(item.self == 1 ? 'self':'')]" :id="'scoreList_'+index">
 
-        <div class="nameBox innerItem">
-          <span class="nameTxt">{{ item.name }}</span>
+          <div class="nameBox innerItem">
+            <span class="nameTxt">{{ item.name }}</span>
+          </div>
+
+          <div class="rankBox innerItem">
+            <div class="scoreTxt">{{ item.score }}</div>
+
+            <img v-if="index == 0" :src="wImg('1.png')" style="padding-right: 10px">
+            <img v-else-if="index == 1" :src="wImg('2.png')" style="padding-right: 10px">
+            <img v-else-if="index == 2" :src="wImg('3.png')" style="padding-right: 10px">
+            <img v-else :src="wImg('all.png')" style="padding-right: 10px">
+
+          </div>
+
         </div>
-
-        <div class="rankBox innerItem">
-          <div class="scoreTxt">{{ item.score }}</div>
-
-          <img v-if="index == 0" :src="WImgUrl+'1.png'" style="padding-right: 10px">
-          <img v-else-if="index == 1" :src="WImgUrl+'2.png'" style="padding-right: 10px">
-          <img v-else-if="index == 2" :src="WImgUrl+'3.png'" style="padding-right: 10px">
-          <img v-else :src="WImgUrl+'all.png'" style="padding-right: 10px">
-
-        </div>
-
       </div>
-
+      <div class="noDataMsg" v-else-if="dataLoaded">{{ emptyDataMsg }}</div>
     </div>
-  </div>
+  </route-page-layout>
 </template>
 
 <script>
 import IScroll from '../js/iscroll';
 import api from '../api/api'
 import {ROAST_CONFIG} from "../js/config";
+import { MY_SCORE_ICON } from '../js/menuIcons';
 
 export default {
   name: "scores",
@@ -52,47 +56,36 @@ export default {
     return {
       select: 0, myScroll: '',
       list: [],
-      WImgUrl: ROAST_CONFIG.WImgUrl,
       userMob: '',
       userScore: '',
-      backImage: 'backScore.png'
-      // list: [
-      //   {id: 0, name: 'مهرداد احمدی', rank: 1580, rankTxt: 'نفر اول', self: 0},
-      //   {id: 1, name: 'مهرداد پگاه وند', rank: 1580, rankTxt: 'نفر اول', self: 0},
-      //   {id: 2, name: 'مهرداد پگاه وند', rank: 1580, rankTxt: 'نفر اول', self: 0},
-      //   {id: 3, name: 'مهرداد پگاه وند', rank: 1580, rankTxt: 'نفر اول', self: 0},
-      //   {id: 4, name: 'مهرداد پگاه وند', rank: 1580, rankTxt: 'نفر اول', self: 0},
-      //   {id: 5, name: 'مهرداد پگاه وند', rank: 1580, rankTxt: 'نفر اول', self: 0},
-      //   {id: 6, name: 'مهرداد پگاه وند', rank: 1580, rankTxt: 'نفر اول', self: 1},
-      //   {id: 7, name: 'مهرداد پگاه وند', rank: 1580, rankTxt: 'نفر اول', self: 0},
-      //   {id: 8, name: 'مهرداد پگاه وند', rank: 1580, rankTxt: 'نفر اول', self: 0},
-      //   {id: 9, name: 'مهرداد پگاه وند', rank: 1580, rankTxt: 'نفر اول', self: 0},
-      // ]
+      backImage: 'backScore.png',
+      dataLoaded: false,
+      emptyDataMsg: ROAST_CONFIG.EMPTY_DATA_MSG,
+      myScoreIcon: MY_SCORE_ICON,
     }
   },
   created() {
     this.getScores()
-    // let self = this;
-    // setTimeout(() => {
-    //   self.scrollInit();
-    // }, 600)
   },
   methods: {
 
     getScores() {
       api.scores().then(data => {
-        // console.log(data.success, data.data)
+        this.dataLoaded = true;
         if (data.success == 'true') {
-          this.list = data.data;
-          this.scrollInit();
+          this.list = data.data || [];
+          if (this.list.length > 0) {
+            this.scrollInit();
+          }
           for (let key in this.list) {
             if (this.list[key]['self'] == 1) {
               this.userMob = this.list[key]['name'];
               this.userScore = this.list[key]['score'];
             }
           }
+        } else {
+          this.list = [];
         }
-
       })
     },
 
@@ -102,7 +95,7 @@ export default {
       this.myScroll = '';
       if (this.myScroll == '' && this.list.length > 10) {
         setTimeout(() => {
-          this.myScroll = new IScroll(".parent", {
+          this.myScroll = new IScroll(".scoresBody", {
             scrollY: true,
             momentum: true,
             preventDefault: false,
@@ -116,69 +109,35 @@ export default {
           });
 
         }, 10);
-        // this.refreshScroll();
       }
     },
-    // refreshScroll() {
-    //
-    //   setTimeout(() => {
-    //     this.myScroll.moveDown(-1 * this.myScroll.maxScrollY + 20)
-    //   }, 30);
-    // },
     down() {
       if (this.list.length > 10)
         this.myScroll.moveDown(80);
-
-      // if (this.select < this.list.length - 1) {
-      //   this.select++;
-      //   this.myScroll.scrollToElement('#scoreList_' + this.select, 1000, false, true);
-      //   return true;
-      // }
-      // return false;
     },
     up() {
       if (this.list.length > 10)
         this.myScroll.moveUp(80);
-
-      // if (this.myScroll.y === 0) {
-      //   return false
-      // } else {
-      //   return true
-      // }
-      // if (this.select > 0) {
-      //   this.select--;
-      //   this.myScroll.scrollToElement('#scoreList_' + this.select, 1000, false, true);
-      //   return true;
-      // }
-      // return false;
     },
   }
 }
 </script>
 
 <style scoped>
-.parent {
-  width: 350px;
-  height: 950px;
+.scoresBody {
+  width: 100%;
+  height: 100%;
   overflow: hidden;
-  position: absolute;
-  top: 100px;
-  right: 0px;
-  /*border: 1px solid red;*/
-  /*padding: 15px;*/
-  /*padding-top: 30px !important;*/
 }
 
 .backImg {
-  /*background: url('../assets/images/scores/backScore.png');*/
   width: 100%;
   height: 202px;
   position: relative;
-  /*top: 60px;*/
   display: -ms-flexbox;
   display: flex;
   display: -webkit-flex !important;
-  margin: auto;
+  margin: 0;
   flex-direction: column;
 }
 
@@ -189,7 +148,7 @@ export default {
   display: flex;
   display: -webkit-flex !important;
   margin: auto;
-  margin-top: 40px;
+  margin-top: 24px;
   flex-direction: column;
   align-items: center;
 }
@@ -261,11 +220,9 @@ export default {
 }
 
 .ListChild {
-  /*position: absolute;*/
   width: 90%;
   margin: auto;
-  /*padding: 17px;*/
-  /*padding-bottom: 30px !important;*/
+  margin-top: 10px;
 }
 
 .scoreItem {
@@ -296,7 +253,6 @@ export default {
   align-content: center;
   height: 100%;
   display: -webkit-flex !important;
-  /*border: 1px solid red;*/
 }
 
 .nameBox {
