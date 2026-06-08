@@ -92,7 +92,8 @@ export default {
   width: 332px;
   right: 7px;
   height: 35px;
-  top: 30px;
+  top: 0;
+  margin-top: 10px;
   position: relative;
   direction: rtl;
   display: flex;

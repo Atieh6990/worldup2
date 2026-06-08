@@ -1,7 +1,5 @@
 <template>
   <div class="registerParent">
-
-    <img class="icon" :src="WImgUrl+'loginBack.png'">
     <input :class="[((yPos == 0 && activeRoute == 1) ? 'inpHover':''),'content']" :value="contentTxt"
            :placeholder="placeHolders[type]"
            type="text"
@@ -24,7 +22,7 @@
     <div :class="[((yPos == 1 && activeRoute == 1) ? 'submitBtnHover':''),'submitBtn']"
          v-on:click="submitBtn()">
       <span style="padding-left: 15px">{{ btnTxt[type] }}</span>
-      <img :src="WImgUrl+icons[type]" >
+      <img :src="wImg(icons[type])" >
     </div>
 
 
@@ -54,7 +52,6 @@ export default {
   mixins: [func],
   data() {
     return {
-      WImgUrl:ROAST_CONFIG.WImgUrl,
       icons: ['sendBtn.png', 'dashicons_cloud-saved.png', 'sendBtn.png'],
       placeHolders: ['شماره تلفن همراه خود را وارد کنید', 'کد چهار رقمی را وارد کنید', 'نام مستعار خود را انتخاب کنید.'],
       btnTxt: ["ارسال", "ثبت", "ثبت"],
@@ -266,28 +263,17 @@ export default {
 
 <style scoped>
 .registerParent {
-  width: 350px;
-  height: 760px;
-  right: 0px;
-  position: absolute;
-  top: 0px;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.icon {
-  top: 103px;
-  position: absolute;
-  right: 0px;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
 }
 
 .content {
   height: 56px;
   width: 301px;
   right: 17px;
-  top: 339px;
+  top: 10px;
   border-radius: 7px;
   position: absolute;
   background-color: #FFFFFF;
@@ -312,7 +298,7 @@ export default {
   height: 56px;
   width: 301px;
   right: 17px;
-  top: 420px;
+  top: 91px;
   border-radius: 7px;
   display: flex;
   align-items: center;
@@ -330,7 +316,7 @@ export default {
   height: 56px;
   width: 119px;
   right: 194px;
-  top: 500px;
+  top: 171px;
   border-radius: 7px;
   position: absolute;
   background-color: transparent;
@@ -363,7 +349,7 @@ export default {
   font-size: 18px;
   color: #ffffff;
   position: absolute;
-  top: 672px;
+  top: 343px;
   /* left: 10px; */
   padding: 40px;
 }
@@ -387,7 +373,7 @@ export default {
   align-items: center;
   justify-content: center;
   padding: 10px;
-  top: 820px;
+  top: 491px;
   direction: ltr;
 }
 .errorMdg {
@@ -395,7 +381,7 @@ export default {
   height: 60px;
   right: 0px;
   position: absolute;
-  top: 630px;
+  top: 301px;
   /*border-top: 1px solid #3b3a3f;*/
   display: flex;
   align-items: center;

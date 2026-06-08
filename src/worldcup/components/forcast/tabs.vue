@@ -47,7 +47,7 @@ export default {
   display: flex;
   display: -webkit-flex !important;
   position: relative;
-  top: 15px;
+  top: 0;
   /*position: relative;*/
   /*top: 20px;*/
 

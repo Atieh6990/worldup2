@@ -1,0 +1,63 @@
+/* WebView: کل پنل 350×1080 چسبیده به سمت راست — html → body → #app → منو */
+html.webview-mode,
+html.webview-mode body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 1080px;
+    overflow: hidden;
+    background: transparent !important;
+    direction: rtl;
+}
+
+html.webview-mode #app {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: auto;
+    width: 350px;
+    height: 1080px;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background: transparent !important;
+    text-align: initial;
+    direction: rtl;
+}
+
+html.webview-mode .routParent.webviewLayout {
+    position: relative;
+    top: 0;
+    right: 0;
+    left: auto;
+    width: 350px !important;
+    height: 1080px;
+    margin: 0;
+    background: transparent;
+    direction: rtl;
+}
+
+html.webview-mode .nestedRoutParent {
+    width: 350px;
+    height: 1080px;
+    right: 0;
+    left: auto;
+}
+
+html.webview-mode .nestedRoutBackground {
+    height: 1080px;
+    width: 350px;
+    right: 0;
+    left: auto;
+}
+
+html.webview-mode .nestedRoutContent {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 350px;
+    height: 1080px;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}

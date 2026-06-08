@@ -1,10 +1,14 @@
 import {ROAST_CONFIG} from '../js/config'
+import api from '../api/api'
 
 var isImeFocused;
 var keyBoardIME;
 var isFile = 0;
 var FileSelected = "";
 var documentsDir = "";
+var lastPlayVideoSignature = '';
+var initialLiveStreamPromise = null;
+var initialLiveStreamDone = false;
 
 var androidTvDevelop = {
     // android_id: 'f24e46cfec5a98e2',
@@ -13,8 +17,8 @@ var androidTvDevelop = {
     // model: "SAMTV",
     // ver: "1.0",
 
-    mac: "44:D8:78:EB:A2:AD",
-    mac_lan: "44:D8:78:EB:A2:AD",
+    mac: "49:D8:78:EB:A5:AD",
+    mac_lan: "49:D8:78:EB:A5:AD",
     uid: "",//for andriod is empty
     version: 9,
     tv_type: 1//android
@@ -32,7 +36,7 @@ var tizenTvDevelop = {
     // version: "17"
     mac: "",//for tizen is empty
     mac_lan: "",//for tizen is empty
-    uid: "KLpr4eeerdddd33Q22",//for andriod is empty
+    uid: "KLpdvskgn54f",//for andriod is empty
     version: "17",
     tv_type: 0//tizen
 }
@@ -371,6 +375,65 @@ export default {
                     data: ''
                 }))
             }, 100)
+        },
+
+        sendPlayVideoToReact(payload) {
+            const signature = (payload.uuid || '') + '|' + (payload.video || '')
+            if (signature === lastPlayVideoSignature) return
+            lastPlayVideoSignature = signature
+            setTimeout(function () {
+                window.ReactNativeWebView && window.ReactNativeWebView.postMessage(JSON.stringify({
+                    type: 'playVideo',
+                    data: {
+                        video: payload.video || '',
+                        poster: payload.poster || '',
+                        uuid: payload.uuid || '',
+                    }
+                }))
+            }, 200);
+        },
+
+        playLiveStream(uuid) {
+            let _self = this;
+            return api.aparatMatchByUuid(uuid).then(function (match) {
+                if (!match || !match.m3u8) {
+                    console.log('playLiveStream: m3u8 not found', uuid);
+                    return null;
+                }
+                let payload = {
+                    video: match.m3u8,
+                    poster: match.thumb_website || '',
+                    uuid: match.uuid || uuid,
+                };
+                _self.$root.$emit('liveStreamPayload', payload);
+                if (ROAST_CONFIG.OS_TYPE == 0) {
+                    _self.sendPlayVideoToReact(payload);
+                }
+                return payload;
+            });
+        },
+
+        loadInitialLiveStream(uuid) {
+            if (!uuid && initialLiveStreamPromise) {
+                return initialLiveStreamPromise
+            }
+            let resolveUuid = uuid
+                ? Promise.resolve(uuid)
+                : api.aparatFirstLiveMatchUuid();
+            const request = resolveUuid.then(function (id) {
+                if (!id) {
+                    console.log('loadInitialLiveStream: uuid not found');
+                    return null;
+                }
+                return this.playLiveStream(id);
+            }.bind(this)).then(function (result) {
+                if (!uuid) initialLiveStreamDone = true
+                return result
+            });
+            if (!uuid) {
+                initialLiveStreamPromise = request
+            }
+            return request
         },
 
 

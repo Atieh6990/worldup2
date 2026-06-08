@@ -2,24 +2,24 @@
   <div class="scoresBox">
     <div class="scoreParent">
       <div class="numScore">{{ userScore }}</div>
-      <div class="titleScore">رتبه من:</div>
+      <div class="titleScore">مجموع امتیازات من:</div>
       <div class="verLine"></div>
       <div style="width: 20%; margin: auto;">
-        <img style="width: 35px;height: 31.11px" :src="WImgUrl+'myScore.png'">
+        <img style="width: 35px;height: 31.11px" :src="scoreIcon" alt="">
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import {ROAST_CONFIG} from "../../js/config";
+import { MY_SCORE_ICON } from '../../js/menuIcons'
 
 export default {
   name: "myScore",
   props:["userScore"],
   data(){
     return{
-      WImgUrl: ROAST_CONFIG.WImgUrl,
+      scoreIcon: MY_SCORE_ICON,
     }
   }
 }

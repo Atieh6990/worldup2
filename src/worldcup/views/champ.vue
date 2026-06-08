@@ -1,5 +1,6 @@
 <template>
-  <div class="champParent">
+  <route-page-layout :poster-src="wImg('menuSlide.png')">
+  <div class="champParent" v-if="teams.length > 0">
     <div class="champChild">
 
       <div class="countryItem" v-for="(item,index) in teams" :id="'country_' + index">
@@ -45,11 +46,14 @@
     </div>
 
   </div>
+  <div class="noDataMsg" v-else-if="dataLoaded">{{ emptyDataMsg }}</div>
+  </route-page-layout>
 </template>
 
 <script>
 import IScroll from '../js/iscroll';
 import api from '../api/api'
+import {ROAST_CONFIG} from "../js/config";
 
 export default {
   name: "champ",
@@ -61,6 +65,8 @@ export default {
       xpos: 0,
       popup: false, showSuccessPopup: false, Errmsg: '', Erstatus: '',
       teams: [],
+      dataLoaded: false,
+      emptyDataMsg: ROAST_CONFIG.EMPTY_DATA_MSG,
       // teams: [
       //   {id: 0, name: 'ایران', icon: require('../assets/images/champ/B-3-IRAN-2 1.png')},
       //   {id: 1, name: 'سنگال', icon: require('../assets/images/champ/B-3-IRAN-2 1.png')},
@@ -90,9 +96,14 @@ export default {
   created() {
 
     api.allteams().then(data => {
+      this.dataLoaded = true;
       if (data.success) {
-        this.teams = data.data;
-        this.scrollInit();
+        this.teams = data.data || [];
+        if (this.teams.length > 0) {
+          this.scrollInit();
+        }
+      } else {
+        this.teams = [];
       }
     })
 
@@ -208,12 +219,10 @@ export default {
 
 <style scoped>
 .champParent {
-  width: 350px;
-  height: 980px;
+  width: 100%;
+  height: 100%;
   overflow: hidden;
-  position: absolute;
-  top: 100px;
-  right: 0px;
+  position: relative;
   direction: ltr;
   /*border: 1px solid red;*/
 }

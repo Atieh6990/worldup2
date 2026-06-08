@@ -1,13 +1,17 @@
 <template>
-  <div class="parent">
-
-    <!--    <div style="position: absolute;width: 200px;height: 200px;background-color: #42b983"></div>-->
-
-    <div>
-      <registering v-on:set_error_msgL="set_error_msg" v-on:manageRegisterData="manageRegisterData"
-                   :type="registrationType" ref="registering" :activeRoute="activeRoute"
-                   :yPage="yPage" :numberShow="numberShow"></registering>
-    </div>
+  <route-page-layout>
+    <template #poster>
+      <img class="loginPoster" :src="wImg('loginBack.png')" alt="">
+    </template>
+    <registering
+      v-on:set_error_msgL="set_error_msg"
+      v-on:manageRegisterData="manageRegisterData"
+      :type="registrationType"
+      ref="registering"
+      :activeRoute="activeRoute"
+      :yPage="yPage"
+      :numberShow="numberShow"
+    />
 
     <!--    <div v-else>-->
 
@@ -36,8 +40,7 @@
 
     <!--    </div>-->
 
-
-  </div>
+  </route-page-layout>
 </template>
 
 <script>
@@ -332,15 +335,10 @@ export default {
 </script>
 
 <style scoped>
-.parent {
-  width: 350px;
-  height: 100%;
-  /*background-color: #000000;*/
-  /*opacity: 0.2;*/
-  /*right: 110px;*/
-  /*position: a  bsolute;*/
-  overflow: hidden;
-  /*box-shadow: 0px 4px 20px 0px #00000073;*/
-
+.loginPoster {
+  width: 100%;
+  display: block;
+  margin: 0;
+  padding: 0;
 }
 </style>

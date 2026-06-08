@@ -171,6 +171,84 @@ export default {
         });
     },
 
+    aparatSportVideoList() {
+        return axios({
+            method: "GET",
+            url: ROAST_CONFIG.APARAT_SPORT_VIDEO_LIST_URL,
+        }).then(response => response['data'] || {}).catch(response => {
+            console.log("aparatSportVideoList catch", response)
+            return {}
+        });
+    },
+
+    aparatLeagueMatchesByType(sectionType) {
+        return axios({
+            method: "GET",
+            url: ROAST_CONFIG.APARAT_SPORT_LEAGUE_URL,
+        }).then(response => {
+            let data = response['data'];
+            let attributes = data && data.data && data.data.attributes ? data.data.attributes : [];
+            let section = attributes.find(item => item.type === sectionType);
+            return section && section.data ? section.data : []
+        }).catch(response => {
+            console.log("aparatLeagueMatchesByType catch", sectionType, response)
+            return []
+        });
+    },
+
+    aparatLiveMatches() {
+        return this.aparatLeagueMatchesByType('live_matches');
+    },
+
+    aparatFirstLiveMatchUuid() {
+        const extractUuidFromUrl = (url) => {
+            if (!url) return '';
+            let match = url.match(/\/m\/([A-Za-z0-9]+)/);
+            return match ? match[1] : '';
+        };
+        const findUuidInList = (list) => {
+            if (!Array.isArray(list)) return '';
+            for (let i = 0; i < list.length; i++) {
+                if (list[i] && list[i].uuid) return list[i].uuid;
+                let fromUrl = extractUuidFromUrl(list[i] && list[i].url);
+                if (fromUrl) return fromUrl;
+            }
+            return '';
+        };
+        const liveSectionKeys = ['live_matches', 'live_match', 'playing_matches', 'aparat_sport_live'];
+
+        return this.aparatSportVideoList().then(listData => {
+            for (let k = 0; k < liveSectionKeys.length; k++) {
+                let uuid = findUuidInList(listData[liveSectionKeys[k]]);
+                if (uuid) return uuid;
+            }
+            let keys = Object.keys(listData || {});
+            for (let i = 0; i < keys.length; i++) {
+                let uuid = findUuidInList(listData[keys[i]]);
+                if (uuid) return uuid;
+            }
+            return this.aparatLiveMatches().then(matches => {
+                return matches.length > 0 && matches[0].uuid ? matches[0].uuid : '';
+            });
+        });
+    },
+
+    aparatMatchByUuid(uuid) {
+        if (!uuid) return Promise.resolve(null);
+        let Url = ROAST_CONFIG.APARAT_MATCH_WITH_UUID_URL + encodeURIComponent(uuid);
+        return axios({
+            method: "GET",
+            url: Url,
+        }).then(response => response['data'] || null).catch(response => {
+            console.log("aparatMatchByUuid catch", response)
+            return null;
+        });
+    },
+
+    aparatUpcomingMatches() {
+        return this.aparatLeagueMatchesByType('upcoming_matches');
+    },
+
 
     // getCurrency(url) {
     //     let Url = url

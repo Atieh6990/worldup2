@@ -1,20 +1,23 @@
 <template>
-  <div style="  direction: rtl !important;">
-    <div class="popupParent" v-if="showSuccessPopup == true">
-      <div class="popupBack"></div>
-      <div    :class="[(Erstatus) ?'popBox':'popBoxErr']"   >{{Errmsg}}</div>
-    </div>
-    <tabs :y-pos="yPos" ref="tabs"></tabs>
-    <groups v-on:selectItem="selectItem" :y-pos="yPos"  :groups="groups" ref="groups"></groups>
-    <games v-on:dopredict="dopredict" :y-pos="yPos" :selectedIndex="selectedIndex" :groups="groups" :matches="predictable" ref="games" v-if="type == 0 && predictable[0]"></games>
-    <myforcasts ref="myforcasts" :mypredict="mypredict" :selectedIndex="selectedIndex" v-if="type == 1 && mypredict[0]" ></myforcasts>
-
+  <div class="forecastPage" style="direction: rtl !important;">
+    <div class="noDataMsg forecastEmpty" v-if="dataLoaded && !hasData">{{ emptyDataMsg }}</div>
+    <template v-else-if="dataLoaded">
+      <div class="popupParent" v-if="showSuccessPopup == true">
+        <div class="popupBack"></div>
+        <div :class="[(Erstatus) ?'popBox':'popBoxErr']">{{Errmsg}}</div>
+      </div>
+      <tabs :y-pos="yPos" ref="tabs"></tabs>
+      <groups v-on:selectItem="selectItem" :y-pos="yPos" :groups="groups" ref="groups"></groups>
+      <games v-on:dopredict="dopredict" :y-pos="yPos" :selectedIndex="selectedIndex" :groups="groups" :matches="predictable" ref="games" v-if="type == 0"></games>
+      <myforcasts ref="myforcasts" :mypredict="mypredict" :selectedIndex="selectedIndex" v-if="type == 1"></myforcasts>
+    </template>
   </div>
 </template>
 
 <script>
 
 import api from "../../api/api";
+import {ROAST_CONFIG} from "../../js/config";
 import tabs from '../forcast/tabs'
 import groups from '../forcast/groups'
 import games from '../forcast/games'
@@ -35,7 +38,14 @@ export default {
       showSuccessPopup:false,
       Erstatus:false,
       Errmsg:"",
+      dataLoaded: false,
+      emptyDataMsg: ROAST_CONFIG.EMPTY_DATA_MSG,
     }
+  },
+  computed: {
+    hasData() {
+      return this.groups.length > 0;
+    },
   },
   components: {tabs, groups, games, myforcasts},
   created() {
@@ -509,22 +519,19 @@ return
 
 
       api.matches().then((data) => {
-        if (data.success) {
-
+        this.dataLoaded = true;
+        if (data.success && data.data) {
           console.log(data.data)
           this.createGroups(data.data)
-         // this.createGroups(this.data)
-          // console.log("data",data.data)
-          // this.data =data.data
-          // this.groups = Object.keys(this.matches);
-          // this.matches=this.data[this.groups[this.selectedIndex]]
-          // // console.log("this.groups",this.groups)
-          // console.log("this.selectedIndex",this.selectedIndex)
-          // console.log("this.groups[this.selectedIndex]",this.groups[this.selectedIndex])
-          // console.log("this.matches",this.matches);
-          this.$refs.groups.resetParams()
+          this.$nextTick(() => {
+            if (this.$refs.groups) {
+              this.$refs.groups.resetParams()
+            }
+          })
         } else {
-          //this.matches = {};
+          this.groups = [];
+          this.predictable = [];
+          this.mypredict = [];
         }
       this.hidePopUp()
         // if (data.success)
@@ -538,6 +545,16 @@ return
 
 <style scoped>
 
+.forecastPage {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.forecastEmpty {
+  width: 100%;
+}
 
 .popupParent {
   width: 350px;

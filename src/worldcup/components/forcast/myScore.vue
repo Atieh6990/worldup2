@@ -1,12 +1,12 @@
 <template>
-  <div class="backImg" :style="{ background: 'url(' + WImgUrl +backImage+ ')' }">
+  <div class="backImg" :style="{ background: 'url(' + wImg(backImage) + ')' }">
     <div class="scoresBox">
       <div class="scoreParent">
         <div class="numScore">{{ userScoreNum }}</div>
         <div class="titleScore">امتیاز روزانه من:</div>
         <div class="verLine"></div>
         <div style="width: 20%; margin: auto;">
-          <img style="width: 35px;height: 31.11px" :src="WImgUrl+'myScore.png'">
+          <img style="width: 35px;height: 31.11px" :src="myScoreIcon" alt="">
         </div>
       </div>
     </div>
@@ -15,16 +15,15 @@
 </template>
 
 <script>
-import {ROAST_CONFIG} from "../../js/config";
+import { MY_SCORE_ICON } from "../../js/menuIcons";
 
 export default {
   name: "myScore",
   props: ['userScoreNum'],
   data() {
     return {
-      WImgUrl: ROAST_CONFIG.WImgUrl,
-      backImage: 'backWinner.png'
-
+      backImage: 'backWinner.png',
+      myScoreIcon: MY_SCORE_ICON,
     }
   },
   methods: {}
@@ -37,11 +36,11 @@ export default {
   width: 100%;
   height: 202px;
   position: relative;
-  top: 60px;
+  top: 0;
   display: -ms-flexbox;
   display: flex;
   display: -webkit-flex !important;
-  margin: auto;
+  margin: 0;
   flex-direction: column;
 }
 

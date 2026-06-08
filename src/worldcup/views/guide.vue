@@ -1,27 +1,27 @@
 <template>
-  <div class="parent">
-    <img class="icon" :src="`${WImgUrl}rahnamaBack.png`">
-
+  <route-page-layout>
+    <template #poster>
+      <img class="icon" :src="guidePosterImg" alt="">
+    </template>
     <div class="guidParent">
       <div class="child" ref="moving">
-        <img :src="WImgUrl+'rahnama.png'" style="z-index: 10">
+        <img class="guideContentImg" :src="guideContentImg" alt="">
       </div>
     </div>
-
-
-  </div>
+  </route-page-layout>
 </template>
 
 <script>
-import {ROAST_CONFIG} from "../js/config";
 import IScroll from '../js/iscroll';
+import { GUIDE_POSTER_IMG, GUIDE_CONTENT_IMG } from '../js/guideImages';
 
 export default {
   name: "guide",
   data() {
     return {
-      WImgUrl: ROAST_CONFIG.WImgUrl,
-      myScroll: ''
+      myScroll: '',
+      guidePosterImg: GUIDE_POSTER_IMG,
+      guideContentImg: GUIDE_CONTENT_IMG,
     }
 
   },
@@ -42,7 +42,7 @@ export default {
             scrollY: true,
             momentum: true,
             preventDefault: false,
-            scrollbars: false,
+            scrollbars: true,
             mouseWheel: true,
             interactiveScrollbars: true,
             shrinkScrollbars: "none",
@@ -61,47 +61,33 @@ export default {
     },
     up() {
       this.myScroll.moveUp(80);
-      // this.$refs.myScroll.scrollBy(0, 100, 800, IScroll.utils.ease.back);
     },
   }
 }
 </script>
 
 <style scoped>
-.parent {
-  width: 350px;
-  height: 950px;
-  overflow: hidden;
-  position: absolute;
-  top: 100px;
-  right: 0px;
-}
-
-.back {
+.icon,
+.guideContentImg {
   width: 100%;
+  display: block;
 }
 
 .guidParent {
-  margin-top: 0px;
+  margin-top: 10px;
   position: relative;
   width: 100%;
-  /*height: 630px;*/
-  height: 750px;
-  /*overflow: hidden;*/
-  padding-top20px: 100px;
+  height: 100%;
   right: 0px !important;
   display: flex;
   justify-content: center;
   overflow: hidden;
-  /*border: 1px solid red;*/
   display: -webkit-flex !important;;
 }
 
 .child {
   position: absolute;
   width: 100%;
-  /*overflow: hidden;*/
   right: 0px !important;
-  /*padding: 0px 17px 30px 17px !important;*/
 }
 </style>
