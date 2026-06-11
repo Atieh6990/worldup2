@@ -1,11 +1,7 @@
 <template>
   <div class="parent">
     <div class="posterWrap">
-      <img class="posterImg" :src="wImg('menuSlide.png')">
-      <div class="brandGroup">
-        <img class="goalGif" :src="wImg('goal.gif')" alt="">
-        <img class="samLogo" :src="samLogo" alt="">
-      </div>
+      <home-poster />
     </div>
 
     <div class="menuList">
@@ -46,13 +42,18 @@ import { mapGetters, mapMutations } from 'vuex'
 import func from "../mixins/mixin";
 import { ROAST_CONFIG } from "../js/config";
 import { MENU_HOVER_ICON, getMenuIconPath } from "../js/menuIcons";
+import homePoster from '../components/layout/homePoster'
 import myRank from '../components/score/myRank'
-import api from '../api/api'
-import IScroll from '../js/iscroll'
+import { fetchMyTotalScore } from '../js/rankingService'
+import {
+  createVerticalScroll,
+  destroyVerticalScroll,
+  refreshVerticalScroll,
+} from '../js/scrollHelper'
 
 export default {
   name: "menuRout",
-  components: { myRank },
+  components: { myRank, homePoster },
   mixins: [func],
   data() {
     return {
@@ -63,7 +64,6 @@ export default {
       loginItem: { id: 0, name: 'ثبت نام', des: 'ثبت نام', rout: '/worldCupHome/login/' },
       hasLoggedIn: false,
       myScoreNum: '',
-      samLogo: require('../assets/images/menu/sam.png'),
       hoverIcon: MENU_HOVER_ICON,
     }
   },
@@ -78,11 +78,8 @@ export default {
       let json = JSON.parse(this.getParam("Tokenw"));
       if (json && json.access_token) {
         this.hasLoggedIn = true
-        api.scores().then(data => {
-          if (data.success == 'true') {
-            let find = data.data.find(element => element.self == 1).ranking;
-            this.myScoreNum = find
-          }
+        fetchMyTotalScore().then(score => {
+          this.myScoreNum = score
         })
       }
     }
@@ -93,10 +90,7 @@ export default {
     });
   },
   beforeDestroy() {
-    if (this.myScroll) {
-      this.myScroll.destroy();
-      this.myScroll = '';
-    }
+    this.myScroll = destroyVerticalScroll(this.myScroll)
   },
   methods: {
     ...mapMutations(['setMenu', 'setOnlinePlay']),
@@ -111,22 +105,14 @@ export default {
     },
 
     scrollInit() {
-      this.myScroll = '';
       setTimeout(() => {
-        this.myScroll = new IScroll(".menuList", {
-          scrollY: true,
-          scrollbars: false,
-          momentum: true,
-          preventDefault: false,
-          mouseWheel: true,
-          interactiveScrollbars: true,
-          shrinkScrollbars: "none",
-          fadeScrollbars: false,
-          mouseMove: true,
-          bounce: false,
-          click: true,
-        });
-        this.myScroll.refresh();
+        const el = document.querySelector('.menuList')
+        if (!el) return
+        if (this.myScroll) {
+          refreshVerticalScroll(this.myScroll)
+          return
+        }
+        this.myScroll = createVerticalScroll(el, { click: true })
       }, 50);
     },
 
@@ -206,45 +192,6 @@ export default {
   font-size: 0;
   margin: 0;
   padding: 0;
-}
-
-.posterImg {
-  width: 100%;
-  display: block;
-  margin: 0;
-  padding: 0;
-}
-
-.brandGroup {
-  position: absolute;
-  top: 190px;
-  right: 50px;
-  width: 125px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  direction: ltr;
-  display: -webkit-flex !important;
-}
-
-.goalGif {
-  position: absolute;
-  top: 10px;
-  left: 0;
-  width: 60px;
-  height: auto;
-  flex-shrink: 0;
-}
-
-.samLogo {
-  position: absolute;
-  top: 10px;
-  right: 0;
-  width: 95px;
-  height: auto;
-  margin-top: 1px;
-  flex-shrink: 0;
 }
 
 .menuList {

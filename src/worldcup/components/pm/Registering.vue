@@ -3,7 +3,7 @@
     <input :class="[((yPos == 0 && activeRoute == 1) ? 'inpHover':''),'content']" :value="contentTxt"
            :placeholder="placeHolders[type]"
            type="text"
-           @input="onInputChange"
+           readonly
            :id="'content_'+type" v-on:click="removeHover()" ref="content" v-if="osType== 1">
 
     <div v-else>
@@ -73,7 +73,10 @@ export default {
   },
   created() {
     this.yPos = 0;
-    this.showIme("content_" + this.type);
+    // TV / Android WebView: ورودی با کلید عددی است؛ focus خودکار IME صفحه را روی RN خالی می‌کند
+    if (this.shouldAutoShowIme()) {
+      this.showIme("content_" + this.type);
+    }
 
     this.$root.$on("set_error_msgL", data => {
       // console.log("nnnnnnnnnnnn")
@@ -99,6 +102,11 @@ export default {
   },
   components: {SimpleKeyboard},
   methods: {
+    shouldAutoShowIme() {
+      if (ROAST_CONFIG.OS_TYPE === 0 || ROAST_CONFIG.WEBVIEW_MODE) return false
+      if (ROAST_CONFIG.DEVELOP_MODE === 1 && (this.type === 0 || this.type === 1)) return false
+      return true
+    },
     cancel(){
       this.hideIme("content_" + this.type);
     },
@@ -142,7 +150,7 @@ export default {
       }
 
       if (this.yPos == 3) {//pak kardan
-        this.contentTxt = '';
+        this.clearContent();
         return false
       }
 
@@ -198,8 +206,14 @@ export default {
         }
       }
     },
-    clearBtn() {
+    clearContent() {
       this.contentTxt = '';
+      this.typeInpShow = 0;
+      this.$set(this.contentDivTxt, this.type, this.placeHolders[this.type]);
+      this.$emit('clearNumber');
+    },
+    clearBtn() {
+      this.clearContent();
     },
     submitBtn() {
       this.typeInpShow = 0;

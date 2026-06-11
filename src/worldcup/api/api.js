@@ -249,6 +249,22 @@ export default {
         return this.aparatLeagueMatchesByType('upcoming_matches');
     },
 
+    hamsamLives() {
+        return axios({
+            method: 'GET',
+            url: ROAST_CONFIG.HAMSAM_LIVES_URL,
+        }).then(response => {
+            const body = response['data'] || {}
+            if (body.status === 'success' && Array.isArray(body.data)) {
+                return body.data
+            }
+            return []
+        }).catch(response => {
+            console.log('hamsamLives catch', response)
+            return []
+        });
+    },
+
 
     // getCurrency(url) {
     //     let Url = url

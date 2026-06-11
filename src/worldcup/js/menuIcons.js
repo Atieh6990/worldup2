@@ -1,7 +1,10 @@
-export const MENU_HOVER_ICON = require('../assets/images/menu/hover.png')
-export const MY_SCORE_ICON = require('../assets/images/menu/myScore.png')
+import { ROAST_CONFIG } from './config'
+import { resolveAssetPath } from './wImgUrl'
 
-const MENU_ICONS = {
+const hoverLocal = require('../assets/images/menu/hover.png')
+const myScoreLocal = require('../assets/images/menu/myScore.png')
+
+const MENU_ICON_LOCAL = {
   0: require('../assets/images/menu/0.png'),
   1: require('../assets/images/menu/1.png'),
   2: require('../assets/images/menu/2.png'),
@@ -11,7 +14,36 @@ const MENU_ICONS = {
   6: require('../assets/images/menu/6.png'),
 }
 
+export const MENU_HOVER_ICON = resolveAssetPath(
+  'menu/hover.png',
+  ROAST_CONFIG.DEVELOP_MODE,
+  ROAST_CONFIG.WImgUrl,
+  hoverLocal,
+)
+
+export const MY_SCORE_ICON = resolveAssetPath(
+  'menu/myScore.png',
+  ROAST_CONFIG.DEVELOP_MODE,
+  ROAST_CONFIG.WImgUrl,
+  myScoreLocal,
+)
+
 export function getMenuIconPath(id) {
-  let iconId = id > 6 ? (id % 7) : id
-  return MENU_ICONS[iconId] || MENU_ICONS[0]
+  const iconId = id > 6 ? (id % 7) : id
+  const local = MENU_ICON_LOCAL[iconId] || MENU_ICON_LOCAL[0]
+  return resolveAssetPath(
+    `menu/${iconId}.png`,
+    ROAST_CONFIG.DEVELOP_MODE,
+    ROAST_CONFIG.WImgUrl,
+    local,
+  )
+}
+
+export function getSamLogoPath() {
+  return resolveAssetPath(
+    'menu/sam.png',
+    ROAST_CONFIG.DEVELOP_MODE,
+    ROAST_CONFIG.WImgUrl,
+    require('../assets/images/menu/sam.png'),
+  )
 }

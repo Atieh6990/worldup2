@@ -49,12 +49,14 @@ export default {
 <style scoped>
 .routeMenuBadge {
   position: relative;
+  z-index: 4;
   height: 89px;
   flex-shrink: 0;
   width: 100%;
   direction: rtl;
   pointer-events: none;
   overflow: hidden;
+  background: transparent;
 }
 
 .iconHover {

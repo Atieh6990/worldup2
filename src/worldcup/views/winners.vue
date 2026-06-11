@@ -1,9 +1,6 @@
 <template>
   <route-page-layout>
-    <template #poster>
-      <my-score :userMob="userMob" :userScoreNum="userScoreNum"></my-score>
-    </template>
-    <div v-if="winnersList.message!='no winners yet'" class="winnersPage" style="direction: rtl !important;">
+    <div v-if="hasWinners" class="winnersPage" style="direction: rtl !important;">
       <groups v-on:selectItem="selectItem" :y-pos="yPos" :groups="groups" ref="groups"></groups>
       <div class="winnersList">
       <div class="winnerParent">
@@ -31,7 +28,6 @@
 <script>
 import groups from "../components/forcast/groups";
 import api from "../api/api";
-import MyScore from "../components/forcast/myScore";
 import {ROAST_CONFIG} from "../js/config";
 
 export default {
@@ -39,7 +35,7 @@ export default {
   data() {
     return {
       yPos: 1,
-      winnersList: [],
+      winnersList: {},
       userScoreList: [],
       groups: [],
       selectedIndex: 0,
@@ -58,58 +54,89 @@ export default {
     this.winnersApi();
 
   },
-  components: {MyScore, groups},
+  computed: {
+    hasWinners() {
+      return this.groups.length > 0
+    },
+  },
+  components: { groups },
   methods: {
     selectItem(index) {
       this.selectedIndex = index
     },
     winnersApi: function () {
       api.winners().then((data) => {
-        if (data.success) {
-          this.winnersInfo(data.data);
-          this.userScoreApi();
-        } else {
+        if (!data || !data.success) return
+
+        const payload = data.data || {}
+        if (payload.message === 'no winners yet') {
+          this.winnersList = payload
+          this.groups = []
+          return
         }
 
+        this.winnersInfo(payload);
+        this.userScoreApi();
+      }).catch(() => {
+        this.groups = []
       });
 
     },
     userScoreApi: function () {
-      api.userScore().then((data) => {
-        if (data.success) {
-          this.userScoreInfo(data.data);
-          this.userMob = data.data['user']['mobile'];
-        } else {
-        }
+      if (!this.groups.length) return
 
-      });
+      api.userScore().then((data) => {
+        if (!data || !data.success || !data.data) return
+
+        this.userScoreInfo(data.data);
+        const user = data.data.user
+        this.userMob = user && user.mobile ? user.mobile : ''
+      }).catch(() => {});
 
     },
     winnersInfo: function (data) {
+      if (!data || data.message === 'no winners yet') {
+        this.winnersList = data || {}
+        this.groups = []
+        return
+      }
+
       this.winnersList = data;
+      this.groups = []
 
       for (let key in this.winnersList) {
+        if (!Object.prototype.hasOwnProperty.call(this.winnersList, key) || key === 'message') continue
         this.groups.push(key);
       }
-      this.selectedInfo();
+
+      if (this.groups.length > 0) {
+        this.selectedInfo();
+      }
     },
     userScoreInfo: function (data) {
-      this.userScoreList = data;
-      //
-      // for (let key in this.userScoreList) {
-      //   this.groups.push(key);
-      // }
+      this.userScoreList = data || {};
       this.selectedScore();
     },
     selectedInfo: function () {
-      this.scoreUserMob = this.winnersList[this.groups[this.selectedIndex]]['score_user']['mobile'];
-      this.lotteryUserMob = this.winnersList[this.groups[this.selectedIndex]]['lottery_user']['mobile'];
-      this.scoreUserScore = this.winnersList[this.groups[this.selectedIndex]]['score_user']['score'];
-      this.lotteryUserScore = this.winnersList[this.groups[this.selectedIndex]]['lottery_user']['score'];
-      this.descScore = this.winnersList[this.groups[this.selectedIndex]]['description'];
+      const dayKey = this.groups[this.selectedIndex]
+      const dayData = dayKey ? this.winnersList[dayKey] : null
+      if (!dayData) return
+
+      const scoreUser = dayData.score_user || {}
+      const lotteryUser = dayData.lottery_user || {}
+
+      this.scoreUserMob = scoreUser.mobile || ''
+      this.lotteryUserMob = lotteryUser.mobile || ''
+      this.scoreUserScore = scoreUser.score != null ? scoreUser.score : ''
+      this.lotteryUserScore = lotteryUser.score != null ? lotteryUser.score : ''
+      this.descScore = dayData.description || ''
     },
     selectedScore: function () {
-      this.userScoreNum = this.userScoreList[this.groups[this.selectedIndex]]['score'];
+      const dayKey = this.groups[this.selectedIndex]
+      if (!dayKey || !this.userScoreList || !this.userScoreList[dayKey]) return
+
+      const dayScore = this.userScoreList[dayKey].score
+      this.userScoreNum = dayScore != null ? dayScore : ''
     },
     enter() {
       if (this.yPos == 1) {

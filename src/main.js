@@ -5,19 +5,32 @@ import App from './App.vue'
 import router from './worldcup/router'
 import store from './worldcup/store'
 import { ROAST_CONFIG } from './worldcup/js/config'
-import { initWebViewShell } from './worldcup/js/webviewShell'
+import { hydrateTokenFromCookie } from './worldcup/js/tokenCookie'
+import { resolveTeamImageUrl } from './worldcup/js/wImgUrl'
+import { initWebViewShell, repaintWebViewPanel } from './worldcup/js/webviewShell'
 import routePageLayout from './worldcup/components/layout/routePageLayout'
 
 initWebViewShell()
 
-try {
-  localStorage.clear()
-} catch (e) {}
+router.afterEach(() => {
+  repaintWebViewPanel()
+})
+
+if (ROAST_CONFIG.DEVELOP_MODE == 1) {
+  hydrateTokenFromCookie()
+} else {
+  try {
+    localStorage.clear()
+  } catch (e) {}
+}
 
 Vue.config.productionTip = false
 Vue.component('routePageLayout', routePageLayout)
 Vue.prototype.wImg = function (fileName) {
   return ROAST_CONFIG.resolveWImg(fileName)
+}
+Vue.prototype.teamImg = function (path) {
+  return resolveTeamImageUrl(path, ROAST_CONFIG.TEAM_IMAGE_BASE_URL)
 }
 try {
   window.$ = window.jQuery = require('jquery');
