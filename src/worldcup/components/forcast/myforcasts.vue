@@ -1,21 +1,21 @@
 <template>
-  <div class="matchesParent" >
-    <div class="matchesScroll" v-if="mypredict[selectedIndex] && mypredict[selectedIndex].length > 0">
+  <div class="myforcastsRoot">
+  <div class="matchesParent" ref="scrollWrap" v-if="hasMatches">
+    <div class="matchesScroll routeScrollEnd">
 
       <div :id="'match_' + m" v-for="(match,m) in mypredict[selectedIndex]"
            class="matches"
-           :class="[(status == 1 ? 'winBorder':'looseBorder')]"
-           :style="[m == 0 ? {marginTop :'7px'}:'']">
+           :class="[(status == 1 ? 'winBorder':'looseBorder')]">
 
-        <div class="backImg">
+        <div class="backImg" :style="{ backgroundImage: 'url(' + rectangleBg + ')' }">
 
           <div class="backIcon" style="right: 28px;">
-            <img v-if="match.teama && match.teama.pic" :src="match.teama.pic" class="icon"/>
+            <img v-if="match.teama && match.teama.pic" :src="teamImg(match.teama.pic)" class="icon"/>
             <img v-else :src="wImg('malavan70.png')"  class="icon"/>
           </div>
           <div class="line"></div>
           <div class="backIcon" style="right: 135px;">
-            <img  v-if="match.teamb && match.teamb.pic"  :src="match.teamb.pic" class="icon"/>
+            <img  v-if="match.teamb && match.teamb.pic"  :src="teamImg(match.teamb.pic)" class="icon"/>
             <img v-else :src="wImg('malavan70.png')"  class="icon"/>
           </div>
 
@@ -59,87 +59,188 @@
       </div>
 
     </div>
-    <div class="noDataMsg" v-else>{{ emptyDataMsg }}</div>
+  </div>
+  <div class="noDataMsg" v-if="!hasMatches">{{ emptyDataMsg }}</div>
   </div>
 </template>
 
 <script>
-import IScroll from "../../js/iscroll";
 import {ROAST_CONFIG} from "../../js/config";
+import { resolveAssetPath } from '../../js/wImgUrl';
+import {
+  createForecastScroll,
+  refreshForecastScroll,
+  scrollForecastToElement,
+} from '../../js/forecastScroll';
 export default {
   name: "myforcasts",
   props: ['mypredict', 'selectedIndex'],
+  computed: {
+    hasMatches() {
+      return !!(this.mypredict && this.mypredict[this.selectedIndex] && this.mypredict[this.selectedIndex].length > 0)
+    },
+  },
   data() {
     return {
       emptyDataMsg: ROAST_CONFIG.EMPTY_DATA_MSG,
       balls: [1, 1, 0, 0],
       status:1,
-      win: require('../../assets/images/forecast/check.png'),
-      loose: require('../../assets/images/forecast/cancle.png'),
-      myScroll: '',
+      win: resolveAssetPath(
+        'forecast/check.png',
+        ROAST_CONFIG.DEVELOP_MODE,
+        ROAST_CONFIG.WImgUrl,
+        require('../../assets/images/forecast/check.png'),
+      ),
+      loose: resolveAssetPath(
+        'forecast/cancle.png',
+        ROAST_CONFIG.DEVELOP_MODE,
+        ROAST_CONFIG.WImgUrl,
+        require('../../assets/images/forecast/cancle.png'),
+      ),
+      yMatch: 0,
+      myScroll: null,
+      _scrollTimer: null,
+      rectangleBg: resolveAssetPath(
+        'forecast/Rectangle.png',
+        ROAST_CONFIG.DEVELOP_MODE,
+        ROAST_CONFIG.WImgUrl,
+        require('../../assets/images/forecast/Rectangle.png'),
+      ),
     }
   },
 
-  created() {
-
-    this.scrollInit()
+  watch: {
+    mypredict: {
+      deep: true,
+      handler() {
+        this.refreshScroll()
+      },
+    },
+    selectedIndex() {
+      this.resetScrollPosition()
+      this.scheduleScrollInit()
+    },
+    hasMatches: {
+      handler(ready) {
+        if (ready) {
+          this.$nextTick(() => this.scheduleScrollInit())
+        } else {
+          this.destroyScroll()
+        }
+      },
+      immediate: true,
+    },
   },
-  methods:{
-    scrollInit() {
-      this.myScroll = '';
-      if (this.myScroll == '') {
-        setTimeout(() => {
-          this.myScroll = new IScroll(".matchesParent", {
-            scrollY: true,
-            scrollbars: false,
-            momentum: true,
-            preventDefault: false,
-            // scrollbars: false,
-            mouseWheel: true,
-            interactiveScrollbars: true,
-            shrinkScrollbars: "none",
-            fadeScrollbars: false,
-            mouseMove: true
-          });
-        }, 10);
 
+  beforeDestroy() {
+    clearTimeout(this._scrollTimer)
+    this.destroyScroll()
+  },
+
+  methods:{
+    destroyScroll() {
+      if (this.myScroll) {
+        this.myScroll.destroy()
+        this.myScroll = null
+      }
+    },
+
+    scheduleScrollInit() {
+      clearTimeout(this._scrollTimer)
+      this._scrollTimer = setTimeout(() => this.initScroll(), 150)
+    },
+
+    initScroll() {
+      if (!this.hasMatches) {
+        this.destroyScroll()
+        return
       }
 
+      const el = this.$refs.scrollWrap
+      if (!el) return
+
+      if (this.myScroll) {
+        refreshForecastScroll(this.myScroll)
+        return
+      }
+
+      this.myScroll = createForecastScroll(el)
+      refreshForecastScroll(this.myScroll)
     },
 
-    down(){
-      this.myScroll.moveDown(80);
+    refreshScroll() {
+      if (this.myScroll) {
+        this.$nextTick(() => refreshForecastScroll(this.myScroll))
+      } else {
+        this.scheduleScrollInit()
+      }
     },
-    up(){
-      this.myScroll.moveUp(80);
 
-      if (this.myScroll.y === 0) {
-        return false
-      }else {
+    resetScrollPosition() {
+      this.yMatch = 0
+      if (this.myScroll) {
+        this.myScroll.scrollTo(0, 0, 0)
+        refreshForecastScroll(this.myScroll)
+      }
+    },
+
+    scrollToMatch(index) {
+      if (!this.myScroll) return
+      this.$nextTick(() => {
+        scrollForecastToElement(this.myScroll, '#match_' + index)
+      })
+    },
+
+    down() {
+      const list = this.mypredict[this.selectedIndex]
+      if (!list || !this.myScroll) return
+
+      if (this.yMatch < list.length - 1) {
+        this.yMatch++
+        this.scrollToMatch(this.yMatch)
+      }
+    },
+
+    up() {
+      if (!this.myScroll) return false
+
+      if (this.yMatch > 0) {
+        this.yMatch--
+        this.scrollToMatch(this.yMatch)
         return true
       }
-    }
+
+      return false
+    },
   }
 }
 </script>
 
 <style scoped>
 
+.myforcastsRoot {
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  display: -webkit-flex !important;
+  flex-direction: column;
+  overflow: hidden;
+}
+
 .matchesParent {
-  width: 350px;
-  height: 840px;
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  height: 100%;
   position: relative;
-  top: 0;
-  margin-top: 10px;
-  left: 0px;
   overflow: hidden;
 }
 
 .matchesScroll {
   width: 350px;
-  position: absolute;
-  top: 0px;
-  left: 0px;
+  box-sizing: border-box;
 }
 
 .matches {
@@ -155,8 +256,11 @@ export default {
   margin-top: 20px;
 }
 
+.matches:first-child {
+  margin-top: 0;
+}
+
 .backImg {
-  background: url('../../assets/images/forecast/Rectangle.png');
   width: 315px;
   height: 164px;
   position: absolute;

@@ -1,12 +1,12 @@
 <template>
   <div class="routePage">
-    <div class="posterWrap" v-if="$slots.poster || posterSrc">
+    <div class="posterWrap" v-if="!hidePoster">
       <slot name="poster">
-        <img v-if="posterSrc" class="posterImg" :src="posterSrc" alt="">
+        <home-poster />
       </slot>
     </div>
     <route-menu-badge />
-    <div class="routeBody">
+    <div class="routeBody" :class="{ routeBodyStandard: contentInset }">
       <slot />
     </div>
   </div>
@@ -14,14 +14,19 @@
 
 <script>
 import routeMenuBadge from './routeMenuBadge'
+import homePoster from './homePoster'
 
 export default {
   name: 'routePageLayout',
-  components: { routeMenuBadge },
+  components: { routeMenuBadge, homePoster },
   props: {
-    posterSrc: {
-      type: String,
-      default: '',
+    hidePoster: {
+      type: Boolean,
+      default: false,
+    },
+    contentInset: {
+      type: Boolean,
+      default: true,
     },
   },
 }
@@ -43,6 +48,8 @@ export default {
 }
 
 .posterWrap {
+  position: relative;
+  z-index: 3;
   flex-shrink: 0;
   width: 100%;
   line-height: 0;
@@ -51,9 +58,9 @@ export default {
   padding: 0;
 }
 
-.posterWrap ::v-deep img,
-.posterWrap ::v-deep .backImg,
-.posterImg {
+.posterWrap ::v-deep .homePoster > .posterImg,
+.posterWrap ::v-deep .posterSection .posterImg,
+.posterWrap ::v-deep .backImg {
   width: 100%;
   display: block;
   margin: 0;
@@ -65,9 +72,17 @@ export default {
   flex: 1;
   min-height: 0;
   position: relative;
+  z-index: 1;
   overflow: hidden;
+  background: transparent;
   display: flex;
   display: -webkit-flex !important;
   flex-direction: column;
+}
+
+.routeBodyStandard {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  box-sizing: border-box;
 }
 </style>

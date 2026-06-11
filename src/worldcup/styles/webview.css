@@ -49,6 +49,9 @@ html.webview-mode .nestedRoutBackground {
     width: 350px;
     right: 0;
     left: auto;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    background: rgba(11, 19, 32, 0.95) !important;
 }
 
 html.webview-mode .nestedRoutContent {
@@ -60,4 +63,137 @@ html.webview-mode .nestedRoutContent {
     margin: 0;
     padding: 0;
     overflow: hidden;
+}
+
+/* RN WebView: فقط paint — اندازه همان webview-mode بالا (350×1080) */
+html.webview-native-shell.webview-mode {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    touch-action: manipulation;
+}
+
+/*
+ * اسکرول IScroll: wrapper باید overflow:hidden بماند.
+ * transform روی scroller (.matchesScroll / .listScroll / .menuScroll / .child) نگذار —
+ * IScroll موقعیت را با transform همان المان تنظیم می‌کند.
+ */
+html.webview-native-shell.webview-mode .matchesParent,
+html.webview-native-shell.webview-mode .listParent,
+html.webview-native-shell.webview-mode .menuList,
+html.webview-native-shell.webview-mode .scoresBody {
+    overflow: hidden !important;
+    position: relative !important;
+}
+
+html.webview-native-shell.webview-mode .matches,
+html.webview-native-shell.webview-mode .listItem,
+html.webview-native-shell.webview-mode .listScroll .guideContentImg,
+html.webview-native-shell.webview-mode .menuItem,
+html.webview-native-shell.webview-mode .backImg,
+html.webview-native-shell.webview-mode .forecastButton,
+html.webview-native-shell.webview-mode .scoreParent,
+html.webview-native-shell.webview-mode .scoreBox,
+html.webview-native-shell.webview-mode .teamsNameParent {
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+html.webview-native-shell.webview-mode .posterWrap,
+html.webview-native-shell.webview-mode .routeMenuBadge {
+    position: relative !important;
+    z-index: 10 !important;
+}
+
+html.webview-native-shell.webview-mode .routeBody {
+    overflow: hidden !important;
+}
+
+html.webview-native-shell.webview-mode .forecastFixedHeader {
+    position: relative !important;
+    z-index: 6 !important;
+    background: transparent !important;
+}
+
+html.webview-native-shell.webview-mode .forecastScrollArea,
+html.webview-native-shell.webview-mode .forecastPage .matchesParent {
+    overflow: hidden !important;
+    position: relative !important;
+}
+
+html.webview-native-shell.webview-mode .forecastPage .itemsParent,
+html.webview-native-shell.webview-mode .forecastPage .groupParent,
+html.webview-native-shell.webview-mode .forecastPage .gamesRoot,
+html.webview-native-shell.webview-mode .forecastPage .matchesParent,
+html.webview-native-shell.webview-mode .forecastPage .matches,
+html.webview-native-shell.webview-mode .forecastPage .backImg,
+html.webview-native-shell.webview-mode .forecastPage .forecastButton,
+html.webview-native-shell.webview-mode .forecastPage .scoreParent,
+html.webview-native-shell.webview-mode .forecastPage .scoreBox,
+html.webview-native-shell.webview-mode .forecastPage .teamsNameParent,
+html.webview-native-shell.webview-mode .forecastPage .items,
+html.webview-native-shell.webview-mode .forecastPage .flickity,
+html.webview-native-shell.webview-mode .forecastPage .icon,
+html.webview-native-shell.webview-mode .forecastPage .line,
+html.webview-native-shell.webview-mode .forecastPage .teamsName,
+html.webview-native-shell.webview-mode .forecastPage .matchTime,
+html.webview-native-shell.webview-mode .forecastPage .ball,
+html.webview-native-shell.webview-mode .forecastPage .goal,
+html.webview-native-shell.webview-mode .forecastPage .status,
+html.webview-native-shell.webview-mode .forecastPage .result,
+html.webview-native-shell.webview-mode .forecastPage .balls,
+html.webview-native-shell.webview-mode .forecastPage .scoreTxt,
+html.webview-native-shell.webview-mode .forecastPage .colorNav,
+html.webview-native-shell.webview-mode .forecastPage .selectedNav {
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+html.webview-native-shell.webview-mode .forecastPage .myforcastsRoot .matchesParent,
+html.webview-native-shell.webview-mode .forecastPage .myforcastsRoot .matches,
+html.webview-native-shell.webview-mode .forecastPage .myforcastsRoot .backImg,
+html.webview-native-shell.webview-mode .forecastPage .myforcastsRoot .backIcon,
+html.webview-native-shell.webview-mode .forecastPage .myforcastsRoot .icon,
+html.webview-native-shell.webview-mode .forecastPage .myforcastsRoot .line,
+html.webview-native-shell.webview-mode .forecastPage .myforcastsRoot .teamsNameParent,
+html.webview-native-shell.webview-mode .forecastPage .myforcastsRoot .teamsName,
+html.webview-native-shell.webview-mode .forecastPage .myforcastsRoot .matchTime,
+html.webview-native-shell.webview-mode .forecastPage .myforcastsRoot .balls,
+html.webview-native-shell.webview-mode .forecastPage .myforcastsRoot .ball,
+html.webview-native-shell.webview-mode .forecastPage .myforcastsRoot .goal,
+html.webview-native-shell.webview-mode .forecastPage .myforcastsRoot .status,
+html.webview-native-shell.webview-mode .forecastPage .myforcastsRoot .result,
+html.webview-native-shell.webview-mode .forecastPage .myforcastsRoot .winBorder,
+html.webview-native-shell.webview-mode .forecastPage .myforcastsRoot .looseBorder,
+html.webview-native-shell.webview-mode .forecastPage .myforcastsRoot .winStatus,
+html.webview-native-shell.webview-mode .forecastPage .myforcastsRoot .looseStatus,
+html.webview-native-shell.webview-mode .forecastPage .myforcastsRoot .winResult,
+html.webview-native-shell.webview-mode .forecastPage .myforcastsRoot .looseResult {
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+html.webview-native-shell.webview-mode .registerParent {
+    overflow: visible !important;
+    position: relative !important;
+}
+
+html.webview-native-shell.webview-mode .registerParent .content,
+html.webview-native-shell.webview-mode .registerParent .submitBtn,
+html.webview-native-shell.webview-mode .registerParent .clearBtn,
+html.webview-native-shell.webview-mode .registerParent .des,
+html.webview-native-shell.webview-mode .registerParent .errorMdg {
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    visibility: visible !important;
+    opacity: 1 !important;
 }

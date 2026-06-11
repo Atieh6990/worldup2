@@ -1,5 +1,5 @@
 <template>
-  <route-page-layout :poster-src="wImg('menuSlide.png')">
+  <route-page-layout>
     <upcomingGames ref="upcomingGames"></upcomingGames>
   </route-page-layout>
 </template>

@@ -1,93 +1,96 @@
 <template>
   <route-page-layout>
-    <template #poster>
-      <img class="icon" :src="guidePosterImg" alt="">
-    </template>
-    <div class="guidParent">
-      <div class="child" ref="moving">
-        <img class="guideContentImg" :src="guideContentImg" alt="">
+    <div class="listParent" ref="listScrollWrap">
+      <div class="listScroll routeScrollEnd">
+        <img
+          ref="guideImg"
+          class="guideContentImg"
+          :src="guideContentImg"
+          alt=""
+          @load="onGuideImgLoad"
+        >
       </div>
     </div>
   </route-page-layout>
 </template>
 
 <script>
-import IScroll from '../js/iscroll';
-import { GUIDE_POSTER_IMG, GUIDE_CONTENT_IMG } from '../js/guideImages';
+import {
+  createVerticalScroll,
+  destroyVerticalScroll,
+  refreshVerticalScroll,
+  scrollStepDown,
+  scrollStepUp,
+} from '../js/scrollHelper';
+import { GUIDE_CONTENT_IMG } from '../js/guideImages';
 
 export default {
   name: "guide",
   data() {
     return {
-      myScroll: '',
-      guidePosterImg: GUIDE_POSTER_IMG,
+      myScroll: null,
       guideContentImg: GUIDE_CONTENT_IMG,
     }
-
   },
-  created() {
-    let self = this;
-    setTimeout(() => {
-      self.scrollInit();
-    }, 600)
+  mounted() {
+    this.$nextTick(() => {
+      const img = this.$refs.guideImg
+      if (img && img.complete && img.naturalHeight > 0) {
+        this.scrollInit()
+      }
+    })
+  },
+  beforeDestroy() {
+    this.myScroll = destroyVerticalScroll(this.myScroll)
   },
   methods: {
     scrollInit() {
-      let self = this;
-      this.myScroll = '';
-
-      if (this.myScroll == '') {
-        setTimeout(() => {
-          this.myScroll = new IScroll(".guidParent", {
-            scrollY: true,
-            momentum: true,
-            preventDefault: false,
-            scrollbars: true,
-            mouseWheel: true,
-            interactiveScrollbars: true,
-            shrinkScrollbars: "none",
-            fadeScrollbars: false,
-            mouseMove: true,
-            bounce: false,
-          });
-
-        }, 10);
-      }
+      setTimeout(() => {
+        const el = this.$refs.listScrollWrap
+        if (!el) return
+        if (this.myScroll) {
+          refreshVerticalScroll(this.myScroll)
+          return
+        }
+        this.myScroll = createVerticalScroll(el)
+      }, 50)
     },
-
 
     down() {
-      this.myScroll.moveDown(80);
+      return scrollStepDown(this.myScroll, 80)
     },
+
     up() {
-      this.myScroll.moveUp(80);
+      return scrollStepUp(this.myScroll, 80)
+    },
+
+    onGuideImgLoad() {
+      this.$nextTick(() => {
+        this.scrollInit()
+      })
     },
   }
 }
 </script>
 
 <style scoped>
-.icon,
+.listParent {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.listScroll {
+  width: 326px;
+  margin: 0 auto;
+  padding-top: 0;
+  box-sizing: border-box;
+}
+
 .guideContentImg {
   width: 100%;
   display: block;
-}
-
-.guidParent {
-  margin-top: 10px;
-  position: relative;
-  width: 100%;
-  height: 100%;
-  right: 0px !important;
-  display: flex;
-  justify-content: center;
-  overflow: hidden;
-  display: -webkit-flex !important;;
-}
-
-.child {
-  position: absolute;
-  width: 100%;
-  right: 0px !important;
+  height: auto;
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div class="groupParent">=
+  <div class="groupParent">
     <flickity class="flickity suggestedProgram" ref="flickity" :options="flickityOptions" v-if="groups.length>0">
 
       <div v-for="(item,index) in groups" :id="'groupItem_'+index"
@@ -93,7 +93,7 @@ export default {
   right: 7px;
   height: 35px;
   top: 0;
-  margin-top: 10px;
+  margin-top: 6px;
   position: relative;
   direction: rtl;
   display: flex;

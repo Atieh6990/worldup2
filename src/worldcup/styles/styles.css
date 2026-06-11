@@ -1,3 +1,9 @@
+/* فاصله انتهای محتوای اسکرول در صفحات route (غیر از پیش‌بینی) */
+.routeScrollEnd {
+    padding-bottom: 8px;
+    box-sizing: border-box;
+}
+
 /* #0B1320 — glass background (css.glass adapted) */
 .appGlassBg {
     background: rgba(11, 19, 32, 0.82);

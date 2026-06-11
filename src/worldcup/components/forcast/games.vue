@@ -1,19 +1,18 @@
 <template>
-  <div>
-  <div class="matchesParent" v-if="matches[selectedIndex] && matches[selectedIndex].length>0">
+  <div class="gamesRoot">
+  <div class="matchesParent" ref="scrollWrap" v-if="hasMatches">
 
 
-    <div class="matchesScroll">
+    <div class="matchesScroll routeScrollEnd">
       <div :id="'match_' + m" v-for="(match,m) in matches[selectedIndex]"
-           class="matches"
-           :style="[m == 0 ? {marginTop :'7px'}:'']">
-        <div class="backImg">
+           class="matches">
+        <div class="backImg" :style="{ backgroundImage: 'url(' + rectangleBg + ')' }">
           <div class="backIcon" style="right: 28px;">
-            <img v-if="match.teama && match.teama.pic" :src="match.teama.pic"  class="icon"/>
+            <img v-if="match.teama && match.teama.pic" :src="teamImg(match.teama.pic)"  class="icon"/>
           </div>
           <div class="line"></div>
           <div class="backIcon" style="right: 135px;">
-            <img v-if="match.teamb && match.teamb.pic" :src="match.teamb.pic"  class="icon"/>
+            <img v-if="match.teamb && match.teamb.pic" :src="teamImg(match.teamb.pic)"  class="icon"/>
           </div>
           <div class="teamsNameParent">
             <div class="teamsName">{{ match.teama.name }}</div>
@@ -28,7 +27,7 @@
             <div class="scoreBox">
 
               <div :id="'teamA_'+[m]" v-if="osType== 0"
-                   :class="[(yPos==2&&yMatch==m&&yScore==0&&xScore==0) ?'scoreHvr':'','scoreTxt']">{{ teamA[m] }}
+                   :class="[(yPos==2&&yMatch==m&&yScore==0&&xScore==0) ?'scoreHvr':'','scoreTxt']">{{ scoreDisplay(teamA[m]) }}
               </div>
               <input :id="'teamA_'+[m]" v-model="teamA[m]" v-else
                      :class="[(yPos==2&&yMatch==m&&yScore==0&&xScore==0) ?'scoreHvr':'','scoreTxt']">
@@ -39,7 +38,7 @@
             <div class="scoreBox">
 
               <div :id="'teamA_'+[m]" v-if="osType== 0"
-                   :class="[(yPos==2&&yMatch==m&&yScore==0&&xScore==1) ?'scoreHvr':'','scoreTxt']">{{ teamB[m] }}
+                   :class="[(yPos==2&&yMatch==m&&yScore==0&&xScore==1) ?'scoreHvr':'','scoreTxt']">{{ scoreDisplay(teamB[m]) }}
               </div>
               <input :id="'teamB_'+[m]" v-model="teamB[m]" v-else
                      :class="[(yPos==2&&yMatch==m&&yScore==0&&xScore==1) ?'scoreHvr':'','scoreTxt']">
@@ -59,91 +58,188 @@
 
 
   </div>
-    <div class="noDataMsg" v-if="!matches[selectedIndex] || matches[selectedIndex].length==0">{{ emptyDataMsg }}</div>
+    <div class="noDataMsg" v-if="!hasMatches">{{ emptyDataMsg }}</div>
   </div>
 </template>
 
 <script>
-import IScroll from "../../js/iscroll";
 import {ROAST_CONFIG} from '../../js/config';
+import { resolveAssetPath } from '../../js/wImgUrl';
+import {
+  createForecastScroll,
+  refreshForecastScroll,
+  scrollForecastToElement,
+} from '../../js/forecastScroll';
 import api from "../../api/api";
 
 export default {
   name: "games",
   props: ['matches', 'yPos','selectedIndex','groups'],
+  computed: {
+    hasMatches() {
+      return !!(this.matches && this.matches[this.selectedIndex] && this.matches[this.selectedIndex].length > 0)
+    },
+  },
   data() {
     return {
       yMatch: 0,
       xScore: 0,
       yScore: 0,
-      myScroll: '',
+      myScroll: null,
+      _scrollTimer: null,
       forecastFlag: false,
-      ballActive: require('../../assets/images/forecast/vectorActive.png'),
-      ballDeactive: require('../../assets/images/forecast/vectorDeactive.png'),
+      ballActive: resolveAssetPath(
+        'forecast/vectorActive.png',
+        ROAST_CONFIG.DEVELOP_MODE,
+        ROAST_CONFIG.WImgUrl,
+        require('../../assets/images/forecast/vectorActive.png'),
+      ),
+      ballDeactive: resolveAssetPath(
+        'forecast/vectorDeactive.png',
+        ROAST_CONFIG.DEVELOP_MODE,
+        ROAST_CONFIG.WImgUrl,
+        require('../../assets/images/forecast/vectorDeactive.png'),
+      ),
       teamA: [],
       teamB: [],
       osType: ROAST_CONFIG.OS_TYPE,
       emptyDataMsg: ROAST_CONFIG.EMPTY_DATA_MSG,
       showSuccessPopup: true , //bad az sabte pish bini bareye 3sanie true mishe
+      rectangleBg: resolveAssetPath(
+        'forecast/Rectangle.png',
+        ROAST_CONFIG.DEVELOP_MODE,
+        ROAST_CONFIG.WImgUrl,
+        require('../../assets/images/forecast/Rectangle.png'),
+      ),
     }
   },
   watch: {
-    matches: function () {
-      this.scrollInit();
-    },selectedIndex: function () {
-      this.scrollInit();
-    }
+    matches: {
+      deep: true,
+      handler() {
+        this.initpredicted()
+        this.refreshScroll()
+      },
+    },
+    selectedIndex() {
+      this.yMatch = 0
+      this.yScore = 0
+      this.xScore = 0
+      this.initpredicted()
+      this.resetScrollPosition()
+      this.scheduleScrollInit()
+    },
+    hasMatches: {
+      handler(ready) {
+        if (ready) {
+          this.$nextTick(() => {
+            this.initpredicted()
+            this.scheduleScrollInit()
+          })
+        } else {
+          this.destroyScroll()
+        }
+      },
+      immediate: true,
+    },
   },
 
-  created() {
-    console.log("-00099",this.matches[this.selectedIndex])
-    this.scrollInit();
+  beforeDestroy() {
+    clearTimeout(this._scrollTimer)
+    this.destroyScroll()
   },
 
   methods: {
-
-    scrollInit() {
-      this.myScroll = '';
-      if (this.myScroll == '') {
-        setTimeout(() => {
-          this.myScroll = new IScroll(".matchesParent", {
-            scrollY: true,
-            scrollbars: false,
-            momentum: true,
-            preventDefault: false,
-            // scrollbars: false,
-            mouseWheel: true,
-            interactiveScrollbars: true,
-            shrinkScrollbars: "none",
-            fadeScrollbars: false,
-            mouseMove: true
-          });
-        }, 10);
-
+    destroyScroll() {
+      if (this.myScroll) {
+        this.myScroll.destroy()
+        this.myScroll = null
       }
-this.initpredicted()
     },
+
+    scheduleScrollInit() {
+      clearTimeout(this._scrollTimer)
+      this._scrollTimer = setTimeout(() => this.initScroll(), 150)
+    },
+
+    initScroll() {
+      if (!this.hasMatches) {
+        this.destroyScroll()
+        return
+      }
+
+      const el = this.$refs.scrollWrap
+      if (!el) return
+
+      if (this.myScroll) {
+        refreshForecastScroll(this.myScroll)
+        return
+      }
+
+      this.myScroll = createForecastScroll(el)
+      refreshForecastScroll(this.myScroll)
+    },
+
+    refreshScroll() {
+      if (this.myScroll) {
+        this.$nextTick(() => refreshForecastScroll(this.myScroll))
+      } else {
+        this.scheduleScrollInit()
+      }
+    },
+
+    resetScrollPosition() {
+      this.yMatch = 0
+      if (this.myScroll) {
+        this.myScroll.scrollTo(0, 0, 0)
+        refreshForecastScroll(this.myScroll)
+      }
+    },
+
+    goalFieldValue(val) {
+      if (val === null || val === undefined || val === '') return ''
+      return String(val)
+    },
+
+    scoreDisplay(val) {
+      if (val === undefined || val === null || val === '') return ''
+      return String(val)
+    },
+
     initpredicted(){
-      //console.log("this.matches[this.selectedIndex].length",this.matches[this.selectedIndex].length)
-      if(this.matches[this.selectedIndex].length ){
-        //let i = 0, len = Object.keys(arr).length;
-        let i = 0, len = this.matches[this.selectedIndex].length;
-        //console.log("=========",this.matches[this.selectedIndex])
-        while (i < len) {
-          this.teamB[i]=""
-          this.teamA[i]=""
-         // console.log("======2===",this.matches[this.selectedIndex][i])
-          if(this.matches[this.selectedIndex][i].is_forecast && this.matches[this.selectedIndex][i].forecasts.length ){
-
-            this.teamB[i]=this.matches[this.selectedIndex][i].forecasts[0].goalb
-            this.teamA[i]=this.matches[this.selectedIndex][i].forecasts[0].goala
-          }
-          i++
-        }
+      if (!this.hasMatches) {
+        this.teamA = []
+        this.teamB = []
+        return
       }
 
+      const list = this.matches[this.selectedIndex]
+      const teamA = []
+      const teamB = []
+
+      for (let i = 0; i < list.length; i++) {
+        let goalA = ''
+        let goalB = ''
+        const match = list[i]
+        if (match.is_forecast && match.forecasts && match.forecasts.length) {
+          goalA = this.goalFieldValue(match.forecasts[0].goala)
+          goalB = this.goalFieldValue(match.forecasts[0].goalb)
+        }
+        teamA[i] = goalA
+        teamB[i] = goalB
+      }
+
+      this.teamA = teamA
+      this.teamB = teamB
     },
 
+
+    scrollToMatch(index) {
+      if (!this.myScroll) return
+      this.$nextTick(() => {
+        scrollForecastToElement(this.myScroll, '#match_' + index)
+      })
+    },
 
     left() {
       if (this.yScore == 0 && this.xScore == 0)
@@ -154,42 +250,17 @@ this.initpredicted()
         this.xScore--;
     },
     down() {
-
-      if (this.yScore == 0){
-
-        this.yScore++;
+      if (this.yScore === 0) {
+        this.yScore = 1
+        return
       }
 
-      else {
-        if (this.yMatch < (this.matches[this.selectedIndex].length) - 1) {
-        //  console.log("this.yScore == 0 else")
-          this.yMatch++;
-          this.yScore--;
-          this.xScore = 0;
-          this.myScroll.scrollToElement('#match_' + this.yMatch, 590, false, -180);
-          this.myScroll.refresh();
-        }
+      if (this.yMatch < this.matches[this.selectedIndex].length - 1) {
+        this.yMatch++
+        this.yScore = 0
+        this.xScore = 0
+        this.scrollToMatch(this.yMatch)
       }
-      if (this.yPos == 0) {
-    //    console.log("this.yPos == 0")
-        this.yPos++;
-        this.xScore = 0;
-      } else if (this.yPos == 1) { console.log("this.yPos == 0 else")
-
-        if (this.yScore == 0)
-          this.yScore++;
-        else {
-          if (this.yMatch < (this.matches[this.selectedIndex].length) - 1) {
-            this.yMatch++;
-            this.yScore--;
-            this.xScore = 0;
-            this.myScroll.scrollToElement('#match_' + this.yMatch, 590, false, -180);
-            this.myScroll.refresh();
-          }
-        }
-
-      }
-
     },
     up() {
       if (this.yScore == 1) {
@@ -198,8 +269,7 @@ this.initpredicted()
       } else {
         if (this.yMatch > 0) {
           this.yMatch--;
-          this.myScroll.scrollToElement('#match_' + this.yMatch, 590, false, true);
-          this.myScroll.refresh();
+          this.scrollToMatch(this.yMatch);
           this.xScore = 0;
           return true
         }
@@ -210,51 +280,37 @@ this.initpredicted()
     },
 
     enter() {
-      if(this.yScore==1 && this.yPos==2 && (this.teamA[this.yMatch]||this.teamA[this.yMatch]==0) && (this.teamB[this.yMatch]||this.teamB[this.yMatch]==0) ){
-        this.predict(this.teamA[this.yMatch],this.teamB[this.yMatch],this.matches[this.selectedIndex][this.yMatch].id)
+      if (this.yPos == 2 && this.yScore == 0) {
+        const field = this.xScore === 0 ? 'teamA' : 'teamB'
+        this.$set(this[field], this.yMatch, '')
+        return { teamA: this.teamA, teamB: this.teamB }
       }
-      let data = {
-        teamA: this.teamA, teamB: this.teamB
+
+      const goalA = String(this.teamA[this.yMatch] ?? '')
+      const goalB = String(this.teamB[this.yMatch] ?? '')
+      if (this.yScore == 1 && this.yPos == 2 && goalA !== '' && goalB !== '') {
+        this.predict(goalA, goalB, this.matches[this.selectedIndex][this.yMatch].id)
       }
-      return data
+      return { teamA: this.teamA, teamB: this.teamB }
     },
 
     showNumber(number) {
-    //console.log('number', number)
-      if (this.yScore == 0) {
-        if (number > 9) {
+      if (this.yPos != 2 || this.yScore != 0) return
 
-          if (isNaN(parseInt(this.teamA[this.yMatch]))) {
+      const field = this.xScore === 0 ? 'teamA' : 'teamB'
+      const idx = this.yMatch
+      const current = String(this[field][idx] ?? '')
 
-          } else {
-
-            if (this.xScore == 0) {
-
-              var strTeamA = "'" + this.teamA[this.yMatch] + "'";
-              var resTeamA = strTeamA.substring(1, strTeamA.length - 2);
-              this.teamA[this.yMatch] = resTeamA;
-              this.$set(this.teamA, this.yMatch, this.teamA[this.yMatch]);
-
-            }
-
-          }
-          if (isNaN(parseInt(this.teamB[this.yMatch]))) {
-
-          } else {
-            if (this.xScore == 1) {
-              var strTeamB = "'" + this.teamB[this.yMatch] + "'";
-              var resTeamB = strTeamB.substring(1, strTeamB.length - 2);
-              this.teamB[this.yMatch] = resTeamB;
-              this.$set(this.teamB, this.yMatch, this.teamB[this.yMatch]);
-            }
-          }
-        } else {
-          if (this.xScore == 0)
-            this.$set(this.teamA, this.yMatch, number);
-          else
-            this.$set(this.teamB, this.yMatch, number);
-        }
+      if (number === -1) {
+        this.$set(this[field], idx, current.slice(0, -1))
+        return
       }
+
+      if (number < 0 || number > 9) return
+
+      if (current.length >= 2) return
+
+      this.$set(this[field], idx, current + String(number))
     },
      predict(goala,goalb,match){
       console.log("------",match)
@@ -267,7 +323,7 @@ this.initpredicted()
 
 console.log("data",data)
        api.predict(data).then((data) => {
-         console.log("data4444444",data)
+        //  console.log("data4444444",data)
          if (data.success===true || data.success==="true" ) {
 
            this.$emit("dopredict",true,data.data.msg);
@@ -298,22 +354,29 @@ console.log("data",data)
 
 <style scoped>
 
-.matchesParent {
-  width: 350px;
-  height: 840px;
-  position: relative;
-  top: 0;
-  margin-top: 10px;
-  left: 0px;
+.gamesRoot {
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  display: -webkit-flex !important;
+  flex-direction: column;
   overflow: hidden;
-  /*border: 1px solid red;*/
+}
+
+.matchesParent {
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
 }
 
 .matchesScroll {
   width: 350px;
-  position: absolute;
-  top: 0px;
-  left: 0px;
+  box-sizing: border-box;
 }
 
 .matches {
@@ -329,8 +392,11 @@ console.log("data",data)
   margin-top: 20px;
 }
 
+.matches:first-child {
+  margin-top: 0;
+}
+
 .backImg {
-  background: url('../../assets/images/forecast/Rectangle.png');
   width: 315px;
   height: 164px;
   position: absolute;

@@ -1,5 +1,5 @@
 <template>
-  <route-page-layout :poster-src="wImg('menuSlide.png')">
+  <route-page-layout>
   <div class="champParent" v-if="teams.length > 0">
     <div class="champChild">
 
@@ -9,7 +9,7 @@
 
           <div class="countryHover" v-if="index == select"></div>
           <div class="flagBack">
-            <img style="width: 90%" :src="item.pic">
+            <img style="width: 90%" :src="teamImg(item.pic)">
           </div>
         </div>
 
@@ -23,7 +23,7 @@
       <div class="blurBack"></div>
       <div class="popBox">
         <div class="flagBack">
-          <img style="width: 90%" :src="teams[select].pic">
+          <img style="width: 90%" :src="teamImg(teams[select].pic)">
         </div>
         <div class="selectName">{{ teams[select].name }}</div>
         <div class="selectName">
@@ -232,6 +232,8 @@ export default {
   position: absolute;
   top: 0px;
   left: 0px;
+  padding-bottom: 16px;
+  box-sizing: border-box;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;

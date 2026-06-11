@@ -1,11 +1,9 @@
 <template>
   <route-page-layout>
-    <template #poster>
-      <img class="loginPoster" :src="wImg('loginBack.png')" alt="">
-    </template>
     <registering
       v-on:set_error_msgL="set_error_msg"
       v-on:manageRegisterData="manageRegisterData"
+      v-on:clearNumber="numberShow = ''"
       :type="registrationType"
       ref="registering"
       :activeRoute="activeRoute"
@@ -229,13 +227,15 @@ export default {
     down() {
       this.$refs.registering.down();
     },
-    // showNum(num) {
-    //   if (this.userLoggedIn == false) {
-    //     this.numberShow += num;
-    //   } else {
-    //     this.chatTxt += num;
-    //   }
-    // },
+    showNumber(num) {
+      if (!this.$refs.registering) return
+      if (num === -1) {
+        this.numberShow = String(this.numberShow || '').slice(0, -1)
+        return
+      }
+      if (num < 0 || num > 9) return
+      this.numberShow = String(this.numberShow || '') + String(num)
+    },
 
     set_error_msg(data) {
       this.errorMessage = data
@@ -335,10 +335,4 @@ export default {
 </script>
 
 <style scoped>
-.loginPoster {
-  width: 100%;
-  display: block;
-  margin: 0;
-  padding: 0;
-}
 </style>

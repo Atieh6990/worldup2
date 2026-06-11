@@ -117,9 +117,12 @@ export default {
     // onchangeChatInp(inp){ // چت آنلاین - غیرفعال
     //   this.$refs.routeview.onChange(inp);
     // },
+    keysAllowed() {
+      return this.loading == false || ROAST_CONFIG.DEVELOP_MODE == 1
+    },
     up() {
       if(this.osType == 0){
-        if (this.loading==false){
+        if (this.keysAllowed()){
           this.$refs.routeview.up();
         }
       }else{
@@ -130,7 +133,7 @@ export default {
     down() {
 
       if(this.osType == 0){
-        if (this.loading==false){
+        if (this.keysAllowed()){
           this.$refs.routeview.down();
         }
       }else{
@@ -141,7 +144,7 @@ export default {
     },
     left() {
       if(this.osType == 0){
-        if (this.loading==false){
+        if (this.keysAllowed()){
           this.$refs.routeview.left();
         }
       }else{
@@ -151,7 +154,7 @@ export default {
     },
     right() {
       if(this.osType == 0){
-        if (this.loading==false){
+        if (this.keysAllowed()){
           this.$refs.routeview.right();
         }
       }else{
@@ -164,7 +167,7 @@ export default {
       // console.log("enter worldcuphome" + this.osType , this.loading , this.$route.name)
       if (this.osType == 0 ) {
 
-        if (this.loading==false){
+        if (this.keysAllowed()){
 
           if(this.$route.name == 'menuRout'){
             if(ROAST_CONFIG.DEVELOP_MODE == 1){//age mode develop hastesh enter too local kar kone.
@@ -247,7 +250,10 @@ export default {
       }
     },
     showNumber(num) {
-      this.$refs.routeview.showNumber(num);
+      const view = this.$refs.routeview
+      if (view && typeof view.showNumber === 'function') {
+        view.showNumber(num)
+      }
     },
     exit() {
       this.handleExit();

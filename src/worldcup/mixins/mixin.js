@@ -1,5 +1,7 @@
 import {ROAST_CONFIG} from '../js/config'
 import api from '../api/api'
+import { buildHamsamPlayPayload, fetchISport6Live } from '../js/hamsamLiveService'
+import { getTokenCookie, persistDevelopToken } from '../js/tokenCookie'
 
 var isImeFocused;
 var keyBoardIME;
@@ -92,38 +94,44 @@ export default {
         },
         setParam(key, value) {
             localStorage.setItem(key, value);
+            if (ROAST_CONFIG.DEVELOP_MODE == 1) {
+                persistDevelopToken(key, value)
+            }
         },
         clearParam() {
+            if (ROAST_CONFIG.DEVELOP_MODE == 1) {
+                persistDevelopToken('Tokenw', '')
+            }
             localStorage.clear();
         },
         getParam(key) {
+            if (ROAST_CONFIG.DEVELOP_MODE == 1 && key === 'Tokenw') {
+                const stored = localStorage.getItem(key)
+                if (stored) return stored
+                const fromCookie = getTokenCookie()
+                if (fromCookie) {
+                    localStorage.setItem(key, fromCookie)
+                    return fromCookie
+                }
+            }
             return localStorage.getItem(key);
         },
         removeParam: function (key) {
             localStorage.removeItem(key);
+            if (ROAST_CONFIG.DEVELOP_MODE == 1) {
+                persistDevelopToken(key, '')
+            }
         },
         showIme: function (inputName) {
+            if (ROAST_CONFIG.OS_TYPE === 0 || ROAST_CONFIG.WEBVIEW_MODE) return
 
-            if (ROAST_CONFIG.OS_TYPE == 1) {
-                keyBoardIME = setTimeout(function () {
-                    var elIme = document.querySelector('#' + inputName);
-                    //document.body.focus();
-                    elIme.focus();
-                    keyBoardIME = true;
-                    // console.log('isImeFocused11111111111 ->' + isImeFocused)
-                }, 500);
-            } else {
-                keyBoardIME = setTimeout(function () {
-                    // var elIme = document.querySelector('#' + inputName);
-                    // console.log("inputName")
-                    var elIme = document.getElementById("" + inputName)
-                    //document.body.focus();
-                    elIme.focus();
-                    // console.log("getFocuse")
-                    isImeFocused = true;
-                }, 500);
-            }
-
+            keyBoardIME = setTimeout(function () {
+                var elIme = document.getElementById("" + inputName)
+                if (!elIme || !/^(INPUT|TEXTAREA)$/i.test(elIme.tagName)) return
+                elIme.focus();
+                keyBoardIME = true;
+                isImeFocused = true;
+            }, 500);
         },
 
         hideIme: function (inputName) {
@@ -378,18 +386,21 @@ export default {
         },
 
         sendPlayVideoToReact(payload) {
-            const signature = (payload.uuid || '') + '|' + (payload.video || '')
+            const messageText = payload.message != null ? payload.message : ''
+            const signature = (payload.video || '') + '|' + messageText
             if (signature === lastPlayVideoSignature) return
             lastPlayVideoSignature = signature
+            const message = {
+                type: 'playVideo',
+                data: {
+                    video: payload.video || '',
+                    poster: payload.poster || '',
+                    message: messageText,
+                }
+            }
+            console.log('[ReactNative] postMessage playVideo:', message)
             setTimeout(function () {
-                window.ReactNativeWebView && window.ReactNativeWebView.postMessage(JSON.stringify({
-                    type: 'playVideo',
-                    data: {
-                        video: payload.video || '',
-                        poster: payload.poster || '',
-                        uuid: payload.uuid || '',
-                    }
-                }))
+                window.ReactNativeWebView && window.ReactNativeWebView.postMessage(JSON.stringify(message))
             }, 200);
         },
 
@@ -413,20 +424,29 @@ export default {
             });
         },
 
+        playHamsamLiveStream(live) {
+            if (!live || !live.link) {
+                console.log('playHamsamLiveStream: link not found');
+                return Promise.resolve(null);
+            }
+            const payload = buildHamsamPlayPayload(live);
+            console.log('[initialLiveStream] hamsam live item:', live)
+            console.log('[initialLiveStream] play payload:', payload)
+            this.$root.$emit('liveStreamPayload', payload);
+            if (ROAST_CONFIG.OS_TYPE == 0 || (typeof window !== 'undefined' && window.ReactNativeWebView)) {
+                this.sendPlayVideoToReact(payload);
+            }
+            return Promise.resolve(payload);
+        },
+
         loadInitialLiveStream(uuid) {
             if (!uuid && initialLiveStreamPromise) {
                 return initialLiveStreamPromise
             }
-            let resolveUuid = uuid
-                ? Promise.resolve(uuid)
-                : api.aparatFirstLiveMatchUuid();
-            const request = resolveUuid.then(function (id) {
-                if (!id) {
-                    console.log('loadInitialLiveStream: uuid not found');
-                    return null;
-                }
-                return this.playLiveStream(id);
-            }.bind(this)).then(function (result) {
+            const request = (uuid
+                ? this.playLiveStream(uuid)
+                : fetchISport6Live().then((live) => this.playHamsamLiveStream(live))
+            ).then(function (result) {
                 if (!uuid) initialLiveStreamDone = true
                 return result
             });
