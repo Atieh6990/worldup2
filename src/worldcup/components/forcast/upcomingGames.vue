@@ -23,6 +23,7 @@
 
 import api from "../../api/api";
 import { ROAST_CONFIG } from "../../js/config";
+import { findTodayGroupIndex } from "../../js/jalaliDate";
 import tabs from '../forcast/tabs'
 import groups from '../forcast/groups'
 import games from '../forcast/games'
@@ -524,11 +525,12 @@ export default {
       api.matches().then((data) => {
         this.dataLoaded = true;
         if (data.success && data.data) {
-          console.log(data.data)
           this.createGroups(data.data)
+          const todayIndex = findTodayGroupIndex(data.data)
+          this.selectedIndex = todayIndex
           this.$nextTick(() => {
             if (this.$refs.groups) {
-              this.$refs.groups.resetParams()
+              this.$refs.groups.setActiveIndex(todayIndex, true)
             }
           })
         } else {
@@ -568,7 +570,7 @@ export default {
 .forecastScrollArea {
   flex: 1;
   min-height: 0;
-  margin-top: 8px;
+  margin-top: 20px;
   position: relative;
   z-index: 1;
   overflow: hidden;

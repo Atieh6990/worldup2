@@ -153,16 +153,7 @@ export default {
     },
 
     checkToken() {
-      let key = this.getParam("Tokenw")
-      if (key == null || key == 'null' || key == '' || typeof key == "undefined") {
-        return false
-      }
-      let keyJson = (key);
-      if ((new Date).getTime() >= keyJson.expires_in) {
-        return false
-      } else {
-        return true
-      }
+      return this.checkStoredToken()
     },
   }
 }

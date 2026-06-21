@@ -1,7 +1,7 @@
 import {ROAST_CONFIG} from '../js/config'
 import api from '../api/api'
 import { buildHamsamPlayPayload, fetchISport6Live } from '../js/hamsamLiveService'
-import { getTokenCookie, persistDevelopToken } from '../js/tokenCookie'
+import { saveToken, loadTokenRaw, clearStoredToken, isTokenValid, loadToken, getAccessToken } from '../js/tokenCookie'
 
 var isImeFocused;
 var keyBoardIME;
@@ -93,34 +93,45 @@ export default {
             return params;
         },
         setParam(key, value) {
-            localStorage.setItem(key, value);
-            if (ROAST_CONFIG.DEVELOP_MODE == 1) {
-                persistDevelopToken(key, value)
+            if (key === 'Tokenw') {
+                if (value) {
+                    saveToken(value)
+                } else {
+                    clearStoredToken()
+                }
+                return
             }
+            localStorage.setItem(key, value);
         },
         clearParam() {
-            if (ROAST_CONFIG.DEVELOP_MODE == 1) {
-                persistDevelopToken('Tokenw', '')
-            }
-            localStorage.clear();
+            clearStoredToken()
+            try {
+                const keys = Object.keys(localStorage)
+                for (let i = 0; i < keys.length; i++) {
+                    if (keys[i] !== 'Tokenw') {
+                        localStorage.removeItem(keys[i])
+                    }
+                }
+            } catch (e) {}
         },
         getParam(key) {
-            if (ROAST_CONFIG.DEVELOP_MODE == 1 && key === 'Tokenw') {
-                const stored = localStorage.getItem(key)
-                if (stored) return stored
-                const fromCookie = getTokenCookie()
-                if (fromCookie) {
-                    localStorage.setItem(key, fromCookie)
-                    return fromCookie
-                }
+            if (key === 'Tokenw') {
+                return loadTokenRaw()
             }
             return localStorage.getItem(key);
         },
         removeParam: function (key) {
-            localStorage.removeItem(key);
-            if (ROAST_CONFIG.DEVELOP_MODE == 1) {
-                persistDevelopToken(key, '')
+            if (key === 'Tokenw') {
+                clearStoredToken()
+                return
             }
+            localStorage.removeItem(key);
+        },
+        checkStoredToken() {
+            return isTokenValid(loadToken())
+        },
+        getBearerToken() {
+            return getAccessToken()
         },
         showIme: function (inputName) {
             if (ROAST_CONFIG.OS_TYPE === 0 || ROAST_CONFIG.WEBVIEW_MODE) return

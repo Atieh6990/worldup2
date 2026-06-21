@@ -79,14 +79,14 @@ html.webview-native-shell.webview-mode {
  */
 html.webview-native-shell.webview-mode .matchesParent,
 html.webview-native-shell.webview-mode .listParent,
-html.webview-native-shell.webview-mode .menuList,
-html.webview-native-shell.webview-mode .scoresBody {
+html.webview-native-shell.webview-mode .menuList {
     overflow: hidden !important;
     position: relative !important;
 }
 
 html.webview-native-shell.webview-mode .matches,
 html.webview-native-shell.webview-mode .listItem,
+html.webview-native-shell.webview-mode .scoreItem,
 html.webview-native-shell.webview-mode .listScroll .guideContentImg,
 html.webview-native-shell.webview-mode .menuItem,
 html.webview-native-shell.webview-mode .backImg,

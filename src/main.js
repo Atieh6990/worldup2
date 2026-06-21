@@ -16,13 +16,7 @@ router.afterEach(() => {
   repaintWebViewPanel()
 })
 
-if (ROAST_CONFIG.DEVELOP_MODE == 1) {
-  hydrateTokenFromCookie()
-} else {
-  try {
-    localStorage.clear()
-  } catch (e) {}
-}
+hydrateTokenFromCookie()
 
 Vue.config.productionTip = false
 Vue.component('routePageLayout', routePageLayout)

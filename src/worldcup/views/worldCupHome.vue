@@ -301,7 +301,7 @@ export default {
     // },
     manageInterceptor() {
       axios.interceptors.request.use((config) => {
-        config.headers.Authorization = `Bearer ` + this.getParam("Tokenw");
+        config.headers.Authorization = `Bearer ` + this.getBearerToken();
         this.getResponse = 0
         this.loading = true;
         return config
