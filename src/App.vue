@@ -23,7 +23,9 @@ export default {
   },
   created() {
     this._keyEventHandler = this.keyEvent.bind(this);
+    this._keyUpHandler = this.keyUpEvent.bind(this);
     window.addEventListener("keydown", this._keyEventHandler);
+    window.addEventListener("keyup", this._keyUpHandler);
     this.$router.push('/worldCupHome/menuRout').catch(err => {
     })
 
@@ -93,10 +95,21 @@ export default {
     if (this._keyEventHandler) {
       window.removeEventListener("keydown", this._keyEventHandler);
     }
+    if (this._keyUpHandler) {
+      window.removeEventListener("keyup", this._keyUpHandler);
+    }
   },
   methods: {
     ...mapMutations(['setOnlinePlay']),
     ...mapGetters(['getOnlinePlay']),
+
+    keyUpEvent(event) {
+      const keyCode = event.keyCode
+      if (keyCode === 13 || keyCode === 29443) {
+        event.preventDefault()
+        if (event.stopPropagation) event.stopPropagation()
+      }
+    },
 
     handleOnlinePlay() {
 
@@ -134,6 +147,8 @@ export default {
           break;
         case 13://Enter
         case 29443://Enter
+          event.preventDefault()
+          if (event.stopPropagation) event.stopPropagation()
           view.enter();
 
           break;

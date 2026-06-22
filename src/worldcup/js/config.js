@@ -33,7 +33,8 @@ function detectWebviewMode() {
 
 
 
-var main_api_url = 'https://fifa.tvapps.ir/api/'
+ var main_api_url = 'https://fifa.tvapps.ir/api/'
+//var main_api_url = 'http://localhost:8083/api/'
 
 var hamsam_lives_url = 'https://hamsam.tvapps.ir/api/v1/lives'
 

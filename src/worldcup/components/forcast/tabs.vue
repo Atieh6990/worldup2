@@ -47,22 +47,23 @@ export default {
   display: flex;
   display: -webkit-flex !important;
   position: relative;
-  top: 0;
+  top: 5px;
   /*position: relative;*/
   /*top: 20px;*/
 
 }
 
 .items {
-  width: 156px;
+  width: 162px;
   height: 48px;
   line-height: 45px;
   color: #ffffff;
-  font-size: 16px;
+  font-size: 19px;
+  letter-spacing:0px;
   text-align: center;
   z-index: 1;
   background: rgba(74, 74, 75, 1);
-  border-radius: 36px;
+  border-radius: 10px;
   margin: auto;
   border: 3px solid transparent;
   /*float: right;*/

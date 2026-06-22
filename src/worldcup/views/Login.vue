@@ -4,6 +4,7 @@
       v-on:set_error_msgL="set_error_msg"
       v-on:manageRegisterData="manageRegisterData"
       v-on:clearNumber="numberShow = ''"
+      v-on:syncNumber="numberShow = $event"
       :type="registrationType"
       ref="registering"
       :activeRoute="activeRoute"
@@ -213,27 +214,38 @@ export default {
 
     },
     right() {
-
-
-      return false
-
-
+      if (this.$refs.registering) {
+        this.$refs.registering.right()
+      }
     },
     left() {
-
-      return false
-
+      if (this.$refs.registering) {
+        this.$refs.registering.left()
+      }
     },
     down() {
       this.$refs.registering.down();
     },
     showNumber(num) {
       if (!this.$refs.registering) return
+      const reg = this.$refs.registering
+
       if (num === -1) {
+        if (reg.yPos === 2 && reg.isNumericType) {
+          reg.onKeyboardBackspace()
+          return
+        }
         this.numberShow = String(this.numberShow || '').slice(0, -1)
         return
       }
+
       if (num < 0 || num > 9) return
+
+      if (reg.yPos === 2 && reg.isNumericType) {
+        reg.appendDigit(String(num))
+        return
+      }
+
       this.numberShow = String(this.numberShow || '') + String(num)
     },
 

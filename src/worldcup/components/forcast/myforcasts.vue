@@ -325,9 +325,9 @@ export default {
 }
 
 .matchTime {
-  font-size: 20px;
+  font-size: 18px;
   width: 40%;
-  line-height: 20px;
+  line-height: 25px;
 }
 
 .balls {

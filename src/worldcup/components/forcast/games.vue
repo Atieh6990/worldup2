@@ -7,11 +7,13 @@
       <div :id="'match_' + m" v-for="(match,m) in matches[selectedIndex]"
            class="matches">
         <div class="backImg" :style="{ backgroundImage: 'url(' + rectangleBg + ')' }">
-          <div class="backIcon" style="right: 28px;">
+          <div class="backIcon" style="right: 28px;"
+               :class="{ flagHvr: isFlagActive(m, 0) }">
             <img v-if="match.teama && match.teama.pic" :src="teamImg(match.teama.pic)"  class="icon"/>
           </div>
           <div class="line"></div>
-          <div class="backIcon" style="right: 135px;">
+          <div class="backIcon" style="right: 135px;"
+               :class="{ flagHvr: isFlagActive(m, 1) }">
             <img v-if="match.teamb && match.teamb.pic" :src="teamImg(match.teamb.pic)"  class="icon"/>
           </div>
           <div class="teamsNameParent">
@@ -27,30 +29,40 @@
             <div class="scoreBox">
 
               <div :id="'teamA_'+[m]" v-if="osType== 0"
-                   :class="[(yPos==2&&yMatch==m&&yScore==0&&xScore==0) ?'scoreHvr':'','scoreTxt']">{{ scoreDisplay(teamA[m]) }}
+                   :class="[isScoreActive(m, 0) ? 'scoreHvr' : '', 'scoreTxt']">{{ scoreDisplay(teamA[m]) }}
               </div>
               <input :id="'teamA_'+[m]" v-model="teamA[m]" v-else
-                     :class="[(yPos==2&&yMatch==m&&yScore==0&&xScore==0) ?'scoreHvr':'','scoreTxt']">
+                     :class="[isScoreActive(m, 0) ? 'scoreHvr' : '', 'scoreTxt']">
 
             </div>
 
 
             <div class="scoreBox">
 
-              <div :id="'teamA_'+[m]" v-if="osType== 0"
-                   :class="[(yPos==2&&yMatch==m&&yScore==0&&xScore==1) ?'scoreHvr':'','scoreTxt']">{{ scoreDisplay(teamB[m]) }}
+              <div :id="'teamB_'+[m]" v-if="osType== 0"
+                   :class="[isScoreActive(m, 1) ? 'scoreHvr' : '', 'scoreTxt']">{{ scoreDisplay(teamB[m]) }}
               </div>
               <input :id="'teamB_'+[m]" v-model="teamB[m]" v-else
-                     :class="[(yPos==2&&yMatch==m&&yScore==0&&xScore==1) ?'scoreHvr':'','scoreTxt']">
+                     :class="[isScoreActive(m, 1) ? 'scoreHvr' : '', 'scoreTxt']">
 
             </div>
           </div>
         </div>
-        <div
-            :style="[(yPos==2&&yMatch==m&&yScore==1) ? {backgroundColor :'#116DFF',color :'#FFFFFF'}:{backgroundColor :'#4A4A4B',color: 'rgba(142, 140, 140, 0.85)'}]"
-            class="forecastButton">
-          <img :src="[(yPos==2&&yMatch==m&&yScore==1) ? ballActive:ballDeactive]" style="padding: 10px"/>
-          <div>ثبت پیش بینی</div>
+        <div class="forecastActions">
+          <div class="forecastActionsInner">
+            <div
+              :style="isSubmitActive(m) ? { backgroundColor: '#116DFF', color: '#FFFFFF' } : { backgroundColor: '#4A4A4B', color: 'rgba(142, 140, 140, 0.85)' }"
+              class="forecastButton forecastButtonCompact">
+              <img :src="[isSubmitActive(m) ? ballActive : ballDeactive]" class="forecastBtnIcon"/>
+              <span>ثبت</span>
+            </div>
+            <div class="scoreAdjust">
+              <div
+                :class="['adjustBtn', isAdjustActive(m, 0) ? 'adjustBtnActive' : '']">-</div>
+              <div
+                :class="['adjustBtn', isAdjustActive(m, 1) ? 'adjustBtnActive' : '']">+</div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -85,8 +97,14 @@ export default {
       yMatch: 0,
       xScore: 0,
       yScore: 0,
+      editingScore: false,
+      editingTeam: 0,
+      scoreFocusTeam: 0,
       myScroll: null,
       _scrollTimer: null,
+      _focusNextAfterReload: false,
+      _predictedMatchId: null,
+      _predictedIndex: null,
       forecastFlag: false,
       ballActive: resolveAssetPath(
         'forecast/vectorActive.png',
@@ -119,12 +137,17 @@ export default {
       handler() {
         this.initpredicted()
         this.refreshScroll()
+        if (this._focusNextAfterReload) {
+          this.applyFocusAfterPredict()
+        }
       },
     },
     selectedIndex() {
       this.yMatch = 0
       this.yScore = 0
       this.xScore = 0
+      this.editingScore = false
+      this.editingTeam = 0
       this.initpredicted()
       this.resetScrollPosition()
       this.scheduleScrollInit()
@@ -206,6 +229,79 @@ export default {
       return String(val)
     },
 
+    parseScoreValue(val) {
+      if (val === undefined || val === null || val === '') return null
+      const num = parseInt(String(val), 10)
+      return Number.isNaN(num) ? null : Math.max(0, num)
+    },
+
+    getGoalValue(field, index) {
+      return this.parseScoreValue(this[field][index])
+    },
+
+    isScoreActive(matchIndex, teamIndex) {
+      return this.yPos === 2
+        && this.yMatch === matchIndex
+        && this.yScore === 0
+        && !this.editingScore
+        && this.xScore === teamIndex
+    },
+
+    isFlagActive(matchIndex, teamIndex) {
+      return this.yPos === 2
+        && this.yMatch === matchIndex
+        && this.yScore === 0
+        && this.editingScore
+        && this.editingTeam === teamIndex
+    },
+
+    isAdjustActive(matchIndex, adjustIndex) {
+      return this.yPos === 2
+        && this.yMatch === matchIndex
+        && this.yScore === 0
+        && this.editingScore
+        && this.xScore === adjustIndex
+    },
+
+    isSubmitActive(matchIndex) {
+      return this.yPos === 2
+        && this.yMatch === matchIndex
+        && this.yScore === 1
+    },
+
+    resetScoreEdit() {
+      this.editingScore = false
+      this.editingTeam = 0
+    },
+
+    goToSubmitFromAdjust() {
+      this.scoreFocusTeam = this.editingTeam
+      this.resetScoreEdit()
+      this.yScore = 1
+    },
+
+    incrementScore(field, index) {
+      let current = this.getGoalValue(field, index)
+      if (current === null) {
+        current = 0
+      } else {
+        current += 1
+      }
+      if (current > 99) current = 99
+      this.$set(this[field], index, String(current))
+    },
+
+    decrementScore(field, index) {
+      let current = this.getGoalValue(field, index)
+      if (current === null) return
+      if (current <= 0) {
+        this.$set(this[field], index, '0')
+        return
+      }
+      current -= 1
+      this.$set(this[field], index, String(current))
+    },
+
     initpredicted(){
       if (!this.hasMatches) {
         this.teamA = []
@@ -241,16 +337,104 @@ export default {
       })
     },
 
+    findNextPredictableIndex(list, predictedId, predictedIndex) {
+      if (!list || !list.length) return -1
+
+      const stillAt = list.findIndex((match) => String(match.id) === String(predictedId))
+      const start = stillAt >= 0 ? stillAt + 1 : predictedIndex
+
+      if (start < 0 || start >= list.length) return -1
+      return start
+    },
+
+    applyFocusAfterPredict() {
+      this._focusNextAfterReload = false
+      const list = this.matches[this.selectedIndex]
+      const predictedId = this._predictedMatchId
+      const predictedIndex = this._predictedIndex
+      this._predictedMatchId = null
+      this._predictedIndex = null
+
+      if (!list || !list.length) {
+        this.yMatch = 0
+        this.yScore = 0
+        this.xScore = 0
+        this.resetScoreEdit()
+        this.$emit('predictableExhausted')
+        return
+      }
+
+      const nextIndex = this.findNextPredictableIndex(list, predictedId, predictedIndex)
+      if (nextIndex < 0) {
+        this.yMatch = Math.max(0, list.length - 1)
+        this.yScore = 0
+        this.xScore = 0
+        this.resetScoreEdit()
+        this.$emit('predictableExhausted')
+        return
+      }
+
+      this.yMatch = nextIndex
+      this.yScore = 0
+      this.xScore = 0
+      this.resetScoreEdit()
+      this.focusMatchAndRefreshScroll(nextIndex)
+    },
+
+    focusMatchAndRefreshScroll(index) {
+      this.$nextTick(() => {
+        if (!this.myScroll) {
+          this.scheduleScrollInit()
+        }
+        setTimeout(() => {
+          if (this.myScroll) {
+            refreshForecastScroll(this.myScroll)
+            this.scrollToMatch(index)
+            setTimeout(() => refreshForecastScroll(this.myScroll), 300)
+          } else {
+            this.scheduleScrollInit()
+          }
+        }, 120)
+      })
+    },
+
     left() {
-      if (this.yScore == 0 && this.xScore == 0)
-        this.xScore++;
+      if (this.yScore === 1) return
+
+      if (this.yScore === 0 && this.editingScore) {
+        if (this.xScore === 1) {
+          this.xScore = 0
+          return
+        }
+        if (this.xScore === 0) {
+          this.goToSubmitFromAdjust()
+          return
+        }
+      }
+
+      if (this.xScore === 0) this.xScore = 1
     },
+
     right() {
-      if (this.yScore == 0 && this.xScore == 1)
-        this.xScore--;
+      if (this.yScore === 1) return
+
+      if (this.yScore === 0 && this.editingScore) {
+        if (this.xScore === 0) this.xScore = 1
+        return
+      }
+
+      if (this.xScore === 1) this.xScore = 0
     },
+
     down() {
       if (this.yScore === 0) {
+        if (this.editingScore) {
+          if (this.xScore === 0) {
+            this.goToSubmitFromAdjust()
+          }
+          return
+        }
+        this.scoreFocusTeam = this.xScore
         this.yScore = 1
         return
       }
@@ -259,55 +443,84 @@ export default {
         this.yMatch++
         this.yScore = 0
         this.xScore = 0
+        this.scoreFocusTeam = 0
+        this.resetScoreEdit()
         this.scrollToMatch(this.yMatch)
       }
     },
+
     up() {
-      if (this.yScore == 1) {
-        this.yScore--;
+      if (this.yScore === 1) {
+        this.resetScoreEdit()
+        this.yScore = 0
+        this.xScore = this.scoreFocusTeam
         return true
-      } else {
-        if (this.yMatch > 0) {
-          this.yMatch--;
-          this.scrollToMatch(this.yMatch);
-          this.xScore = 0;
-          return true
-        }
-        return false
+      }
+
+      if (this.yScore === 0 && this.editingScore) {
+        this.editingScore = false
+        this.xScore = this.editingTeam
+        return true
+      }
+
+      if (this.yScore === 0 && this.yMatch > 0) {
+        this.yMatch--
+        this.scrollToMatch(this.yMatch)
+        this.xScore = 0
+        this.scoreFocusTeam = 0
+        this.resetScoreEdit()
+        return true
       }
 
       return false
     },
 
     enter() {
-      if (this.yPos == 2 && this.yScore == 0) {
-        const field = this.xScore === 0 ? 'teamA' : 'teamB'
-        this.$set(this[field], this.yMatch, '')
+      if (this.yPos !== 2) {
         return { teamA: this.teamA, teamB: this.teamB }
       }
 
-      const goalA = String(this.teamA[this.yMatch] ?? '')
-      const goalB = String(this.teamB[this.yMatch] ?? '')
-      if (this.yScore == 1 && this.yPos == 2 && goalA !== '' && goalB !== '') {
-        this.predict(goalA, goalB, this.matches[this.selectedIndex][this.yMatch].id)
+      if (this.yScore === 0 && !this.editingScore) {
+        this.editingScore = true
+        this.editingTeam = this.xScore
+        this.scoreFocusTeam = this.xScore
+        this.xScore = 1
+        return { teamA: this.teamA, teamB: this.teamB }
       }
+
+      if (this.yScore === 0 && this.editingScore) {
+        const field = this.editingTeam === 0 ? 'teamA' : 'teamB'
+        if (this.xScore === 1) {
+          this.incrementScore(field, this.yMatch)
+        } else {
+          this.decrementScore(field, this.yMatch)
+        }
+        return { teamA: this.teamA, teamB: this.teamB }
+      }
+
+      const goalA = this.getGoalValue('teamA', this.yMatch)
+      const goalB = this.getGoalValue('teamB', this.yMatch)
+      if (this.yScore === 1 && goalA !== null && goalB !== null) {
+        this.predict(String(goalA), String(goalB), this.matches[this.selectedIndex][this.yMatch].id)
+      }
+
       return { teamA: this.teamA, teamB: this.teamB }
     },
 
     showNumber(number) {
-      if (this.yPos != 2 || this.yScore != 0) return
+      if (this.yPos !== 2 || this.yScore !== 0 || this.editingScore) return
 
       const field = this.xScore === 0 ? 'teamA' : 'teamB'
       const idx = this.yMatch
       const current = String(this[field][idx] ?? '')
 
       if (number === -1) {
-        this.$set(this[field], idx, current.slice(0, -1))
+        const next = current.slice(0, -1)
+        this.$set(this[field], idx, next)
         return
       }
 
       if (number < 0 || number > 9) return
-
       if (current.length >= 2) return
 
       this.$set(this[field], idx, current + String(number))
@@ -325,7 +538,10 @@ console.log("data",data)
        api.predict(data).then((data) => {
         //  console.log("data4444444",data)
          if (data.success===true || data.success==="true" ) {
-
+           const currentMatch = this.matches[this.selectedIndex][this.yMatch]
+           this._predictedMatchId = currentMatch ? currentMatch.id : null
+           this._predictedIndex = this.yMatch
+           this._focusNextAfterReload = true
            this.$emit("dopredict",true,data.data.msg);
            // console.log("data",data.data)
            // this.data =data.data
@@ -448,8 +664,8 @@ console.log("data",data)
   height: 25px;
   font-style: normal;
   font-weight: 400;
-  font-size: 16px;
-  line-height: 25px;
+  font-size: 18px;
+  line-height: 40px;
   color: #FFFFFF;
   display: flex;
   display: -webkit-flex !important;
@@ -463,9 +679,9 @@ console.log("data",data)
 }
 
 .matchTime {
-  font-size: 12px;
+  font-size: 18px;
   width: 25%;
-  line-height: 20px;
+  line-height: 25px;
 }
 
 .scoreParent {
@@ -504,20 +720,94 @@ console.log("data",data)
   color: rgba(60, 88, 98, 1);
 }
 
-.forecastButton {
-  width: 251px;
-  height: 48px;
-  line-height: 48px;
-  border-radius: 7px;
-  position: relative;
+.forecastActions {
+  position: absolute;
   top: 210px;
-  margin: auto;
+  left: 3px;
+  width: 315px;
+  height: 49px;
   display: flex;
   display: -webkit-flex !important;
+  align-items: center;
+  justify-content: center;
+  -webkit-justify-content: center;
+}
+
+.forecastActionsInner {
+  display: flex;
+  display: -webkit-flex !important;
+  align-items: center;
+  direction: ltr;
+}
+
+.forecastButton {
+  border-radius: 7px;
+  display: flex;
+  display: -webkit-flex !important;
+  flex-direction: row;
   justify-content: center;
   align-items: center;
   font-size: 16px;
+  direction: rtl;
+}
 
+.forecastButtonCompact {
+  width: 94px;
+  height: 49px;
+  line-height: 49px;
+  flex-shrink: 0;
+  -webkit-flex-shrink: 0;
+  margin-right: 12px;
+}
+
+.forecastBtnIcon {
+  width: 20px;
+  height: 20px;
+  margin-left: 6px;
+}
+
+.scoreAdjust {
+  display: flex;
+  display: -webkit-flex !important;
+  align-items: center;
+}
+
+.adjustBtn {
+  width: 49px;
+  height: 49px;
+  line-height: 49px;
+  border-radius: 7px;
+  background: #4A4A4B;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 28px;
+  font-weight: 400;
+  text-align: center;
+  display: flex;
+  display: -webkit-flex !important;
+  align-items: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-justify-content: center;
+  border: 2px solid rgba(255, 255, 255, 0.25);
+  box-sizing: border-box;
+  flex-shrink: 0;
+  -webkit-flex-shrink: 0;
+  margin-left: 12px;
+}
+
+.adjustBtn:first-child {
+  margin-left: 0;
+}
+
+.adjustBtnActive {
+  border: 3px solid #116DFF;
+  background: rgba(17, 109, 255, 0.35);
+  color: #FFFFFF;
+}
+
+.flagHvr {
+  border: 3px solid #116DFF;
+  box-shadow: 0 0 0 1px #116DFF;
 }
 
 .scoreHvr {

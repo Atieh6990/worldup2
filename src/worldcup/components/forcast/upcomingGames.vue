@@ -11,7 +11,8 @@
         <groups v-on:selectItem="selectItem" :y-pos="yPos" :groups="groups" ref="groups"></groups>
       </div>
       <div class="forecastScrollArea">
-        <games v-on:dopredict="dopredict" :y-pos="yPos" :selectedIndex="selectedIndex" :groups="groups"
+        <games v-on:dopredict="dopredict" v-on:predictableExhausted="onPredictableExhausted"
+          :y-pos="yPos" :selectedIndex="selectedIndex" :groups="groups"
           :matches="predictable" ref="games" v-if="type == 0"></games>
         <myforcasts ref="myforcasts" :mypredict="mypredict" :selectedIndex="selectedIndex" v-if="type == 1"></myforcasts>
       </div>
@@ -23,6 +24,7 @@
 
 import api from "../../api/api";
 import { ROAST_CONFIG } from "../../js/config";
+import { findTodayGroupIndex } from "../../js/jalaliDate";
 import tabs from '../forcast/tabs'
 import groups from '../forcast/groups'
 import games from '../forcast/games'
@@ -68,7 +70,10 @@ export default {
       this.showSuccessPopup = true
       this.Erstatus = status
       this.Errmsg = msg
-      this.matchesApi();
+      this.matchesApi(true)
+    },
+    onPredictableExhausted() {
+      this.yPos = 1
     },
     selectItem(index) {
       this.selectedIndex = index
@@ -203,7 +208,7 @@ export default {
     },
 
 
-    matchesApi() {
+    matchesApi(keepSelectedDay) {
       // this.data ={
       //   "0": {
       //     "title": "shamsi date1",
@@ -524,11 +529,18 @@ export default {
       api.matches().then((data) => {
         this.dataLoaded = true;
         if (data.success && data.data) {
-          console.log(data.data)
+          const prevIndex = this.selectedIndex
           this.createGroups(data.data)
+          const todayIndex = findTodayGroupIndex(data.data)
+          if (keepSelectedDay) {
+            const safeIndex = Math.max(0, Math.min(prevIndex, this.groups.length - 1))
+            this.selectedIndex = safeIndex
+          } else {
+            this.selectedIndex = todayIndex
+          }
           this.$nextTick(() => {
             if (this.$refs.groups) {
-              this.$refs.groups.resetParams()
+              this.$refs.groups.setActiveIndex(this.selectedIndex, true)
             }
           })
         } else {
@@ -568,7 +580,7 @@ export default {
 .forecastScrollArea {
   flex: 1;
   min-height: 0;
-  margin-top: 8px;
+  margin-top: 20px;
   position: relative;
   z-index: 1;
   overflow: hidden;
