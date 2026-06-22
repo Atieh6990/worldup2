@@ -3,8 +3,6 @@
     <router-view :key="rootRouteKey" ref="routeview"></router-view>
   </div>
 </template>
-
-
 <script>
 
 
