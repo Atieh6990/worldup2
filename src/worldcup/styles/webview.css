@@ -130,6 +130,10 @@ html.webview-native-shell.webview-mode .forecastPage .gamesRoot,
 html.webview-native-shell.webview-mode .forecastPage .matchesParent,
 html.webview-native-shell.webview-mode .forecastPage .matches,
 html.webview-native-shell.webview-mode .forecastPage .backImg,
+html.webview-native-shell.webview-mode .forecastPage .backIcon,
+html.webview-native-shell.webview-mode .forecastPage .forecastActions,
+html.webview-native-shell.webview-mode .forecastPage .forecastActionsInner,
+html.webview-native-shell.webview-mode .forecastPage .adjustBtn,
 html.webview-native-shell.webview-mode .forecastPage .forecastButton,
 html.webview-native-shell.webview-mode .forecastPage .scoreParent,
 html.webview-native-shell.webview-mode .forecastPage .scoreBox,
@@ -187,7 +191,9 @@ html.webview-native-shell.webview-mode .registerParent {
 
 html.webview-native-shell.webview-mode .registerParent .content,
 html.webview-native-shell.webview-mode .registerParent .submitBtn,
-html.webview-native-shell.webview-mode .registerParent .clearBtn,
+html.webview-native-shell.webview-mode .registerParent .keyboardParent,
+html.webview-native-shell.webview-mode .registerParent .numericKeyboard,
+html.webview-native-shell.webview-mode .registerParent .numericKey,
 html.webview-native-shell.webview-mode .registerParent .des,
 html.webview-native-shell.webview-mode .registerParent .errorMdg {
     -webkit-transform: translateZ(0);

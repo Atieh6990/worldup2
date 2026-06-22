@@ -59,7 +59,7 @@ export default {
   line-height: 45px;
   color: #ffffff;
   font-size: 19px;
-  letter-spacing: -2px;
+  letter-spacing:0px;
   text-align: center;
   z-index: 1;
   background: rgba(74, 74, 75, 1);

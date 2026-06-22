@@ -11,7 +11,8 @@
         <groups v-on:selectItem="selectItem" :y-pos="yPos" :groups="groups" ref="groups"></groups>
       </div>
       <div class="forecastScrollArea">
-        <games v-on:dopredict="dopredict" :y-pos="yPos" :selectedIndex="selectedIndex" :groups="groups"
+        <games v-on:dopredict="dopredict" v-on:predictableExhausted="onPredictableExhausted"
+          :y-pos="yPos" :selectedIndex="selectedIndex" :groups="groups"
           :matches="predictable" ref="games" v-if="type == 0"></games>
         <myforcasts ref="myforcasts" :mypredict="mypredict" :selectedIndex="selectedIndex" v-if="type == 1"></myforcasts>
       </div>
@@ -69,7 +70,10 @@ export default {
       this.showSuccessPopup = true
       this.Erstatus = status
       this.Errmsg = msg
-      this.matchesApi();
+      this.matchesApi(true)
+    },
+    onPredictableExhausted() {
+      this.yPos = 1
     },
     selectItem(index) {
       this.selectedIndex = index
@@ -204,7 +208,7 @@ export default {
     },
 
 
-    matchesApi() {
+    matchesApi(keepSelectedDay) {
       // this.data ={
       //   "0": {
       //     "title": "shamsi date1",
@@ -525,12 +529,18 @@ export default {
       api.matches().then((data) => {
         this.dataLoaded = true;
         if (data.success && data.data) {
+          const prevIndex = this.selectedIndex
           this.createGroups(data.data)
           const todayIndex = findTodayGroupIndex(data.data)
-          this.selectedIndex = todayIndex
+          if (keepSelectedDay) {
+            const safeIndex = Math.max(0, Math.min(prevIndex, this.groups.length - 1))
+            this.selectedIndex = safeIndex
+          } else {
+            this.selectedIndex = todayIndex
+          }
           this.$nextTick(() => {
             if (this.$refs.groups) {
-              this.$refs.groups.setActiveIndex(todayIndex, true)
+              this.$refs.groups.setActiveIndex(this.selectedIndex, true)
             }
           })
         } else {

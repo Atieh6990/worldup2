@@ -80,6 +80,9 @@ export default {
           return
         }
         this.myScroll = createVerticalScroll(el)
+        setTimeout(() => {
+          refreshVerticalScroll(this.myScroll)
+        }, 300)
       }, 50);
     },
 
@@ -109,9 +112,15 @@ export default {
   box-sizing: border-box;
 }
 
+.listScroll::after {
+  content: '';
+  display: block;
+  clear: both;
+}
+
 .scoreItem {
   position: relative;
-  float: right;
+  display: flex;
   width: 100%;
   height: 77px;
   border: 2px solid #FFFFFF4D;
@@ -119,7 +128,6 @@ export default {
   box-shadow: 0px 4px 4px 0px #00000040;
   border-radius: 8px;
   margin-bottom: 13px;
-  display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
   justify-content: center;

@@ -4,7 +4,7 @@
       @init="onFlickityInit">
 
       <div v-for="(item, index) in groups" :id="'groupItem_' + index" :key="'group_' + index"
-        :class="['items', (yPos == 1 && xItem == index) ? 'colorNav' : '', (selectedTab == index) ? 'selectedNav' : '']">
+        :class="['items', isDayActive(index) ? 'selectedNav' : '']">
         {{ item }}
       </div>
 
@@ -23,9 +23,7 @@ export default {
   data() {
     return {
       xItem: 0,
-      selectedTab: 0,
-      _lastNavAt: 0,
-      _scrollAnimTimer: null,
+      selectedTab: -1,
       _syncTimer: null,
       flickityOptions: {
         accessibility: false,
@@ -41,7 +39,6 @@ export default {
   },
 
   beforeDestroy() {
-    clearTimeout(this._scrollAnimTimer)
     clearTimeout(this._syncTimer)
   },
 
@@ -49,7 +46,7 @@ export default {
     groups() {
       const safeIndex = Math.max(0, Math.min(this.xItem, this.groups.length - 1))
       if (safeIndex !== this.xItem) {
-        this.setActiveIndex(safeIndex, true)
+        this.setActiveIndex(safeIndex, this.selectedTab < 0)
       } else if (this.groups.length) {
         this.$nextTick(() => this.ensureScrollSync(this.xItem))
       }
@@ -58,6 +55,12 @@ export default {
 
 
   methods: {
+
+    isDayActive(index) {
+      if (this.yPos == 1) return this.xItem == index
+      if (this.selectedTab < 0) return false
+      return this.selectedTab == index
+    },
 
     onFlickityInit() {
       this.$nextTick(() => this.ensureScrollSync(this.xItem))
@@ -68,24 +71,17 @@ export default {
       return Math.max(0, Math.min(index, this.groups.length - 1))
     },
 
-    scrollToItem(index, forceInstant) {
+    scrollToItem(index) {
       const flickity = this.$refs.flickity
       const safeIndex = this.clampIndex(index)
       if (!flickity || !this.groups.length) return
 
-      clearTimeout(this._scrollAnimTimer)
       clearTimeout(this._syncTimer)
-
-      const now = Date.now()
-      const rapid = forceInstant !== true && this._lastNavAt && (now - this._lastNavAt) < 220
-      this._lastNavAt = now
-
-      const instant = forceInstant === true || rapid
-      flickity.select(safeIndex, false, instant)
+      flickity.select(safeIndex, false, true)
 
       this._syncTimer = setTimeout(() => {
         this.ensureScrollSync(safeIndex)
-      }, instant ? 16 : 190)
+      }, 16)
     },
 
     ensureScrollSync(index) {
@@ -98,16 +94,17 @@ export default {
       }
     },
 
-    setActiveIndex(index, forceInstant) {
+    setActiveIndex(index, skipHighlight) {
       if (!this.groups.length) return
 
       const safeIndex = this.clampIndex(index)
       this.xItem = safeIndex
-      this.selectedTab = safeIndex
-      this._lastNavAt = 0
+      if (!skipHighlight) {
+        this.selectedTab = safeIndex
+      }
 
       this.$nextTick(() => {
-        this.scrollToItem(safeIndex, forceInstant !== false)
+        this.scrollToItem(safeIndex)
       })
     },
 
@@ -115,23 +112,24 @@ export default {
       this.setActiveIndex(0, true)
     },
 
-    applySelection(index, forceInstant) {
+    applySelection(index) {
       const safeIndex = this.clampIndex(index)
       this.xItem = safeIndex
-      this.scrollToItem(safeIndex, forceInstant)
+      this.selectedTab = safeIndex
+      this.scrollToItem(safeIndex)
       this.$emit('selectItem', safeIndex)
     },
 
     left() {
       if (this.xItem < this.groups.length - 1) {
-        this.applySelection(this.xItem + 1, false)
+        this.applySelection(this.xItem + 1)
         return true
       }
     },
 
     right() {
       if (this.xItem > 0) {
-        this.applySelection(this.xItem - 1, false)
+        this.applySelection(this.xItem - 1)
         return true
       }
     },
@@ -176,7 +174,8 @@ export default {
 }
 
 .groupParent>>>.flickity-slider {
-  transition-duration: 0.18s !important;
+  transition: none !important;
+  transition-duration: 0s !important;
 }
 
 .groupParent>>>.flickity-viewport {
@@ -199,10 +198,6 @@ export default {
   direction: rtl !important;
   width: 140px;
   border: 3px solid transparent;
-}
-
-.colorNav {
-  border: 3px solid rgba(77, 205, 44, 1);
 }
 
 .selectedNav {

@@ -4,7 +4,7 @@ import { resolveWImg } from './wImgUrl'
 
 var osType = 0//0->android , 1->tizen
 
-var developMode = 1
+var developMode = 0
 var webviewMode = 0
 
 var menuPanelWidth = 350
@@ -34,7 +34,7 @@ function detectWebviewMode() {
 
 
  var main_api_url = 'https://fifa.tvapps.ir/api/'
-//var main_api_url = 'http://localhost:8003/api/'
+//var main_api_url = 'http://localhost:8083/api/'
 
 var hamsam_lives_url = 'https://hamsam.tvapps.ir/api/v1/lives'
 
