@@ -114,8 +114,8 @@ export default {
 
       const payload = buildHamsamPlayPayload(live)
       const message = buildHamsamPlayMessage(live)
-      console.log('[liveStreams] playable:', payload.playable)
-      console.log('[liveStreams] ReactNative playVideo:', message)
+      // console.log('[liveStreams] playable:', payload.playable)
+      // console.log('[liveStreams] ReactNative playVideo:', message)
       this.sendPlayVideoToReact(payload)
       return true
     },

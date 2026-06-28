@@ -253,7 +253,7 @@ export default {
             }
 
             function onerror(error) {
-                console.log("The error " + error.message + " occurred when listing the files in the selected folder");
+                // console.log("The error " + error.message + " occurred when listing the files in the selected folder");
             }
 
             tizen.filesystem.resolve(
@@ -262,7 +262,7 @@ export default {
                     documentsDir = dir;
                     dir.listFiles(onsuccess, onerror);
                 }, function (e) {
-                    console.log("Error" + e.message);
+                    // console.log("Error" + e.message);
                 }, "rw"
             );
 
@@ -279,9 +279,9 @@ export default {
                     function (fs) {
                         fs.write(jsonObj);
                         fs.close();
-                        console.log("what is write?????????", jsonObj)
+                        // console.log("what is write?????????", jsonObj)
                     }, function (e) {
-                        console.log("Error " + e.message);
+                        // console.log("Error " + e.message);
                     }, "UTF-8"
                 );
             }
@@ -303,7 +303,7 @@ export default {
                     return _this.tokenFind(data, 2)
 
                 }, function (e) {
-                    console.log("Error " + e.message);
+                    // console.log("Error " + e.message);
                 }, "UTF-8");
 
         },
@@ -339,9 +339,9 @@ export default {
                             function () {
                                 isFile = 0
                                 FileSelected = ""
-                                console.log("done!!!!")
+                                // console.log("done!!!!")
                             }, function (e) {
-                                console.log("Error" + e.message);
+                                // console.log("Error" + e.message);
                             });
                     }
                 } else {
@@ -363,7 +363,7 @@ export default {
 
                     //   CompressPath = dir.path + compressFileName;
                 }, function (e) {
-                    console.log("Error" + e.message);
+                    // console.log("Error" + e.message);
                 }, "rw"
             );
 
@@ -409,7 +409,7 @@ export default {
                     message: messageText,
                 }
             }
-            console.log('[ReactNative] postMessage playVideo:', message)
+            // console.log('[ReactNative] postMessage playVideo:', message)
             setTimeout(function () {
                 window.ReactNativeWebView && window.ReactNativeWebView.postMessage(JSON.stringify(message))
             }, 200);
@@ -419,7 +419,7 @@ export default {
             let _self = this;
             return api.aparatMatchByUuid(uuid).then(function (match) {
                 if (!match || !match.m3u8) {
-                    console.log('playLiveStream: m3u8 not found', uuid);
+                    // console.log('playLiveStream: m3u8 not found', uuid);
                     return null;
                 }
                 let payload = {
@@ -437,12 +437,12 @@ export default {
 
         playHamsamLiveStream(live) {
             if (!live || !live.link) {
-                console.log('playHamsamLiveStream: link not found');
+                // console.log('playHamsamLiveStream: link not found');
                 return Promise.resolve(null);
             }
             const payload = buildHamsamPlayPayload(live);
-            console.log('[initialLiveStream] hamsam live item:', live)
-            console.log('[initialLiveStream] play payload:', payload)
+            // console.log('[initialLiveStream] hamsam live item:', live)
+            // console.log('[initialLiveStream] play payload:', payload)
             this.$root.$emit('liveStreamPayload', payload);
             if (ROAST_CONFIG.OS_TYPE == 0 || (typeof window !== 'undefined' && window.ReactNativeWebView)) {
                 this.sendPlayVideoToReact(payload);

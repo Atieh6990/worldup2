@@ -44,7 +44,7 @@ export default {
              * @param {String} url - content url, if there is no value then take url from config
              */
             open: function (url, baseseek = '') {
-                console.log(url);
+                // console.log(url);
                 /* Create listener object. */
                 this.currentTimePlay = 0
                 urlPlayNow = url;
@@ -55,13 +55,13 @@ export default {
 
                 var listener = {
                     onbufferingstart: function () {
-                        console.log("Buffering start.");
+                        // console.log("Buffering start.");
                     },
                     onbufferingprogress: function (percent) {
-                        console.log("Buffering progress data : " + percent);
+                        // console.log("Buffering progress data : " + percent);
                     },
                     onbufferingcomplete: function () {
-                        console.log("Buffering complete.");
+                        // console.log("Buffering complete.");
 
                     },
 
@@ -69,16 +69,16 @@ export default {
                         // console.log("Current Playtime : " + currentTime);
                     },
                     onevent: function (eventType, eventData) {
-                        console.log("event type: " + eventType + ", data: " + eventData);
+                        // console.log("event type: " + eventType + ", data: " + eventData);
                     },
                     onstreamcompleted: function () {
-                        console.log("Stream Completed");
+                        // console.log("Stream Completed");
                         //clearInterval(window.setPinTIME);
 
                         this.stop();
                     }.bind(this),
                     onerror: function (eventType) {
-                        console.log("event type error : " + eventType);
+                        // console.log("event type error : " + eventType);
                     }
                 };
 
@@ -108,7 +108,7 @@ export default {
             },
             play: function () {
 
-                console.log('play', webapis.avplay.getState())
+                // console.log('play', webapis.avplay.getState())
                 //console.log('oftaaaaaaaaaaad too on playyyyyyyyyyyyyyyyyyyyyyyyyyy !!!! gaeedi manooooooooooo')
                 //set 4k
                 // if (isUhd) {
@@ -167,7 +167,7 @@ export default {
              * Rewind 3 seconds (3000 ms).
              */
             rew: function (num) {
-                console.log('REW');
+                // console.log('REW');
                 webapis.avplay.jumpBackward(num);
             },
             /**

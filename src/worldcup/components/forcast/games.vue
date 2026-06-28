@@ -526,7 +526,7 @@ export default {
       this.$set(this[field], idx, current + String(number))
     },
      predict(goala,goalb,match){
-      console.log("------",match)
+      // console.log("------",match)
       //predict  let Orgdata = {
       let data= {
         'goala': goala,
@@ -534,7 +534,7 @@ export default {
         'match': match,
       }
 
-console.log("data",data)
+// console.log("data",data)
        api.predict(data).then((data) => {
         //  console.log("data4444444",data)
          if (data.success===true || data.success==="true" ) {

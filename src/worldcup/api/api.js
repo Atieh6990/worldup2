@@ -20,13 +20,13 @@ export default {
             let data = response['data'];
             return data
         }).catch(response => {
-            console.log("code catch", response)
+            // console.log("code catch", response)
         });
     },
     signup(key, code, mobile, mac, uid, version, mac_lan, tv_type) {
         let Url = ROAST_CONFIG.main_api_url + 'signup'
         let Orgdata = ''
-        console.log('key', key, 'code', code, 'mobile', mobile, 'mac', mac, 'uid', uid, 'version', version, 'mac_lan', mac_lan, 'tv_type', tv_type)
+        // console.log('key', key, 'code', code, 'mobile', mobile, 'mac', mac, 'uid', uid, 'version', version, 'mac_lan', mac_lan, 'tv_type', tv_type)
 
         if (ROAST_CONFIG.OS_TYPE == 0) {//android
             Orgdata = {
@@ -60,7 +60,7 @@ export default {
             let data = response;
             return data
         }).catch(response => {
-            console.log("signup catch", response)
+            // console.log("signup catch", response)
             return response
         });
     },
@@ -74,7 +74,7 @@ export default {
             let data = response['data'];
             return data
         }).catch(response => {
-            console.log("signup catch", response)
+            // console.log("signup catch", response)
         });
     },
 
@@ -100,7 +100,7 @@ export default {
             let data = response['data'];
             return data
         }).catch(response => {
-            console.log("winner catch", response)
+            // console.log("winner catch", response)
         });
     },
     userScore() {
@@ -112,7 +112,7 @@ export default {
             let data = response['data'];
             return data
         }).catch(response => {
-            console.log("user catch", response)
+            // console.log("user catch", response)
         });
     },
     matches() {
@@ -124,7 +124,7 @@ export default {
             let data = response['data'];
             return data
         }).catch(response => {
-            console.log("matches catch", response)
+            // console.log("matches catch", response)
         });
     },
     predict(data) {
@@ -137,7 +137,7 @@ export default {
             let data = response['data'];
             return data
         }).catch(response => {
-            console.log("predict catch", response)
+            // console.log("predict catch", response)
         });
     },
 
@@ -151,7 +151,7 @@ export default {
             let data = response['data'];
             return data
         }).catch(response => {
-            console.log("code catch", response)
+            // console.log("code catch", response)
         });
     },
 
@@ -167,7 +167,7 @@ export default {
             let data = response['data'];
             return data
         }).catch(response => {
-            console.log("code catch", response)
+            // console.log("code catch", response)
         });
     },
 
@@ -176,7 +176,7 @@ export default {
             method: "GET",
             url: ROAST_CONFIG.APARAT_SPORT_VIDEO_LIST_URL,
         }).then(response => response['data'] || {}).catch(response => {
-            console.log("aparatSportVideoList catch", response)
+            // console.log("aparatSportVideoList catch", response)
             return {}
         });
     },
@@ -191,7 +191,7 @@ export default {
             let section = attributes.find(item => item.type === sectionType);
             return section && section.data ? section.data : []
         }).catch(response => {
-            console.log("aparatLeagueMatchesByType catch", sectionType, response)
+            // console.log("aparatLeagueMatchesByType catch", sectionType, response)
             return []
         });
     },
@@ -240,7 +240,7 @@ export default {
             method: "GET",
             url: Url,
         }).then(response => response['data'] || null).catch(response => {
-            console.log("aparatMatchByUuid catch", response)
+            // console.log("aparatMatchByUuid catch", response)
             return null;
         });
     },
@@ -260,7 +260,7 @@ export default {
             }
             return []
         }).catch(response => {
-            console.log('hamsamLives catch', response)
+            // console.log('hamsamLives catch', response)
             return []
         });
     },
