@@ -88,7 +88,7 @@ export default {
       // this.refreshScroll()
     },
     down() {
-      console.log(this.myScroll.y, this.myScroll.maxScrollY)
+      // console.log(this.myScroll.y, this.myScroll.maxScrollY)
       if (this.myScroll.y !== this.myScroll.maxScrollY) {
         this.myScroll.moveDown(80);
         return true;

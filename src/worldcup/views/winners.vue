@@ -242,7 +242,7 @@ export default {
 
 .scoreTxt {
   color: rgba(255, 255, 255, 1);
-  font-size: 18px;
+  font-size: 20px;
   line-height: 50%;
 }
 
