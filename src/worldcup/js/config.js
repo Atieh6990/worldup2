@@ -4,7 +4,7 @@ import { resolveWImg } from './wImgUrl'
 
 var osType = 0//0->android , 1->tizen
 
-var developMode = 0
+var developMode = 1
 var webviewMode = 0
 
 var menuPanelWidth = 350
